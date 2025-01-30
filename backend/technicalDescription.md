@@ -1,7 +1,7 @@
-<p class="title"> Adatbázis [<span class="mark">Database</span>]
+<p class="title"> Adatbázis [<span class="mark">Database</span>]</p>
 
-<p class="alt-title"> Táblák [<span class="mark">Tables</span>]
-
+<p class="alt-title"> Táblák [<span class="mark">Tables</span>]</p>
+# asd
 
 #
 <style>
