@@ -52,13 +52,12 @@
   <script>
   export default {
     props: ["title", "yes", "no", "size"],
-    emits: ["yesEvent", "noEvent"],
+    emits: ["yesEvent"],
   
     methods: {
       onClickYesButton() {
         this.$emit("yesEvent");
-      },
-  
+      }
     },
   };
   </script>
