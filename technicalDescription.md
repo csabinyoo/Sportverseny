@@ -1,6 +1,14 @@
 # Adatbázis [Databse]
 
-## Diagram
+# Diagram
 ![Diagram](documents/diagram_new.png)
 
-## Táblák
+# Táblák
+###  szerepkörök [Roles]
+> id -> a szerepkör azonosítója
+
+> szerepkör -> a szerepkör megnevezése
+
+> jog -> a szerepkörhöz tartozó jogok
+
+###  szerepkörök [Roles]
