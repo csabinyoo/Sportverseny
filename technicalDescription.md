@@ -1,5 +1,6 @@
 # Adatbázis [Databse]
 
 ## Diagram
-[Diagram](../documents/diagram.png)!
+![Diagram](documents/diagram.png)
+
 ## Táblák
