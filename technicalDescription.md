@@ -3,7 +3,7 @@
  
 # Táblák
  
-<h1 style="text-align:center;">Users</h1>
+### Users
  
 ><strong> id :</strong> *A felhasználó azonosítója, int(10), autoIncrement*
  
@@ -18,8 +18,8 @@
 > **role(szerepkör)** -> Itt vannak a szerepkörök, string(10), notNull
  
 > **permission(jog)** ->  A szerepkörrel megegyező jogot biztosít
-  
-<h1 style="text-align:center;">Csapatok [Teams]</h1>
+ 
+###  Csapatok [Teams]
  
 > **id** -> a csapatok id-je
  
@@ -29,7 +29,7 @@
  
 > **school(iskola)** -> Az iskola neve
  
-<h1 style="text-align:center;">Állomások [Stations]</h1>
+###  Állomások [situations]
  
 > **azonosító(id)** -> Az állomások azonosítója(id)
  
@@ -47,7 +47,7 @@
  
 > **competitonId(versenyId)** -> A verseny azonosítója(id)
  
-<h1 style="text-align:center;">Csapattagok [teamMembers]</h1>
+###  csapattagok [teamMembers]
  
 > **id(azonosító)** -> A csapattagok azonosítója(id)
  
@@ -57,14 +57,13 @@
  
 > **teamCaptain(csapatkapitány)** -> A csapatkapitány neve
  
-<h1 style="text-align:center;">eredményTípusok [resultType]</h1>
+### eredményTípusok [resultType]
  
 > **id(azonosító)** -> Az eredményTípusok azonosítója(id)
  
 > **resultType(eredményTípus)** -> Az eredmény típusa
  
 ### csapatAzÁllomáson [teamAStation]
-<h1 style="text-align:center;">csapatAzÁllomáson [teamAStation]</h1>
  
 > **id(azonosító)** -> A csapatAzÁllomáson azonosítója(id)
  
@@ -73,7 +72,6 @@
 > **stationId(állomásId)** -> Az állomás azonosítója(id)
  
 ### versenyek [competitions]
-<h1 style="text-align:center;">versenyek [competitions]</h1>
  
 > **id(azonosító)** -> A verseny azonosítója(id)
  
@@ -87,9 +85,7 @@
  
 > **registerTo(regisztrációIg)** -> A regisztráció vége
  
- 
 ### tagokEredményeiAzÁllomáson [memberResultsAtStation]
-<h1 style="text-align:center;">tagokEredményeiAzÁllomáson [memberResultsAtStation]</h1>
  
 > **id(azonosító)** -> A tagok eredményeinek azonosítója(id)
  
