@@ -3,11 +3,11 @@
 > A projekt célja egy versenykezelő rendszer létrehozása, amely lehetővé teszi a felhasználók, csapatok, versenyek és állomások adminisztrálását, valamint az eredmények nyilvántartását. A rendszer különböző szerepköröket támogat, mint regisztráló, felügyelő és adminisztrátor. A felhasználók regisztrálása, csapatok és versenyek szervezése, valamint az egyéni és csapat eredmények kezelése biztosítja a versenyek zökkenőmentes lebonyolítását. Az adatbázis táblái tartalmazzák a felhasználók, csapatok, versenyek és eredmények részletes nyilvántartását. A rendszer iskolai, sport- és egyéb csapatversenyekhez is alkalmazható.
 
 ```
-Az alkalmazás négy szerepkörre épül, amik megfelelő joggal hozzáférhetnek bizonyos tartalmakhoz.
-> Admin
-> Felügyelő [Supervisor]
-> Regisztráló [Registrant]
-> Vendég [Guest]
+Az alkalmazás négy szerepkörre épül, amik megfelelő jogosultsággal hozzáférhetnek a weboldal különböző tartalmaihoz.
+> Admin - Teljes hozzáférés.
+> Felügyelő [Supervisor] - Adott állomás felügyelése.
+> Regisztráló [Registrant] - Ő már tud regisztrálni a meghírdetett eseményekre.
+> Vendég [Guest] - Szabadon nézheti az eseményeket, azonban nem tud regisztrálni azokra.
 ```
 
 > A feladatot mySQL adatbázissal, laravel alapú backend, vue.js alapú frontend és a csoportmunkát git, github technológiával valósítjuk meg.
