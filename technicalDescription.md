@@ -1,23 +1,40 @@
-## Leírás
+# A feladat leírása
 
-> A projekt célja egy versenykezelő rendszer létrehozása, amely lehetővé teszi a felhasználók, csapatok, versenyek és állomások adminisztrálását, valamint az eredmények nyilvántartását. A rendszer különböző szerepköröket támogat, mint regisztráló, felügyelő és adminisztrátor. A felhasználók regisztrálása, csapatok és versenyek szervezése, valamint az egyéni és csapat eredmények kezelése biztosítja a versenyek zökkenőmentes lebonyolítását. Az adatbázis táblái tartalmazzák a felhasználók, csapatok, versenyek és eredmények részletes nyilvántartását. A rendszer iskolai, sport- és egyéb csapatversenyekhez is alkalmazható.
+> A projekt célja egy olyan versenykezelő rendszer létrehozása, amely állomásokból áll, ahol a csapatok valamilyen feladatok végrehajtanak aminek az eredményét összesítjük. A helyezés úgy alakul ki, hogy a helyszíneket végzett feladatok eredménye alapján sorba rendezzük a csapatokat.
 
+```
+Egy verseny létrehozása az alábbi lépések szerint történik:
+1. Az admin létrehozza a versenyt valamint a hozzátartozó helyszíneket és a helyszíneket felügyelőket regisztrálja, meghatározza a verseny jelentkezési határidejét.
+2. Nevezés: A regisztrálók regisztrálnak az oldalra, és bejegyzik a csapataik nevét és tagjait. Nevezni csak a jelentkezési határidőn belül lehetséges.
+3. A verseny lebonyolítása: A program által adott ütemterv szerint a csapatok felkeresik a helyszíneket, ahol a felügyelők regisztrálják az eredményeket, ami alapján a rendszer automatikus generálja az eredményt amit bárki megtekinthet.
+```
+
+## Szerepkörök
 ```
 Az alkalmazás négy szerepkörre épül, amik megfelelő jogosultsággal hozzáférhetnek a weboldal különböző tartalmaihoz.
 > Admin - Teljes hozzáférés.
-> Felügyelő [Supervisor] - Adott állomás felügyelése.
-> Regisztráló [Registrant] - Ő már tud regisztrálni a meghírdetett eseményekre.
-> Vendég [Guest] - Szabadon nézheti az eseményeket, azonban nem tud regisztrálni azokra.
+> Felügyelő [Supervisor] - Adott állomás felügyelete: pontozás.
+> Regisztráló [Registrant] - A feladata a csapat beregisztrálja a versenyre.
+> Vendég [Guest] - Szabadon nézheti az eseményeket és az eredményeket.
 ```
 
-> A feladatot mySQL adatbázissal, laravel alapú backend, vue.js alapú frontend, a csoportmunkát git, github technológiával a dizájnt pedig saját css és a bootstrap segítségével valósítjuk meg.
+## Technológia
+> <strong>Adatbázis</strong> > mysql
 
-## Diagram
+> <strong>Backend</strong> > Laravel
+
+> <strong>Frontend</strong> > vue.js
+
+> <strong>Csoportmunka</strong> > git & github
+
+> <strong>Dizájn</strong> > css & bootstrap
+
+# Diagram
 ![Diagram](documents/diagram_new.png)
  
 # Táblák
  
-### Users
+## Users
  
 ><strong> id :</strong> *A felhasználó azonosítója, int(10), autoIncrement*
  
@@ -33,7 +50,7 @@ Az alkalmazás négy szerepkörre épül, amik megfelelő jogosultsággal hozzá
  
 > **permission(jog)** ->  A szerepkörrel megegyező jogot biztosít
  
-###  Csapatok [Teams]
+##  Csapatok [Teams]
  
 > **id** -> a csapatok id-je
  
@@ -43,7 +60,7 @@ Az alkalmazás négy szerepkörre épül, amik megfelelő jogosultsággal hozzá
  
 > **school(iskola)** -> Az iskola neve
  
-###  Állomások [situations]
+##  Állomások [situations]
  
 > **azonosító(id)** -> Az állomások azonosítója(id)
  
@@ -61,7 +78,7 @@ Az alkalmazás négy szerepkörre épül, amik megfelelő jogosultsággal hozzá
  
 > **competitonId(versenyId)** -> A verseny azonosítója(id)
  
-###  csapattagok [teamMembers]
+## csapattagok [teamMembers]
  
 > **id(azonosító)** -> A csapattagok azonosítója(id)
  
@@ -71,13 +88,13 @@ Az alkalmazás négy szerepkörre épül, amik megfelelő jogosultsággal hozzá
  
 > **teamCaptain(csapatkapitány)** -> A csapatkapitány neve
  
-### eredményTípusok [resultType]
+## eredményTípusok [resultType]
  
 > **id(azonosító)** -> Az eredményTípusok azonosítója(id)
  
 > **resultType(eredményTípus)** -> Az eredmény típusa
  
-### csapatAzÁllomáson [teamAStation]
+## csapatAzÁllomáson [teamAStation]
  
 > **id(azonosító)** -> A csapatAzÁllomáson azonosítója(id)
  
@@ -85,7 +102,7 @@ Az alkalmazás négy szerepkörre épül, amik megfelelő jogosultsággal hozzá
  
 > **stationId(állomásId)** -> Az állomás azonosítója(id)
  
-### versenyek [competitions]
+## versenyek [competitions]
  
 > **id(azonosító)** -> A verseny azonosítója(id)
  
@@ -99,7 +116,7 @@ Az alkalmazás négy szerepkörre épül, amik megfelelő jogosultsággal hozzá
  
 > **registerTo(regisztrációIg)** -> A regisztráció vége
  
-### tagokEredményeiAzÁllomáson [memberResultsAtStation]
+## tagokEredményeiAzÁllomáson [memberResultsAtStation]
  
 > **id(azonosító)** -> A tagok eredményeinek azonosítója(id)
  
