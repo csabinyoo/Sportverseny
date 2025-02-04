@@ -10,7 +10,7 @@ Az alkalmazás négy szerepkörre épül, amik megfelelő jogosultsággal hozzá
 > Vendég [Guest] - Szabadon nézheti az eseményeket, azonban nem tud regisztrálni azokra.
 ```
 
-> A feladatot mySQL adatbázissal, laravel alapú backend, vue.js alapú frontend és a csoportmunkát git, github technológiával valósítjuk meg.
+> A feladatot mySQL adatbázissal, laravel alapú backend, vue.js alapú frontend, a csoportmunkát git, github technológiával a dizájnt pedig saját css és a bootstrap segítségével valósítjuk meg.
 
 ## Diagram
 ![Diagram](documents/diagram_new.png)
