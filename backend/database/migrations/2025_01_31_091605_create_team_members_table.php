@@ -15,7 +15,7 @@ return new class extends Migration
             $table->integer('id')->autoIncrement();
             $table->integer('teamId');
             $table->string('name');
-            $table->integer('captain');
+            $table->tinyInteger('captain');
             $table->foreign('teamId')->references('id')->on('teams');
         });
     }

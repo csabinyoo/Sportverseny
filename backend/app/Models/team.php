@@ -9,4 +9,13 @@ class team extends Model
 {
     /** @use HasFactory<\Database\Factories\TeamFactory> */
     use HasFactory;
+    public $timestamps = false;
+
+    protected $fillable = [
+        'id',
+        'competitionId',
+        'name',
+        'school',
+        'userId'
+    ];
 }

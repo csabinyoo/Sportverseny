@@ -9,4 +9,11 @@ class Role extends Model
 {
     /** @use HasFactory<\Database\Factories\RoleFactory> */
     use HasFactory;
+    public $timestamps = false;
+
+    protected $fillable = [
+        'id',
+        'role',
+        'permission'
+    ];
 }

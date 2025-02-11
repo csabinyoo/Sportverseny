@@ -9,4 +9,13 @@ class member_results_at_station extends Model
 {
     /** @use HasFactory<\Database\Factories\MemberResultsAtStationFactory> */
     use HasFactory;
+    public $timestamps = false;
+
+    protected $fillable = [
+        'id',
+        'teamAtStationId',
+        'teamMemberId',
+        'result',
+        'resultTime'
+    ];
 }

@@ -9,4 +9,10 @@ class result_type extends Model
 {
     /** @use HasFactory<\Database\Factories\ResultTypeFactory> */
     use HasFactory;
+    public $timestamps = false;
+
+    protected $fillable = [
+        'id',
+        'type'
+    ];
 }
