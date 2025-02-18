@@ -4,13 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCompetitionRequest extends FormRequest
+class UpdateUsersRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
+        //Bármely felhasználó csinálhatja
         return true;
     }
 
@@ -22,7 +23,9 @@ class StoreCompetitionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'nullable|string',
+            'email' => 'nullable|email',
+            'password' => 'nullable',
         ];
     }
 }

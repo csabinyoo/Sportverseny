@@ -1,0 +1,70 @@
+### változók
+@protocol = http://
+@hostname = localhost
+@port = 8000
+@host = {{protocol}}{{hostname}}:{{port}}
+
+# ------------- login, user -------------
+### login
+# @name login
+POST {{host}}/api/users/login 
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "123"
+}
+
+###
+@token = {{login.response.body.data.token}}
+
+### logout user
+POST  {{host}}/api/users/logout
+Accept: application/json
+Authorization: Bearer {{token}}
+
+# ------------- competitions -------------
+### competitions
+GET {{host}}/api/competitions
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### competition by id
+GET {{host}}/api/competitions/1
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### post competition
+POST {{host}}/api/competitions
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "test2",
+    "date": "2025-05-05",
+    "location": "Budapest",
+    "registerFrom": "2025-04-04", 
+    "registerTo" : "2025-05-02"
+}
+
+### patch competition
+PATCH {{host}}/api/competitions/2
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "test2",
+    "date": "2025-05-05",
+    "location": "Budapest",
+    "registerFrom": "2025-04-04", 
+    "registerTo" : "2025-05-02"
+}
+
+### delete competition
+DELETE {{host}}/api/competitions/2
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}

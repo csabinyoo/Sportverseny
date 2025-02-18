@@ -16,7 +16,6 @@ class Competition extends Model
         'name',
         'date',
         'location',
-        'moreIsBetter',
         'registerFrom',
         'registerTo'
     ];
@@ -24,9 +23,9 @@ class Competition extends Model
     protected function casts(): array
     {
         return [
-            'date' => 'date',
-            'registerFrom' => 'date',
-            'registerTo' => 'date'
+            'date' => 'date:Y-m-d',
+            'registerFrom' => 'date:Y-m-d',
+            'registerTo' => 'date:Y-m-d'
         ];
     }
 }
