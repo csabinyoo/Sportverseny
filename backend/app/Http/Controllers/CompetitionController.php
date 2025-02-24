@@ -11,7 +11,6 @@ class CompetitionController extends Controller
     public function index()
     {
         $rows = Competition::all();
-        // $rows = Diak::orderBy('nev', 'asc')->get();
         return response()->json(['data' => $rows], options: JSON_UNESCAPED_UNICODE);
     }
 

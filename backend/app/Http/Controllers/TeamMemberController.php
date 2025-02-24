@@ -8,43 +8,88 @@ use App\Http\Requests\Updateteam_memberRequest;
 
 class TeamMemberController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $rows = team_member::all();
+        return response()->json(['data' => $rows], options: JSON_UNESCAPED_UNICODE);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Storeteam_memberRequest $request)
     {
-        //
+        try {
+            $row = team_member::create($request->all());
+            $data = [
+                'message' => 'ok',
+                'data' => $row
+            ];
+        } catch (\Illuminate\Database\QueryException $e) {
+            $data = [
+                'message' => 'The post failed',
+                'data' => $request->all()
+            ];
+        }
+
+        return response()->json($data, options: JSON_UNESCAPED_UNICODE);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(team_member $team_member)
+    public function show(int $id)
     {
-        //
+        $row = team_member::find($id);
+        if ($row) {
+            $data = [
+                'message' => 'ok',
+                'data' => $row
+            ];
+        } else {
+            $data = [
+                'message' => 'Not found',
+                'data' => [
+                    'id' => $id
+                ]
+            ];
+        }
+        return response()->json($data, options: JSON_UNESCAPED_UNICODE);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Updateteam_memberRequest $request, team_member $team_member)
+    public function update(Updateteam_memberRequest $request, int $id)
     {
-        //
+        $row = team_member::find($id);
+        if ($row) {
+            $row->update($request->all());
+            $data = [
+                'message' => 'ok',
+                'data' => $row
+            ];
+        } else {
+            $data = [
+                'message' => 'Not found',
+                'data' => [
+                    'id' => $id
+                ]
+            ];
+        }
+        return response()->json($data, options: JSON_UNESCAPED_UNICODE);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(team_member $team_member)
+    public function destroy(int $id)
     {
-        //
+        $row = team_member::find($id);
+        if ($row) {
+            $row->delete();
+            $data = [
+                'message' => 'ok',
+                'data' => [
+                    'id' => $id
+                ]
+            ];
+        } else {
+            $data = [
+                'message' => 'Not found',
+                'data' => [
+                    'id' => $id
+                ]
+            ];
+        }
+        return response()->json($data, options: JSON_UNESCAPED_UNICODE);
     }
 }
