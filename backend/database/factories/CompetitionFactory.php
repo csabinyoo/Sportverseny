@@ -39,12 +39,12 @@ class CompetitionFactory extends Factory
         $registerFrom = $randomDateCarbon->copy()->subDays(7)->format('Y-m-d');
         $registerTo = $randomDateCarbon->copy()->subDays(1)->format('Y-m-d');
 
-        $location = $faker->numberBetween(1, 60) . '. terem';
+        // $location = $faker->numberBetween(1, 60) . '. terem';
 
         return [
             'name' => $name . ' emléktorna',
             'date' => $randomDate,
-            'location' => $location,
+            'location' => $faker->city() . ' ' . $name . ' Szakközép Iskola',
             'registerFrom' => $registerFrom,
             'registerTo' => $registerTo
         ];
