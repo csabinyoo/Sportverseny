@@ -25,7 +25,7 @@ class CompetitionController extends Controller
         } catch (\Illuminate\Database\QueryException $e) {
             $data = [
                 'message' => 'The post failed',
-                'data' => $request->all()
+                'data' => []
             ];
         }
 

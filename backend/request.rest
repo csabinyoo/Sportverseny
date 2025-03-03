@@ -42,7 +42,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name": "test2",
+    "name": "test",
     "date": "2025-05-05",
     "location": "Budapest",
     "registerFrom": "2025-04-04", 
