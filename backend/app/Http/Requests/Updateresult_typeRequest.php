@@ -11,7 +11,7 @@ class Updateresult_typeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**

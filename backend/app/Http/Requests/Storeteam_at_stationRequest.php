@@ -11,7 +11,7 @@ class Storeteam_at_stationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
