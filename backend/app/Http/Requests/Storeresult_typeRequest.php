@@ -22,7 +22,7 @@ class Storeresult_typeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'type' => "string"
         ];
     }
 }

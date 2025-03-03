@@ -13,19 +13,22 @@ class CompetitionSeeder extends Seeder
      */
     public function run(): void
     {
-        $data = [
-            [
-                'id' => 1,
-                'name' => 'test',
-                'date' => '2025-02-16',
-                'location' => 'test',
-                'registerFrom' => '2025-02-11',
-                'registerTo' => '2025-02-15'
-            ],
-        ];
+        // $data = [
+        //     [
+        //         'id' => 1,
+        //         'name' => 'test',
+        //         'date' => '2025-02-16',
+        //         'location' => 'test',
+        //         'registerFrom' => '2025-02-11',
+        //         'registerTo' => '2025-02-15'
+        //     ],
+        // ];
 
+        // if (Competition::count() === 0) {
+        //     Competition::factory()->createMany($data);
+        // }
         if (Competition::count() === 0) {
-            Competition::factory()->createMany($data);
+            Competition::factory(10)->create();
         }
     }
 }

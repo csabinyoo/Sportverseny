@@ -22,7 +22,8 @@ class StoreRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'role' => 'string',
+            'permission' => 'integer'
         ];
     }
 }

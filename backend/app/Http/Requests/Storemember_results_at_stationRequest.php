@@ -22,7 +22,10 @@ class Storemember_results_at_stationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'teamAtStationId' => 'integer',
+            'teamMemberId' => 'integer',
+            'result' => 'nullable|integer',
+            'resultTime' => 'nullable|integer',
         ];
     }
 }

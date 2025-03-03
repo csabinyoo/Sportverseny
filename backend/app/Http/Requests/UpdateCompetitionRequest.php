@@ -22,7 +22,11 @@ class UpdateCompetitionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'string',
+            'date' => 'date',
+            'location' => 'string',
+            'registerFrom' => 'date',
+            'registerTo' => 'date',
         ];
     }
 }

@@ -22,7 +22,9 @@ class Updateteam_memberRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'teamId' => 'integer',
+            'name' => 'string',
+            'captain' => 'integer'
         ];
     }
 }

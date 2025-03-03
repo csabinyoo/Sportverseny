@@ -22,7 +22,10 @@ class UpdateteamRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'competitionId' => 'integer',
+            'name' => 'string',
+            'school' => 'string',
+            'userId' => 'integer'
         ];
     }
 }

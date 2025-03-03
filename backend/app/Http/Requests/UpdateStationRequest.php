@@ -22,7 +22,13 @@ class UpdateStationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'string',
+            'location' => 'string',
+            'weighting' => 'numeric',
+            'moreIsBetter' => 'boolean',
+            'typeId' => 'integer',
+            'userId' => 'integer',
+            'competitionId' => 'integer',
         ];
     }
 }
