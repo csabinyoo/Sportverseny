@@ -22,8 +22,8 @@ class Storemember_results_at_stationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'teamAtStationId' => 'integer',
-            'teamMemberId' => 'integer',
+            'teamAtStationId' => 'nullable|integer',
+            'teamMemberId' => 'nullable|integer',
             'result' => 'nullable|integer',
             'resultTime' => 'nullable|integer',
         ];

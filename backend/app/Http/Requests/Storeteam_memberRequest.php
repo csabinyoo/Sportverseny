@@ -22,9 +22,9 @@ class Storeteam_memberRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'teamId' => 'integer',
-            'name' => 'string',
-            'captain' => 'integer'
+            'teamId' => 'nullable|integer',
+            'name' => 'nullable|string',
+            'captain' => 'nullable|integer'
         ];
     }
 }

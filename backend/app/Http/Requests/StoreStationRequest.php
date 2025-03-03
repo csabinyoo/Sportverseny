@@ -22,13 +22,13 @@ class StoreStationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string',
-            'location' => 'string',
-            'weighting' => 'numeric',
-            'moreIsBetter' => 'boolean',
-            'typeId' => 'integer',
-            'userId' => 'integer',
-            'competitionId' => 'integer',
+            'name' => 'nullable|string',
+            'location' => 'nullable|string',
+            'weighting' => 'nullable|numeric',
+            'moreIsBetter' => 'nullable|boolean',
+            'typeId' => 'nullable|integer',
+            'userId' => 'nullable|integer',
+            'competitionId' => 'nullable|integer',
         ];
     }
 }

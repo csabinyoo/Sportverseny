@@ -22,8 +22,8 @@ class UpdateRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role' => 'string',
-            'permission' => 'integer'
+            'role' => 'nullable|string',
+            'permission' => 'nullable|integer'
         ];
     }
 }

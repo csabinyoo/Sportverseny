@@ -22,11 +22,11 @@ class StoreCompetitionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string',
-            'date' => 'date',
-            'location' => 'string',
-            'registerFrom' => 'date',
-            'registerTo' => 'date',
+            'name' => 'nullable|string',
+            'date' => 'nullable|date',
+            'location' => 'nullable|string',
+            'registerFrom' => 'nullable|date',
+            'registerTo' => 'nullable|date',
         ];
     }
 }

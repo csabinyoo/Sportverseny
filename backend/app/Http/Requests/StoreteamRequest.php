@@ -22,10 +22,10 @@ class StoreteamRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'competitionId' => 'integer',
-            'name' => 'string',
-            'school' => 'string',
-            'userId' => 'integer'
+            'competitionId' => 'nullable|integer',
+            'name' => 'nullable|string',
+            'school' => 'nullable|string',
+            'userId' => 'nullable|integer'
         ];
     }
 }

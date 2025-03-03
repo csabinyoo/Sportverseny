@@ -22,8 +22,8 @@ class Updateteam_at_stationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'teamId' => 'integer',
-            'stationId' => 'integer'
+            'teamId' => 'nullable|integer',
+            'stationId' => 'nullable|integer'
         ];
     }
 }
