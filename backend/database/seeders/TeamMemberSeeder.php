@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\team;
 use App\Models\team_member;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class TeamMemberSeeder extends Seeder
@@ -17,8 +16,14 @@ class TeamMemberSeeder extends Seeder
         $teams = team::all();
 
         foreach ($teams as $team) {
-            team_member::factory()->count(10)->create([
-                'teamId' => $team->id
+            $teamMembers = team_member::factory()->count(10)->create([
+                'teamId' => $team->id,
+            ]);
+
+            $captain = $teamMembers->random();
+
+            $captain->update([
+                'captain' => true,
             ]);
         }
     }
