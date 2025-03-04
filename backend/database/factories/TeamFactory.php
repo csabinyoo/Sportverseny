@@ -45,13 +45,13 @@ class TeamFactory extends Factory
         }
 
         // Véletlenszerű, de egyedi nevet választunk
-        $name = $this->faker->randomElement($availableNames);
-        $usedNames[] = $name;
+        $teamName = $this->faker->randomElement($availableNames);
+        $usedNames[] = $teamName;
 
         return [
             'competitionId' => Competition::inRandomOrder()->first()->id,
-            'name' => $name,
-            'school' => $this->faker->city() . 'i ' . $name . ' Szakközép Iskola',
+            'name' => $teamName,
+            'school' => $faker->city() . 'i ' . $name . ' Szakközép Iskola',
             'userId' => User::inRandomOrder()->first()->id
         ];
     }
