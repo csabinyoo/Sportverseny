@@ -28,9 +28,29 @@ class TeamFactory extends Factory
             $name = $faker->lastName(). " " . $faker->firstNameFemale();
         }
 
+        static $usedNames = [];
+
+        $teamNames = [
+            'Titans', 'Dragons', 'Warriors', 'Thunder', 'Vikings', 'Eagles', 'Panthers', 
+            'Hawks', 'Falcons', 'Predators', 'Storm', 'Sharks', 'Wolves', 'Spartans', 'Gladiators'
+        ];
+
+        // Kiszűrjük azokat a neveket, amiket már felhasználtunk
+        $availableNames = array_diff($teamNames, $usedNames);
+
+        // Ha elfogytak az egyedi nevek, újraindítjuk a listát (hogy ne hibázzon)
+        if (empty($availableNames)) {
+            $usedNames = [];
+            $availableNames = $teamNames;
+        }
+
+        // Véletlenszerű, de egyedi nevet választunk
+        $name = $this->faker->randomElement($availableNames);
+        $usedNames[] = $name;
+
         return [
             'competitionId' => Competition::inRandomOrder()->first()->id,
-            'name' => $this->faker->word(),
+            'name' => $name,
             'school' => $this->faker->city() . 'i ' . $name . ' Szakközép Iskola',
             'userId' => User::inRandomOrder()->first()->id
         ];

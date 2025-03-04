@@ -16,7 +16,11 @@ class ResultTypeSeeder extends Seeder
         $data = [
             [
                 'id' => 1,
-                'type' => 'test'
+                'type' => 'point'
+            ],
+            [
+                'id' => 2,
+                'type' => 'time'
             ],
         ];
 

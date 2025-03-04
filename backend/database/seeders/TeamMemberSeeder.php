@@ -17,7 +17,6 @@ class TeamMemberSeeder extends Seeder
         $teams = team::all();
 
         foreach ($teams as $team) {
-            // Minden csapathoz pontosan 10 csapattagot generálunk
             team_member::factory()->count(10)->create([
                 'teamId' => $team->id
             ]);

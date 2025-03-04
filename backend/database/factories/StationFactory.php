@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Competition;
 use App\Models\result_type;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,13 +19,51 @@ class StationFactory extends Factory
      */
     public function definition(): array
     {
+        static $usedNames = [];
+
+        $sports = [
+            'Football',
+            'Basketball',
+            'Baseball',
+            'Soccer',
+            'Tennis',
+            'Volleyball',
+            'Hockey',
+            'Rugby',
+            'Cricket',
+            'Golf',
+            'Swimming',
+            'Boxing',
+            'MMA',
+            'Wrestling',
+            'Cycling',
+            'Rowing',
+            'Fencing',
+            'Archery',
+            'Skiing',
+            'Snowboarding'
+        ];
+
+        // Kiszűrjük azokat a neveket, amiket már felhasználtunk
+        $availableNames = array_diff($sports, $usedNames);
+
+        // Ha elfogytak az egyedi nevek, újraindítjuk a listát (hogy ne hibázzon)
+        if (empty($availableNames)) {
+            $usedNames = [];
+            $availableNames = $sports;
+        }
+
+        // Véletlenszerű, de egyedi nevet választunk
+        $name = $this->faker->randomElement($availableNames);
+        $usedNames[] = $name;
+
         return [
-            'name' => $this->faker->word(),
+            'name' => $name,
             'location' => $this->faker->numberBetween(1, 60) . '. terem',
-            'weighting' => $this->faker->randomFloat(1, 0.5, 1),
+            'weighting' => $this->faker->boolean(50) ? 1.0 : $this->faker->randomFloat(1, 0.5, 0.8),
             'moreIsBetter' => $this->faker->boolean(),
             'typeId' => result_type::inRandomOrder()->first()->id,
-            'userId' => 1,
+            'userId' => User::where('roleId', 2)->inRandomOrder()->first()?->id,
             'competitionId' => Competition::inRandomOrder()->first()->id
         ];
     }

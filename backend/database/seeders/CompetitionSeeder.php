@@ -14,7 +14,7 @@ class CompetitionSeeder extends Seeder
     public function run(): void
     {
         if (Competition::count() === 0) {
-            Competition::factory(10)->create();
+            Competition::factory(1)->create();
         }
     }
 }

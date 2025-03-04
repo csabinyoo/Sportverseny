@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
                 'name' => 'test',
                 'email' => 'test@example.com',
                 'password' => '123',
-                'roleId' => '1',
+                'roleId' => '2',
             ]);
         }
     }
