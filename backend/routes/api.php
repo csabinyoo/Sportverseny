@@ -1,6 +1,13 @@
 <?php
 
 use App\Http\Controllers\CompetitionController;
+use App\Http\Controllers\MemberResultsAtStationController;
+use App\Http\Controllers\ResultTypeController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StationController;
+use App\Http\Controllers\TeamAtStationController;
+use App\Http\Controllers\TeamController;
+use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,4 +40,95 @@ Route::post('competitions', [CompetitionController::class, 'store'])
 Route::patch('competitions/{id}', [CompetitionController::class, 'update'])
     ->middleware(middleware: 'auth:sanctum');
 Route::delete('competitions/{id}', [CompetitionController::class, 'destroy'])
+    ->middleware('auth:sanctum');
+
+// MEMBERATSTATION
+
+Route::get('memberatstation', [MemberResultsAtStationController::class, 'index'])
+    ->middleware('auth:sanctum');
+Route::get('memberatstation/{id}', [MemberResultsAtStationController::class, 'show'])
+    ->middleware('auth:sanctum');
+Route::post('memberatstation', [MemberResultsAtStationController::class, 'store'])
+    ->middleware('auth:sanctum');
+Route::patch('memberatstation/{id}', [MemberResultsAtStationController::class, 'update'])
+    ->middleware(middleware: 'auth:sanctum');
+Route::delete('memberatstation/{id}', [MemberResultsAtStationController::class, 'destroy'])
+    ->middleware('auth:sanctum');
+
+// ResultType
+
+Route::get('results', [ResultTypeController::class, 'index'])
+    ->middleware('auth:sanctum');
+Route::get('results/{id}', [ResultTypeController::class, 'show'])
+    ->middleware('auth:sanctum');
+Route::post('results', [ResultTypeController::class, 'store'])
+    ->middleware('auth:sanctum');
+Route::patch('results/{id}', [ResultTypeController::class, 'update'])
+    ->middleware(middleware: 'auth:sanctum');
+Route::delete('results/{id}', [ResultTypeController::class, 'destroy'])
+    ->middleware('auth:sanctum');
+
+// Roles
+
+Route::get('roles', [RoleController::class, 'index'])
+    ->middleware('auth:sanctum');
+Route::get('roles/{id}', [RoleController::class, 'show'])
+    ->middleware('auth:sanctum');
+Route::post('roles', [RoleController::class, 'store'])
+    ->middleware('auth:sanctum');
+Route::patch('roles/{id}', [RoleController::class, 'update'])
+    ->middleware(middleware: 'auth:sanctum');
+Route::delete('roles/{id}', [RoleController::class, 'destroy'])
+    ->middleware('auth:sanctum');
+
+// STATIONS
+
+Route::get('stations', [StationController::class, 'index'])
+    ->middleware('auth:sanctum');
+Route::get('stations/{id}', [StationController::class, 'show'])
+    ->middleware('auth:sanctum');
+Route::post('stations', [StationController::class, 'store'])
+    ->middleware('auth:sanctum');
+Route::patch('stations/{id}', [StationController::class, 'update'])
+    ->middleware(middleware: 'auth:sanctum');
+Route::delete('stations/{id}', [StationController::class, 'destroy'])
+    ->middleware('auth:sanctum');
+
+// TEAM  AT STATION
+
+Route::get('taematstation', [TeamAtStationController::class, 'index'])
+    ->middleware('auth:sanctum');
+Route::get('taematstation/{id}', [TeamAtStationController::class, 'show'])
+    ->middleware('auth:sanctum');
+Route::post('taematstation', action: [TeamAtStationController::class, 'store'])
+    ->middleware('auth:sanctum');
+Route::patch('taematstation/{id}', [TeamAtStationController::class, 'update'])
+    ->middleware(middleware: 'auth:sanctum');
+Route::delete('taematstation/{id}', [TeamAtStationController::class, 'destroy'])
+    ->middleware('auth:sanctum');
+
+// TEAMS
+
+Route::get('teams', [TeamController::class, 'index'])
+    ->middleware('auth:sanctum');
+Route::get('teams/{id}', [TeamController::class, 'show'])
+    ->middleware('auth:sanctum');
+Route::post('teams', action: [TeamController::class, 'store'])
+    ->middleware('auth:sanctum');
+Route::patch('teams/{id}', [TeamController::class, 'update'])
+    ->middleware(middleware: 'auth:sanctum');
+Route::delete('teams/{id}', [TeamController::class, 'destroy'])
+    ->middleware('auth:sanctum');
+
+// TEAM MEMBER
+
+Route::get('teammember', [TeamMemberController::class, 'index'])
+    ->middleware('auth:sanctum');
+Route::get('teammember/{id}', [TeamMemberController::class, 'show'])
+    ->middleware('auth:sanctum');
+Route::post('teammember', action: [TeamMemberController::class, 'store'])
+    ->middleware('auth:sanctum');
+Route::patch('teammember/{id}', [TeamMemberController::class, 'update'])
+    ->middleware(middleware: 'auth:sanctum');
+Route::delete('teammember/{id}', [TeamMemberController::class, 'destroy'])
     ->middleware('auth:sanctum');
