@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\team_at_station;
+use App\Models\team_member;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,10 @@ class member_results_at_stationFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'teamAtStationId' => team_at_station::inRandomOrder()->first()->id,
+            'teamMemberId' => team_member::inRandomOrder()->first()->id,
+            'result' => $this->faker->numberBetween(0, 100),
+            'resultTime' => $this->faker->time(),
         ];
     }
 }

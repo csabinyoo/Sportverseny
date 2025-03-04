@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Station;
+use App\Models\team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,8 @@ class team_at_stationFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'teamId' => team::inRandomOrder()->first()->id,
+            'stationId' => Station::inRandomOrder()->first()->id
         ];
     }
 }

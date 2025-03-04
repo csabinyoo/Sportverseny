@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\member_results_at_station;
+use App\Models\team_at_station;
+use App\Models\team_member;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,18 +15,18 @@ class MemberResultsAtStationSeeder extends Seeder
      */
     public function run(): void
     {
-        $data = [
-            [
-                'id' => 1,
-                'teamAtStationId' => 1,
-                'teamMemberId' => 1,
-                'result' => 0,
-                'resultTime' => '00:02:45',
-            ],
-        ];
+        $teamMembers = team_member::all();
 
-        if (member_results_at_station::count() === 0) {
-            member_results_at_station::factory()->createMany($data);
+        foreach ($teamMembers as $member) {
+            // Csapat adott állomásainak egy véletlenszerű állomását választjuk
+            $teamAtStation = team_at_station::where('teamId', $member->teamId)->inRandomOrder()->first();
+
+            if ($teamAtStation) {
+                member_results_at_station::factory()->create([
+                    'teamAtStationId' => $teamAtStation->id,
+                    'teamMemberId' => $member->id
+                ]);
+            }
         }
     }
 }

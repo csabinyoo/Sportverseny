@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\team;
 use App\Models\team_member;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,12 +14,13 @@ class TeamMemberSeeder extends Seeder
      */
     public function run(): void
     {
-        $data = [
-            ['id' => 1, 'teamId' => 1, 'name' => 'test', 'captain' => 1],
-        ];
+        $teams = team::all();
 
-        if (team_member::count() === 0) {
-            team_member::factory()->createMany($data);
+        foreach ($teams as $team) {
+            // Minden csapathoz pontosan 10 csapattagot generálunk
+            team_member::factory()->count(10)->create([
+                'teamId' => $team->id
+            ]);
         }
     }
 }

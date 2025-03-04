@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\team;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,9 @@ class team_memberFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'teamId' => team::inRandomOrder()->first()->id,
+            'name' => $this->faker->name(),
+            'captain' => User::inRandomOrder()->first()->id
         ];
     }
 }

@@ -20,10 +20,6 @@ class CompetitionFactory extends Factory
     {
         $faker =  Faker::create('hu_HU');
 
-        $minDate = '2015-01-01';
-        $maxDate = '2024-12-31';
-        $randomDate = fake()->date('Y-m-d', $maxDate);
-
         $neme = fake()->boolean();
         if ($neme) {
             $name = $faker->lastName(). " " . $faker->firstNameMale();
@@ -31,22 +27,14 @@ class CompetitionFactory extends Factory
             $name = $faker->lastName(). " " . $faker->firstNameFemale();
         }
 
-        while ($randomDate < $minDate) {
-            $randomDate = fake()->date('Y-m-d', $maxDate);
-        }
-
-        $randomDateCarbon = Carbon::parse($randomDate);
-        $registerFrom = $randomDateCarbon->copy()->subDays(7)->format('Y-m-d');
-        $registerTo = $randomDateCarbon->copy()->subDays(1)->format('Y-m-d');
-
         // $location = $faker->numberBetween(1, 60) . '. terem';
 
         return [
             'name' => $name . ' emléktorna',
-            'date' => $randomDate,
-            'location' => $faker->city() . ' ' . $name . ' Szakközép Iskola',
-            'registerFrom' => $registerFrom,
-            'registerTo' => $registerTo
+            'date' => now()->addDays(7),
+            'location' => $faker->city() . 'i ' . $name . ' Szakközép Iskola',
+            'registerFrom' => now(),
+            'registerTo' => now()->addDays(6)
         ];
     }
 }
