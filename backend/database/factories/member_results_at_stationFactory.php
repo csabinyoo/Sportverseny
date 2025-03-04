@@ -19,6 +19,13 @@ class member_results_at_stationFactory extends Factory
      */
     public function definition(): array
     {
-       
+        // $teamAtStation = team_at_station::inRandomOrder()->first();
+        // $station = Station::find($teamAtStation->stationId);
+        // return [
+        //     'teamAtStationId' => $teamAtStation->id,
+        //     'teamMemberId' => team_member::inRandomOrder()->first()->id,
+        //     'result' => $station->typeId == 1 ? $this->faker->numberBetween(0, 100) : 0,
+        //     'resultTime' => $station->typeId == 2 ? sprintf('00:%02d:%02d', $this->faker->numberBetween(0, 15), $this->faker->numberBetween(0, 59)) : 0,
+        // ];
     }
 }
