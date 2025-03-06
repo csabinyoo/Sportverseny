@@ -59,7 +59,7 @@ class StationFactory extends Factory
 
         return [
             'name' => $name,
-            'location' => $this->faker->numberBetween(1, 60) . '. terem',
+            'location' => $this->faker->numberBetween(1, 60) . '. class',
             'weighting' => $this->faker->boolean(50) ? 1.0 : $this->faker->randomFloat(1, 0.5, 0.8),
             'moreIsBetter' => $this->faker->boolean(),
             'typeId' => result_type::inRandomOrder()->first()->id,
