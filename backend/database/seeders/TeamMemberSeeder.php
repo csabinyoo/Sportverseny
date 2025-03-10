@@ -13,22 +13,23 @@ class TeamMemberSeeder extends Seeder
      */
     public function run(): void
     {
-        $filePath = database_path('csv\team_members.csv');
-        $data = [];
-        if (($handle = fopen($filePath, "r")) !== FALSE) {
-            fgetcsv($handle, 1000, ";");
-            while (($row = fgetcsv($handle, 1000, ";")) !== FALSE) {
-                $data[] = [
-                    'teamId' => $row[0],
-                    'name' => $row[1],
-                    'captain' => $row[2]
-                ];
-            }
-            fclose($handle);
-        }
+        // $filePath = database_path('csv\team_members.csv');
+        // $data = [];
+        // if (($handle = fopen($filePath, "r")) !== FALSE) {
+        //     fgetcsv($handle, 1000, ";");
+        //     while (($row = fgetcsv($handle, 1000, ";")) !== FALSE) {
+        //         $data[] = [
+        //             'teamId' => $row[0],
+        //             'name' => $row[1],
+        //             'captain' => $row[2]
+        //         ];
+        //     }
+        //     fclose($handle);
+        // }
     
         if (team_member::count() === 0) {
-            team_member::factory()->createMany($data);
+            // team_member::factory()->createMany($data);
+            team_member::factory(60)->create();
         }
     }
 }

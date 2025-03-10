@@ -15,8 +15,8 @@ return new class extends Migration
             $table->integer('id')->autoIncrement();
             $table->integer('teamAtStationId');
             $table->integer('teamMemberId');
-            $table->integer('result');
-            $table->time('resultTime');
+            $table->integer('result')->nullable();
+            $table->time('resultTime')->nullable();
             $table->foreign('teamAtStationId')->references('id')->on('team_at_stations');
             $table->foreign('teamMemberId')->references('id')->on('team_members');
         });

@@ -17,4 +17,11 @@ class team_member extends Model
         'name',
         'captain'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'captain' => 'boolean',
+        ];
+    }
 }

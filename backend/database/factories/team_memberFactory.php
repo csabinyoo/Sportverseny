@@ -1,6 +1,8 @@
 <?php
 
 namespace Database\Factories;
+use App\Models\team;
+use Faker\Factory as Faker;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -16,8 +18,22 @@ class team_memberFactory extends Factory
      */
     public function definition(): array
     {
+        $faker =  Faker::create('hu_HU');
+        $teamId = team::inRandomOrder()->first()->id;
+
+        $neme = fake()->boolean();
+        if ($neme) {
+            //férfi
+            $nev = $faker->lastName(). " " . $faker->firstNameMale();
+        } else {
+            $nev = $faker->lastName(). " " . $faker->firstNameFemale();
+            //nő
+        }
+
         return [
-            //
+            'teamId' => $teamId,
+            'name' => $nev,
+            'captain' => false
         ];
     }
 }

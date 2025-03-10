@@ -65,7 +65,8 @@ class StationFactory extends Factory
             'moreIsBetter' => $typeId == 1 ? 1 : 0, // Ha typeId 1, akkor a magasabb pont jobb; ha 2, akkor az alacsonyabb idő jobb
             'typeId' => $typeId, // Kiválasztott típus ID
             'userId' => $userId, // Kiválasztott felhasználó ID
-            'competitionId' => Competition::inRandomOrder()->first()->id // Véletlenszerű verseny ID kiválasztása
+            'competitionId' => Competition::first()->id
+            // 'competitionId' => Competition::inRandomOrder()->first()->id // Véletlenszerű verseny ID kiválasztása
         ];
     }    
 }
