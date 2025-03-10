@@ -15,17 +15,6 @@ class MemberResultsAtStationSeeder extends Seeder
      */
     public function run(): void
     {
-        // $teamsAtStations = team_at_station::all();
-
-        // foreach ($teamsAtStations as $teamAtStation) {
-        //     $teamMembers = team_member::where('teamId', $teamAtStation->teamId)->get();
-
-        //     foreach ($teamMembers as $teamMember) {
-        //         member_results_at_station::factory()->create([
-        //             'teamAtStationId' => $teamAtStation->id,
-        //             'teamMemberId' => $teamMember->id,
-        //         ]);
-        //     }
-        // }
+        //
     }
 }
