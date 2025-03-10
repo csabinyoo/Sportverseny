@@ -15,16 +15,5 @@ class TeamAtStationSeeder extends Seeder
      */
     public function run(): void
     {
-        $teams = team::all();
-        $stations = Station::all();
-
-        foreach ($teams as $team) {
-            foreach ($stations as $station) {
-                team_at_station::factory()->create([
-                    'teamId' => $team->id,
-                    'stationId' => $station->id
-                ]);
-            }
-        }
     }
 }

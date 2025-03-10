@@ -26,7 +26,7 @@ class RoleSeeder extends Seeder
             ],
             [
                 'id' => 3,
-                'role' => '?',
+                'role' => 'Student',
                 'permission' => 1
             ],
             [

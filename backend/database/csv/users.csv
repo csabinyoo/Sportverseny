@@ -1,0 +1,74 @@
+username;name;email;password;roleId
+mCsaba;Medgyes Csaba;medgyescsaba@gmail.com;MedgyesCsaba2025;4
+lBence;Ledacs-Kiss Bence;ledacs-kissbence@gmail.com;LedacsKissBence2025;4
+fDorain;Fehér Zsolt Dorián;feherzsoltdorian@gmail.com;FeherZsoltDorian2025;4
+supervisor;Supervisor;supervisor@supervisor.com;SuperVisor2025;2
+supervisor2;Supervisor2;supervisor@supervisor.com;SuperVisor2025;2
+supervisor3;Supervisor3;supervisor@supervisor.com;SuperVisor2025;2
+supervisor4;Supervisor4;supervisor@supervisor.com;SuperVisor2025;2
+supervisor5;Supervisor5;supervisor@supervisor.com;SuperVisor2025;2
+supervisor6;Supervisor6;supervisor@supervisor.com;SuperVisor2025;2
+supervisor7;Supervisor7;supervisor@supervisor.com;SuperVisor2025;2
+supervisor8;Supervisor8;supervisor@supervisor.com;SuperVisor2025;2
+supervisor9;Supervisor9;supervisor@supervisor.com;SuperVisor2025;2
+supervisor10;Supervisor10;supervisor@supervisor.com;SuperVisor2025;2
+bEva;Balogh Éva;balogheva@gmail.com;BaloghEva2025;3
+nKatalin;Nagy Katalin;nagykatalin@gmail.com;NagyKatalin2025;3
+sMihaly;Szabó Mihály;szabomihaly@gmail.com;SzaboMihaly2025;3
+bEndre;Balogh Endre;baloghendre@gmail.com;BaloghEndre2025;3
+kJozsef;Kozma József;kozma.jozsef@gmail.com;KozmaJozsef2025;3
+tKatalin;Tóth Katalin;tothkatalin@gmail.com;TothKatalin2025;3
+sDezso;Szabó Dezső;szabodezso@gmail.com;SzaboDezso2025;3
+mRobert;Magyar Róbert;magyarrobert@gmail.com;MagyarRobert2025;3
+bDavid;Balogh Dávid;baloghdavid@gmail.com;BaloghDavid2025;3
+nErika;Nagy Erika;nagy.erika@gmail.com;NagyErika2025;3
+jTamas;Juhász Tamás;juhasztamas@gmail.com;JuhaszTamas2025;3
+fAttila;Farkas Attila;farkasattila@gmail.com;FarkasAttila2025;3
+bHajnalka;Bognár Hajnalka;bognarhajnalka@gmail.com;BognarHajnalka2025;3
+tAttila;Takács Attila;takacsattila@gmail.com;TakacsAttila2025;3
+fZoltan;Fülöp Zoltán;fulopzoltan@gmail.com;FulopZoltan2025;3
+hAnna;Horváth Anna;horvathanna@gmail.com;HorvathAnna2025;3
+gVeronika;Gulyás Veronika;gulyasveronika@gmail.com;GulyasVeronika2025;3
+mNora;Molnár Nóra;molnarnora@gmail.com;MolnarNora2025;3
+pAgnes;Papp Ágnes;pappagnes@gmail.com;PappAgnes2025;3
+sIvan;Szűcs Iván;szucsivan@gmail.com;SzucsIvan2025;3
+tBalint;Tóth Bálint;tothbalint@gmail.com;TothBalint2025;3
+hJudit;Horváth Judit;horvathjudit@gmail.com;HorvathJudit2025;3
+fZoltan;Farkas Zoltán;farkaszoltan@gmail.com;FarkasZoltan2025;3
+mLaszlo;Máté László;matelaszlo@gmail.com;MateLaszlo2025;3
+vZoltan;Varga Zoltán;vargazoltan@gmail.com;VargaZoltan2025;3
+kJozsef;Kiss József;kissjozsef@gmail.com;KissJozsef2025;3
+nLili;Nagy Lili;nagylili@gmail.com;NagyLili2025;3
+bTamás;Borbély Tamás;borbelytamas@gmail.com;BorbelTamas2025;3
+sAdam;Somogyi Ádám;somogyiadam@gmail.com;SomogyiAdam2025;3
+vJozsef;Vass József;vassjozsef@gmail.com;VassJozsef2025;3
+jBence;Jakab Bence;jakabbence@gmail.com;JakabBence2025;3
+fCsaba;Farkas Csaba;farkascsaba@gmail.com;FarkasCsaba2025;3
+tMark;Tóth Márk;tothmark@gmail.com;TothMark2025;3
+mKrisztian;Mészáros Krisztián;meszaroskrisztian@gmail.com;MeszarosKrisztian2025;3
+pVilmos;Pál Vilmos;palvilmos@gmail.com;PalVilmos2025;3
+kGabor;Kiss Gábor;kissgabor@gmail.com;KissGabor2025;3
+kHanna;Kovács Hanna;kovacshanna@gmail.com;KovacsHanna2025;3
+mJanos;Molnár János;molnarjanos@gmail.com;MolnarJanos2025;3
+hLaszlo;Horváth László;horvathlaszlo@gmail.com;HorvathLaszlo2025;3
+nRobert;Németh Róbert;nemethrobert@gmail.com;NemethRobert2025;3
+tMartin;Takács Martin;takacsmartin@gmail.com;TakacsMartin2025;3
+tTamas;Tóth Tamás;tothtamas@gmail.com;TothTamas2025;3
+tZsofia;Török Zsófia;torokzsofia@gmail.com;TorokZsofia2025;3
+nRozsa;Nagy Rózsa;nagyrozsa@gmail.com;NagyRozsa2025;3
+fMonika;Fazekas Mónika;fazekasmonika@gmail.com;FazekasMonika2025;3
+vCsilla;Veres Csilla;verescsilla@gmail.com;VeresCsilla2025;3
+kJudit;Kovács Judit;kovacsjudit@gmail.com;KovacsJudit2025;3
+oIldiko;Oláh Ildikó;olahildiko@gmail.com;OlahIldiko2025;3
+mKlara;Molnár Klára;molnarklara@gmail.com;MolnarKlara2025;3
+mMaria;Mészáros Mária;meszarosmaria@gmail.com;MeszarosMaria2025;3
+tMaria;Tóth Mária;tothmaria@gmail.com;TothMaria2025;3
+lIlona;Lengyel Ilona;lengyelilona@gmail.com;LengyelIlona2025;3
+bGyozo;Balogh Győző;baloghgyozo@gmail.com;BaloghGyoz2025;3
+sIldiko;Szabó Ildikó;szaboildiko@gmail.com;SzaboIldiko2025;3
+hKatalin;Horváth Katalin;horvathkatalin@gmail.com;HorvathKatalin2025;3
+sErika;Szabó Erika;szaboerika@gmail.com;SzaboErika2025;3
+vAnna;Varga Anna;vargaanna@gmail.com;VargaAnna2025;3
+kRobert;Király Róbert;kiralyrobert@gmail.com;KiralyRobert2025;3
+nMaria;Nagy Mária;nagymaria@gmail.com;NagyMaria2025;3
+lFanni;Lengyel Fanni;lengyelfanni@gmail.com;LengyelFanni2025;3

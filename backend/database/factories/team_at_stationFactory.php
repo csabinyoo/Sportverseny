@@ -19,8 +19,7 @@ class team_at_stationFactory extends Factory
     public function definition(): array
     {
         return [
-            'teamId' => team::inRandomOrder()->first()->id,
-            'stationId' => Station::inRandomOrder()->first()->id
+            //
         ];
     }
 }

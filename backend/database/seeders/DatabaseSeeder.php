@@ -37,6 +37,16 @@ class DatabaseSeeder extends Seeder
         DB::statement('DELETE FROM users');
         DB::statement('DELETE FROM roles');
 
+        DB::statement('ALTER TABLE member_results_at_stations AUTO_INCREMENT = 1');
+        DB::statement('ALTER TABLE team_at_stations AUTO_INCREMENT = 1');
+        DB::statement('ALTER TABLE team_members AUTO_INCREMENT = 1');
+        DB::statement('ALTER TABLE teams AUTO_INCREMENT = 1');
+        DB::statement('ALTER TABLE stations AUTO_INCREMENT = 1');
+        DB::statement('ALTER TABLE competitions AUTO_INCREMENT = 1');
+        DB::statement('ALTER TABLE result_types AUTO_INCREMENT = 1');
+        DB::statement('ALTER TABLE users AUTO_INCREMENT = 1');
+        DB::statement('ALTER TABLE roles AUTO_INCREMENT = 1');
+
         $this->call([
             RoleSeeder::class,
             UserSeeder::class,
