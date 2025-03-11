@@ -18,7 +18,7 @@ return new class extends Migration
             $table->double('weighting')->default(1);
             $table->boolean('moreIsBetter');
             $table->integer('typeId');
-            $table->integer('userId');
+            $table->integer('userId')->nullable(); 
             $table->integer('competitionId');
             $table->foreign('typeId')->references('id')->on('result_types');
             $table->foreign('userId')->references('id')->on('users');
