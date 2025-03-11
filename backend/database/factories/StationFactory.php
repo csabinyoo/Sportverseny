@@ -20,53 +20,39 @@ class StationFactory extends Factory
      */
     public function definition(): array
     {
-        $faker = Faker::create('hu_HU'); // Faker példány létrehozása magyar lokalizációval
-        static $usedNames = []; // Tárolja az eddig használt sportágneveket, hogy ne ismétlődjenek
-        static $usedUserIds = []; // Tárolja az eddig kiválasztott felhasználók ID-jait
-    
-        // Sportágak kategóriák szerint
+        $faker = Faker::create('hu_HU');
+        static $usedNames = [];
+
         $sportsByType = [
-            1 => ['Labdarúgás', 'Kosárlabda', 'Baseball', 'Röplabda', 'Jégkorong', 'Krikett', 'Golf', 'Birkózás', 'Íjászat'], // Sportágak, ahol a pontszám a mérvadó
-            2 => ['Úszás', 'Futás', 'Kerékpározás', 'Evezés', 'Síelés', 'Snowboard', 'Vívás'] // Sportágak, ahol az idő a mérvadó
+            1 => ['Labdarúgás', 'Kosárlabda', 'Baseball', 'Röplabda', 'Jégkorong', 'Krikett', 'Golf', 'Birkózás', 'Íjászat'],
+            2 => ['Úszás', 'Futás', 'Kerékpározás', 'Evezés', 'Síelés', 'Snowboard', 'Vívás']
         ];
-    
-        // Véletlenszerűen kiválaszt egy result_type ID-t
+
         $typeId = result_type::inRandomOrder()->first()->id;
-    
-        // A megfelelő sportágak kiválasztása a typeId alapján, kiszűrve a már használtakat
+
         $availableSports = array_diff($sportsByType[$typeId] ?? [], $usedNames);
-    
-        // Ha már az összes sportágat felhasználtuk, akkor újratöltjük a listát
+
         if (empty($availableSports)) {
             $usedNames = [];
             $availableSports = $sportsByType[$typeId] ?? [];
         }
-    
-        // Véletlenszerű sportág kiválasztása
+
         $name = $faker->randomElement($availableSports);
-        $usedNames[] = $name; // Kiválasztott sportág hozzáadása a már használt listához
-    
-        // Felhasználó kiválasztása, aki még nem lett hozzárendelve és roleId == 2
+        $usedNames[] = $name;
+
         $userId = User::where('roleId', 2)
-                      ->whereNotIn('id', $usedUserIds)
-                      ->inRandomOrder()
-                      ->first()?->id;
-    
-        // Ha találtunk megfelelő felhasználót, hozzáadjuk a listához, hogy ne ismétlődjön
-        if ($userId) {
-            $usedUserIds[] = $userId;
-        }
-    
-        // Végső tömb visszaadása a generált adatokkal
+            ->inRandomOrder()
+            ->first()?->id;
+
         return [
-            'name' => $name, // Sportág neve, amely illeszkedik a typeId követelményeihez
-            'location' => $faker->numberBetween(1, 60) . '. terem', // Véletlenszerű teremszám generálása
-            'weighting' => $faker->boolean(50) ? 1.0 : $faker->randomFloat(1, 0.5, 0.8), // Véletlenszerű súlyozás 0.5 és 1.0 között
-            'moreIsBetter' => $typeId == 1 ? 1 : 0, // Ha typeId 1, akkor a magasabb pont jobb; ha 2, akkor az alacsonyabb idő jobb
-            'typeId' => $typeId, // Kiválasztott típus ID
-            'userId' => $userId, // Kiválasztott felhasználó ID
+            'name' => $name,
+            'location' => $faker->numberBetween(1, 60) . '. terem',
+            'weighting' => $faker->boolean(50) ? 1.0 : $faker->randomFloat(1, 0.5, 0.8),
+            'moreIsBetter' => $typeId == 1 ? 1 : 0,
+            'typeId' => $typeId,
+            'userId' => $userId,
             'competitionId' => Competition::first()->id
             // 'competitionId' => Competition::inRandomOrder()->first()->id // Véletlenszerű verseny ID kiválasztása
         ];
-    }    
+    }
 }
