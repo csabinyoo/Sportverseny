@@ -3,68 +3,377 @@
 @hostname = localhost
 @port = 8000
 @host = {{protocol}}{{hostname}}:{{port}}
-
+ 
 # ------------- login, user -------------
 ### login
 # @name login
-POST {{host}}/api/users/login 
+POST {{host}}/api/users/login
 Accept: application/json
 Content-Type: application/json
-
+ 
 {
     "email": "medgyescsaba@gmail.com",
     "password": "MedgyesCsaba2025"
 }
-
+ 
 ###
 @token = {{login.response.body.data.token}}
-
+ 
 ### logout user
 POST  {{host}}/api/users/logout
 Accept: application/json
 Authorization: Bearer {{token}}
-
+ 
 # ------------- competitions -------------
 ### competitions
 GET {{host}}/api/competitions
 Accept: application/json
 Authorization: Bearer {{token}}
-
+ 
 ### competition by id
 GET {{host}}/api/competitions/1
 Accept: application/json
 Authorization: Bearer {{token}}
-
+ 
 ### post competition
 POST {{host}}/api/competitions
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
-
+ 
 {
     "name": "test",
     "date": "2025-05-05",
     "location": "Budapest",
-    "registerFrom": "2025-04-04", 
+    "registerFrom": "2025-04-04",
     "registerTo" : "2025-05-02"
 }
-
+ 
 ### patch competition
-PATCH {{host}}/api/competitions/2
+PATCH {{host}}/api/competitions/6
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
-
+ 
 {
-    "name": "test2",
+    "name": "test3",
     "date": "2025-05-05",
     "location": "Budapest",
-    "registerFrom": "2025-04-04", 
+    "registerFrom": "2025-04-04",
     "registerTo" : "2025-05-02"
 }
-
+ 
 ### delete competition
-DELETE {{host}}/api/competitions/2
+DELETE {{host}}/api/competitions/6
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+# ------------- memberastation -------------
+ 
+ 
+### memberatstation
+GET {{host}}/api/memberatstation
+Accept: application/json
+Authorization: Bearer {{token}}
+ 
+### memberatstation by id
+GET {{host}}/api/memberatstation/1
+Accept: application/json
+Authorization: Bearer {{token}}
+ 
+### post memberatstation
+POST {{host}}/api/memberatstation
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+{
+    "teamAtStationId": 1,
+    "teamMemberId": 1,
+    "result": null,
+    "resultTime": "00:01:30",
+}
+ 
+### patch memberatstation
+PATCH {{host}}/api/memberatstation/2
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+{
+    "teamAtStationId": 2,
+    "teamMemberId": 2,
+    "result": null,
+    "resultTime": "00:01:30",
+}
+ 
+### delete memberatstation
+DELETE {{host}}/api/memberatstation/2
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+# ------------- ResultType -------------
+ 
+### results
+GET {{host}}/api/results
+Accept: application/json
+Authorization: Bearer {{token}}
+ 
+### results by id
+GET {{host}}/api/results/1
+Accept: application/json
+Authorization: Bearer {{token}}
+ 
+### post results
+POST {{host}}/api/results
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+{
+    "type": "number",
+}
+ 
+### patch results
+PATCH {{host}}/api/results/3
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+{
+    "type": "number2",
+}
+ 
+### delete results
+DELETE {{host}}/api/results/3
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+ 
+# ------------- Roles -------------
+ 
+### roles
+GET {{host}}/api/roles
+Accept: application/json
+Authorization: Bearer {{token}}
+ 
+### roles by id
+GET {{host}}/api/roles/1
+Accept: application/json
+Authorization: Bearer {{token}}
+ 
+### post roles
+POST {{host}}/api/roles
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+{
+    "role": "something",
+    "permission": 1,
+}
+ 
+### patch roles
+PATCH {{host}}/api/roles/3
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+{
+    "role": "something",
+    "permission": 2,
+}
+ 
+### delete roles
+DELETE {{host}}/api/roles/3
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+ 
+# ------------- stations -------------
+ 
+ 
+### stations
+GET {{host}}/api/stations
+Accept: application/json
+Authorization: Bearer {{token}}
+ 
+### stations by id
+GET {{host}}/api/stations/1
+Accept: application/json
+Authorization: Bearer {{token}}
+ 
+### post stations
+POST {{host}}/api/stations
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+{
+    "name": "Name",
+    "location": "50. terem",
+    "weighting": 1,
+    "moreIsBetter": 1,
+    "typeId": 1,
+    "userId": null,
+    "competitonId": 1,
+}
+ 
+### patch stations
+PATCH {{host}}/api/stations/3
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+{
+    "name": "Name",
+    "location": "50. terem",
+    "weighting": 1,
+    "moreIsBetter": 1,
+    "typeId": 1,
+    "userId": null,
+    "competitonId": 1,
+}
+ 
+### delete stations
+DELETE {{host}}/api/stations/3
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+ 
+# ------------- TEAM  AT STATION -------------
+ 
+ 
+### taematstation
+GET {{host}}/api/taematstation
+Accept: application/json
+Authorization: Bearer {{token}}
+ 
+### taematstation by id
+GET {{host}}/api/taematstation/1
+Accept: application/json
+Authorization: Bearer {{token}}
+ 
+### post taematstation
+POST {{host}}/api/taematstation
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+{
+    "teamId": 1,
+    "stationId": 1,
+}
+ 
+### patch taematstation
+PATCH {{host}}/api/taematstation/3
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+{
+    "teamId": 1,
+    "stationId": 1,
+}
+ 
+### delete taematstation
+DELETE {{host}}/api/taematstation/3
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+ 
+# ------------- TEAM -------------
+ 
+### teams
+GET {{host}}/api/teams
+Accept: application/json
+Authorization: Bearer {{token}}
+ 
+### teams by id
+GET {{host}}/api/teams/1
+Accept: application/json
+Authorization: Bearer {{token}}
+ 
+### post teams
+POST {{host}}/api/teams
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+{
+    "competitonId": 1,
+    "name": "Újpest II.",
+    "school": "Szolnoki Szakképzési Centrum Rózsa Imre Technikum",
+    "userId": 1,
+}
+ 
+### patch teams
+PATCH {{host}}/api/teams/3
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+{
+    "competitonId": 1,
+    "name": "Újpest II.",
+    "school": "Szolnoki Szakképzési Centrum Rózsa Imre Technikum",
+    "userId": 1,
+}
+ 
+### delete teams
+DELETE {{host}}/api/teams/3
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+ 
+ 
+# ------------- TEAM MEMBER -------------
+ 
+ 
+ 
+### teammember
+GET {{host}}/api/teammember
+Accept: application/json
+Authorization: Bearer {{token}}
+ 
+### teammember by id
+GET {{host}}/api/teammember/1
+Accept: application/json
+Authorization: Bearer {{token}}
+ 
+### post teammember
+POST {{host}}/api/teammember
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+{
+    "teamId": 1,
+    "name": "Kis Lacika",
+    "captain": false,
+}
+ 
+### patch teammember
+PATCH {{host}}/api/teammember/3
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+ 
+{
+    "teamId": 1,
+    "name": "Kis Lacika",
+    "captain": false,
+}
+ 
+### delete teammember
+DELETE {{host}}/api/teammember/3
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
