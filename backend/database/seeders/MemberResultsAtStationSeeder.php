@@ -46,23 +46,13 @@ class MemberResultsAtStationSeeder extends Seeder
                     $result = null;
                 }
 
-                $data[] = [
-                    'teamAtStationId' => $teamAtStationId,
-                    'teamMemberId' => $teamMemberId,
-                    'result' => $result,
-                    'resultTime' => $resultTime
-                ];
-            //    member_results_at_station::factory()->create([
-            //     'teamAtStationId' => $teamAtStationId,
-            //     'teamMemberId' => $teamMemberId,
-            //     'result' => $result,
-            //     'resultTime' => $resultTime
-            //    ]);
+               member_results_at_station::factory()->create([
+                'teamAtStationId' => $teamAtStationId,
+                'teamMemberId' => $teamMemberId,
+                'result' => $result,
+                'resultTime' => $resultTime
+               ]);
             }
-        }
-
-        if (count($data) > 0) {
-            DB::table('member_results_at_stations')->insert($data);
         }
     }
 }

@@ -30,18 +30,12 @@ class UserSeeder extends Seeder
                     'password' => bcrypt($row[3]),
                     'roleId' => $row[4]
                 ];
-
-                DB::table('users')->insert($data);
             }
             fclose($handle);
         }
     
-        // if (User::count() === 0) {
-        //     User::factory()->createMany($data);
-        // }
-
-        if (count($data) > 0) {
-            DB::table('users')->insert($data);
+        if (User::count() === 0) {
+            User::factory()->createMany($data);
         }
     }
 }
