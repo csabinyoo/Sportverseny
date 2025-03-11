@@ -26,7 +26,8 @@ class UserSeeder extends Seeder
                     'username' => $row[0],
                     'name' => $row[1],
                     'email' => $row[2],
-                    'password' => $row[3],
+                    // 'password' => $row[3],
+                    'password' => bcrypt($row[3]),
                     'roleId' => $row[4]
                 ];
 
