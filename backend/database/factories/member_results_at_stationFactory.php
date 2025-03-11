@@ -16,8 +16,8 @@ class member_results_at_stationFactory extends Factory
      */
     public function definition(): array
     {
-        
         return [
+            //
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Station;
+use DB;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -17,7 +18,7 @@ class UserSeeder extends Seeder
         //     User::factory(count: 150)->create();
         // }
         $filePath = database_path('csv\users.csv');
-        $data = [];
+        // $data = [];
         if (($handle = fopen($filePath, "r")) !== FALSE) {
             fgetcsv($handle, 1000, ";");
             while (($row = fgetcsv($handle, 1000, ";")) !== FALSE) {
@@ -28,12 +29,18 @@ class UserSeeder extends Seeder
                     'password' => $row[3],
                     'roleId' => $row[4]
                 ];
+
+                DB::table('users')->insert($data);
             }
             fclose($handle);
         }
     
-        if (User::count() === 0) {
-            User::factory()->createMany($data);
+        // if (User::count() === 0) {
+        //     User::factory()->createMany($data);
+        // }
+
+        if (count($data) > 0) {
+            DB::table('users')->insert($data);
         }
     }
 }
