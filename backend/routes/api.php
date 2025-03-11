@@ -31,10 +31,8 @@ Route::delete('users/{id}', [UsersController::class, 'destroy'])
 
 // COMPETITIONS
 
-Route::get('competitions', [CompetitionController::class, 'index'])
-    ->middleware('auth:sanctum');
-Route::get('competitions/{id}', [CompetitionController::class, 'show'])
-    ->middleware('auth:sanctum');
+Route::get('competitions', [CompetitionController::class, 'index']);
+Route::get('competitions/{id}', [CompetitionController::class, 'show']);
 Route::post('competitions', [CompetitionController::class, 'store'])
     ->middleware('auth:sanctum');
 Route::patch('competitions/{id}', [CompetitionController::class, 'update'])
@@ -44,10 +42,8 @@ Route::delete('competitions/{id}', [CompetitionController::class, 'destroy'])
 
 // MEMBERATSTATION
 
-Route::get('memberatstation', [MemberResultsAtStationController::class, 'index'])
-    ->middleware('auth:sanctum');
-Route::get('memberatstation/{id}', [MemberResultsAtStationController::class, 'show'])
-    ->middleware('auth:sanctum');
+Route::get('memberatstation', [MemberResultsAtStationController::class, 'index']);
+Route::get('memberatstation/{id}', [MemberResultsAtStationController::class, 'show']);
 Route::post('memberatstation', [MemberResultsAtStationController::class, 'store'])
     ->middleware('auth:sanctum');
 Route::patch('memberatstation/{id}', [MemberResultsAtStationController::class, 'update'])
@@ -57,10 +53,8 @@ Route::delete('memberatstation/{id}', [MemberResultsAtStationController::class, 
 
 // ResultType
 
-Route::get('results', [ResultTypeController::class, 'index'])
-    ->middleware('auth:sanctum');
-Route::get('results/{id}', [ResultTypeController::class, 'show'])
-    ->middleware('auth:sanctum');
+Route::get('results', [ResultTypeController::class, 'index']);
+Route::get('results/{id}', [ResultTypeController::class, 'show']);
 Route::post('results', [ResultTypeController::class, 'store'])
     ->middleware('auth:sanctum');
 Route::patch('results/{id}', [ResultTypeController::class, 'update'])
@@ -70,10 +64,8 @@ Route::delete('results/{id}', [ResultTypeController::class, 'destroy'])
 
 // Roles
 
-Route::get('roles', [RoleController::class, 'index'])
-    ->middleware('auth:sanctum');
-Route::get('roles/{id}', [RoleController::class, 'show'])
-    ->middleware('auth:sanctum');
+Route::get('roles', [RoleController::class, 'index']);
+Route::get('roles/{id}', [RoleController::class, 'show']);
 Route::post('roles', [RoleController::class, 'store'])
     ->middleware('auth:sanctum');
 Route::patch('roles/{id}', [RoleController::class, 'update'])
@@ -83,10 +75,8 @@ Route::delete('roles/{id}', [RoleController::class, 'destroy'])
 
 // STATIONS
 
-Route::get('stations', [StationController::class, 'index'])
-    ->middleware('auth:sanctum');
-Route::get('stations/{id}', [StationController::class, 'show'])
-    ->middleware('auth:sanctum');
+Route::get('stations', [StationController::class, 'index']);
+Route::get('stations/{id}', [StationController::class, 'show']);
 Route::post('stations', [StationController::class, 'store'])
     ->middleware('auth:sanctum');
 Route::patch('stations/{id}', [StationController::class, 'update'])
@@ -96,10 +86,8 @@ Route::delete('stations/{id}', [StationController::class, 'destroy'])
 
 // TEAM  AT STATION
 
-Route::get('taematstation', [TeamAtStationController::class, 'index'])
-    ->middleware('auth:sanctum');
-Route::get('taematstation/{id}', [TeamAtStationController::class, 'show'])
-    ->middleware('auth:sanctum');
+Route::get('taematstation', [TeamAtStationController::class, 'index']);
+Route::get('taematstation/{id}', [TeamAtStationController::class, 'show']);
 Route::post('taematstation', action: [TeamAtStationController::class, 'store'])
     ->middleware('auth:sanctum');
 Route::patch('taematstation/{id}', [TeamAtStationController::class, 'update'])
@@ -109,10 +97,8 @@ Route::delete('taematstation/{id}', [TeamAtStationController::class, 'destroy'])
 
 // TEAMS
 
-Route::get('teams', [TeamController::class, 'index'])
-    ->middleware('auth:sanctum');
-Route::get('teams/{id}', [TeamController::class, 'show'])
-    ->middleware('auth:sanctum');
+Route::get('teams', [TeamController::class, 'index']);
+Route::get('teams/{id}', [TeamController::class, 'show']);
 Route::post('teams', action: [TeamController::class, 'store'])
     ->middleware('auth:sanctum');
 Route::patch('teams/{id}', [TeamController::class, 'update'])
@@ -122,10 +108,8 @@ Route::delete('teams/{id}', [TeamController::class, 'destroy'])
 
 // TEAM MEMBER
 
-Route::get('teammember', [TeamMemberController::class, 'index'])
-    ->middleware('auth:sanctum');
-Route::get('teammember/{id}', [TeamMemberController::class, 'show'])
-    ->middleware('auth:sanctum');
+Route::get('teammember', [TeamMemberController::class, 'index']);
+Route::get('teammember/{id}', [TeamMemberController::class, 'show']);
 Route::post('teammember', action: [TeamMemberController::class, 'store'])
     ->middleware('auth:sanctum');
 Route::patch('teammember/{id}', [TeamMemberController::class, 'update'])

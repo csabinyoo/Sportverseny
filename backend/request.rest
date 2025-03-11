@@ -28,12 +28,10 @@ Authorization: Bearer {{token}}
 ### competitions
 GET {{host}}/api/competitions
 Accept: application/json
-Authorization: Bearer {{token}}
  
 ### competition by id
 GET {{host}}/api/competitions/1
 Accept: application/json
-Authorization: Bearer {{token}}
  
 ### post competition
 POST {{host}}/api/competitions
@@ -50,17 +48,13 @@ Authorization: Bearer {{token}}
 }
  
 ### patch competition
-PATCH {{host}}/api/competitions/6
+PATCH {{host}}/api/competitions/7
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
  
 {
-    "name": "test3",
-    "date": "2025-05-05",
-    "location": "Budapest",
-    "registerFrom": "2025-04-04",
-    "registerTo" : "2025-05-02"
+    "name": "test3"
 }
  
 ### delete competition
@@ -75,12 +69,10 @@ Authorization: Bearer {{token}}
 ### memberatstation
 GET {{host}}/api/memberatstation
 Accept: application/json
-Authorization: Bearer {{token}}
  
 ### memberatstation by id
 GET {{host}}/api/memberatstation/1
 Accept: application/json
-Authorization: Bearer {{token}}
  
 ### post memberatstation
 POST {{host}}/api/memberatstation
@@ -119,12 +111,10 @@ Authorization: Bearer {{token}}
 ### results
 GET {{host}}/api/results
 Accept: application/json
-Authorization: Bearer {{token}}
  
 ### results by id
 GET {{host}}/api/results/1
 Accept: application/json
-Authorization: Bearer {{token}}
  
 ### post results
 POST {{host}}/api/results
@@ -158,12 +148,10 @@ Authorization: Bearer {{token}}
 ### roles
 GET {{host}}/api/roles
 Accept: application/json
-Authorization: Bearer {{token}}
  
 ### roles by id
 GET {{host}}/api/roles/1
 Accept: application/json
-Authorization: Bearer {{token}}
  
 ### post roles
 POST {{host}}/api/roles
@@ -191,7 +179,6 @@ Authorization: Bearer {{token}}
 DELETE {{host}}/api/roles/3
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer {{token}}
  
  
 # ------------- stations -------------
@@ -200,7 +187,6 @@ Authorization: Bearer {{token}}
 ### stations
 GET {{host}}/api/stations
 Accept: application/json
-Authorization: Bearer {{token}}
  
 ### stations by id
 GET {{host}}/api/stations/1
@@ -252,12 +238,10 @@ Authorization: Bearer {{token}}
 ### taematstation
 GET {{host}}/api/taematstation
 Accept: application/json
-Authorization: Bearer {{token}}
  
 ### taematstation by id
 GET {{host}}/api/taematstation/1
 Accept: application/json
-Authorization: Bearer {{token}}
  
 ### post taematstation
 POST {{host}}/api/taematstation
@@ -293,12 +277,10 @@ Authorization: Bearer {{token}}
 ### teams
 GET {{host}}/api/teams
 Accept: application/json
-Authorization: Bearer {{token}}
  
 ### teams by id
 GET {{host}}/api/teams/1
 Accept: application/json
-Authorization: Bearer {{token}}
  
 ### post teams
 POST {{host}}/api/teams
@@ -341,12 +323,10 @@ Authorization: Bearer {{token}}
 ### teammember
 GET {{host}}/api/teammember
 Accept: application/json
-Authorization: Bearer {{token}}
  
 ### teammember by id
 GET {{host}}/api/teammember/1
 Accept: application/json
-Authorization: Bearer {{token}}
  
 ### post teammember
 POST {{host}}/api/teammember
