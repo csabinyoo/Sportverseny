@@ -2,48 +2,42 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\HasApiTokens;
+
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasApiTokens, HasFactory, Notifiable;
+    protected $fillable = ['name', 'username', 'roleId', 'email', 'password'];
+    protected $hidden = ['password', 'remember_token'];
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'roleId');
+    }
+
     public $timestamps = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'roleId'
-    ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-    ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'password' => 'hashed'
-        ];
-    }
+     // A jelszó titkosítása a mentés előtt
+     protected static function booted()
+     {
+         static::creating(function ($user) {
+             if (!empty($user->password)) {
+                 $user->password = Hash::make($user->password);
+             }
+         });
+     
+         static::updating(function ($user) {
+             // Csak akkor hash-eljük újra a jelszót, ha tényleg megváltozott
+             if ($user->isDirty('password') && !empty($user->password)) {
+                 $user->password = Hash::make($user->password);
+             }
+         });
+     }
+     
 }

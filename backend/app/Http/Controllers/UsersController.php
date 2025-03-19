@@ -12,40 +12,63 @@ use Laravel\Sanctum\PersonalAccessToken;
 
 class UsersController extends Controller
 {
-    public function login(LoginUsersRequest $request)
-    {
-        //Eltároljuk az adatokat változókba
-        $email = $request->input(('email'));
-        $password = $request->input(('password'));
+    // public function login(LoginUsersRequest $request)
+    // {
+    //     //Eltároljuk az adatokat változókba
+    //     $email = $request->input(('email'));
+    //     $password = $request->input(('password'));
 
-        //Az email alapján megkeressük a usert
-        $user = User::where('email', $email)->first();
+    //     //Az email alapján megkeressük a usert
+    //     $user = User::where('email', $email)->first();
 
-        //Stimmel-e az email és a jelszó?
-        if (!$user || !Hash::check($password, $password ? $user->password : '')) {
+    //     //Stimmel-e az email és a jelszó?
+    //     if (!$user || !Hash::check($password, $password ? $user->password : '')) {
+    //         return response()->json([
+    //             'message' => 'invalid email or password',
+    //             'data' => []
+    //         ], 401);
+    //     }
+
+    //     //Jó az email és a jelszó
+    //     //Kitöröljük az esetleges tokenjeit
+    //     // $user->tokens()->delete();
+
+    //     //itt adjuk az új tokent
+    //     $token = $user->createToken('access')->plainTextToken;
+    //     $user->token = $token;
+
+    //     //visszaadjuk a usert, ami a tokent is tartalmazni fogja
+    //     //A fejlécben elküldjük a httpOnly sütit
+    //     $data = [
+    //         'message' => 'ok',
+    //         'data' => $user
+    //     ];
+    //     return response()
+    //         ->json($data, options: JSON_UNESCAPED_UNICODE);
+
+    // }
+
+    public function login(Request $request){
+        //beolvassuk az adatokat
+        $email = $request->input('email');
+        $password = $request->input('password');
+
+        //megkeressük a usert
+        $user= User::where('email', $email)->first();
+
+        if (!$user || !Hash::check($password, $password ? $user->password : "")) {
             return response()->json([
-                'message' => 'invalid email or password',
-                'data' => []
-            ], 401);
+                'message' => 'invalid email or password'
+            ], 200);
         }
 
-        //Jó az email és a jelszó
-        //Kitöröljük az esetleges tokenjeit
+        //Minden oké az adatokkal
+        //Kitöröljük a userhez tartozó esetleges tokneket
         // $user->tokens()->delete();
 
-        //itt adjuk az új tokent
-        $token = $user->createToken('access')->plainTextToken;
-        $user->token = $token;
-
-        //visszaadjuk a usert, ami a tokent is tartalmazni fogja
-        //A fejlécben elküldjük a httpOnly sütit
-        $data = [
-            'message' => 'ok',
-            'data' => $user
-        ];
-        return response()
-            ->json($data, options: JSON_UNESCAPED_UNICODE);
-
+        //Adunk egy tokent
+        $user->token = $user->createToken('access')->plainTextToken;
+        return response()->json(['user' => $user], options:JSON_UNESCAPED_UNICODE);
     }
 
     public function logout(Request $request)

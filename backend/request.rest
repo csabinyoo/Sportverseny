@@ -15,6 +15,19 @@ Content-Type: application/json
     "email": "medgyescsaba@gmail.com",
     "password": "MedgyesCsaba2025"
 }
+
+### register
+POST {{host}}/api/users
+Accept: application/json
+Content-Type: application/json
+ 
+{
+    "name": "Medgyes Csaba",
+    "username": "csabinyoo",
+    "email": "medgyescsaba1@gmail.com",
+    "password": "MedgyesCsaba2025",
+    "roleId": 1
+}
  
 ###
 @token = {{login.response.body.data.token}}
@@ -26,9 +39,11 @@ Authorization: Bearer {{token}}
  
 # ------------- competitions -------------
 ### competitions
-GET {{host}}/api/competitions
+GET {{host}}/api/users/1
 Accept: application/json
- 
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
 ### competition by id
 GET {{host}}/api/competitions/1
 Accept: application/json
