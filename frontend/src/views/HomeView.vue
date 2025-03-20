@@ -10,19 +10,12 @@
       </div>
     </div>
 
-    <div v-else-if="roleId === 2" class="card">
-      <img src="/avatar-5.png" alt="">
-      <p>Üdvözlünk, <strong>{{ user }}</strong>! Itt találhatod a személyes információidat.</p>
-      <router-link to="/temakorok" class="btn">Témakörök</router-link>
-    </div>
-
-    <div v-else-if="roleId === 4" class="card">
-      <img src="/avatar-5.png" alt="">
-      <p>Üdvözlünk, <strong>{{ user }} ({{ username }})</strong>! Itt kezelheted a felhasználókat és a tartalmakat.</p>
-      <!-- <div class="btn-group">
-        <router-link to="/temakorokadmin" class="btn">Admin Témakörök</router-link>
-        <router-link to="/tesztekadmin" class="btn">Admin Tesztek</router-link>
-      </div> -->
+    <div v-else-if="roleId > 0" class="card">
+      <img src="/avatar-5.png" alt="" class="avatar">
+      <p class="mb-0">Üdvözlünk, <strong>{{ user }} ({{ username }})</strong>! </p> <p class="mt-0 p-0">Itt kezelheted a felhasználókat és a tartalmakat.</p>
+      <div class="btn-group">
+        <router-link to="/versenyek" class="btn">Versenyek</router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -55,6 +48,16 @@ export default {
 .title {
   font-size: 2rem;
   margin-bottom: 20px;
+}
+
+.avatar {
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  margin-bottom: 20px;
+  object-fit: cover;
+  border: 4px solid #007bff;
+  animation: pulseAvatar 1.5s infinite alternate;
 }
 
 .card {

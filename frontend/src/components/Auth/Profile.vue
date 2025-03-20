@@ -87,9 +87,9 @@ import { useAuthStore } from "../../stores/useAuthStore";
 export default {
   data() {
     return {
-      user: {}, // Stores current user data
-      updatedField: {}, // Stores the value of the field being edited
-      isEditingField: null, // Tracks which field is being edited
+      user: {},
+      updatedField: {},
+      isEditingField: null,
       store: useAuthStore(),
     };
   },
@@ -100,7 +100,7 @@ export default {
           Authorization: `Bearer ${this.store.token}`,
         },
       });
-      this.user = response.data.data; // Store user data
+      this.user = response.data.data;
     } catch (error) {
       console.error("Error fetching user profile:", error);
     }
@@ -116,7 +116,6 @@ export default {
     },
     async saveField(field) {
   try {
-    // A teljes user objektumot elküldjük, de csak egy mezőt módosítunk
     const updatedUser = { ...this.user, [field]: this.updatedField[field] };
 
     const response = await axios.patch(
@@ -135,7 +134,8 @@ export default {
       alert("Error: Ez az e-mail már használatban van.");
     } else {
       alert(`${field} sikeresen frissítve.`);
-      this.user = response.data.data; // Frissítsük a teljes user objektumot
+      this.user = response.data.data;
+      
       this.cancelEdit();
 
       if (field === "email" || field === "password") {
@@ -160,8 +160,8 @@ export default {
             },
           });
           alert("Felhasználó sikeresen törölve");
-          this.store.clearStoredData(); // Clear user data and token
-          this.$router.push("/register"); // Redirect to registration page
+          this.store.clearStoredData();
+          this.$router.push("/register");
         } catch (error) {
           console.error("Error deleting user:", error);
           alert("Nem sikerült letörölni a fiókot. Kérlek próbáld újra.");

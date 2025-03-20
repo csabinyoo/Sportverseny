@@ -1,110 +1,43 @@
 <template>
   <div>
-    <!-- Fő fejléc -->
-    <header>
-      <div class="wrapper">
-        <!-- Logo / Weboldal neve -->
-        <div class="logo">
-          <RouterLink to="/">Sportverseny</RouterLink>
-        </div>
-
-        <!-- Navigációs menü -->
-        <nav
-          class="navbar navbar-expand-lg navbar-dark"
-          style="background-color: #2c3e50"
-        >
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <RouterLink to="/" class="nav-link">Kezdőlap</RouterLink>
-              </li>
-              <!-- Témakörök és Tesztelés menüpontok csak akkor jelennek meg, ha a felhasználó be van jelentkezve -->
-              <!-- Admin -->
-              <li
-                v-if="stateAuth.user && stateAuth.roleId === 4"
-                class="nav-item"
-              >
-                <RouterLink to="/temakorokAdmin" class="nav-link"
-                  >Témakörök</RouterLink
-                >
-              </li>
-              <li
-                v-if="stateAuth.user && stateAuth.roleId === 4"
-                class="nav-item"
-              >
-                <RouterLink to="/tesztekAdmin" class="nav-link"
-                  >Tesztelés</RouterLink
-                >
-              </li>
-              <!-- User -->
-              <li
-                v-if="stateAuth.user && stateAuth.roleId === 2"
-                class="nav-item"
-              >
-                <RouterLink to="/temakorok" class="nav-link"
-                  >Témakörök</RouterLink
-                >
-              </li>
-              <li
-                v-if="stateAuth.user && stateAuth.roleId === 2"
-                class="nav-item"
-              >
-                <RouterLink to="/tesztek" class="nav-link"
-                  >Tesztelés</RouterLink
-                >
-              </li>
-              <!-- Admin menüpontok -->
-              <li
-                v-if="stateAuth.user && stateAuth.roleId === 4"
-                class="nav-item"
-              >
-                <RouterLink to="/admin" class="nav-link"
-                  >Admin Felület</RouterLink
-                >
-              </li>
-              <!-- Bejelentkezés és Regisztráció csak akkor jelenik meg, ha nincs bejelentkezve -->
-              <li v-if="!stateAuth.user" class="nav-item">
-                <RouterLink to="/login" class="nav-link"
-                  >Bejelentkezés</RouterLink
-                >
-              </li>
-              <li v-if="!stateAuth.user" class="nav-item">
-                <RouterLink to="/register" class="nav-link"
-                  >Regisztráció</RouterLink
-                >
-              </li>
-              <!-- Kijelentkezés csak akkor jelenik meg, ha be van jelentkezve a felhasználó -->
-              <li v-if="stateAuth.user" class="nav-item">
-                <RouterLink class="nav-link" to="/" @click="Logout()"
-                  >Kijelentkezés</RouterLink
-                >
-              </li>
-              <!-- Saját profil -->
-              <li v-if="stateAuth.user" class="nav-item">
-                <RouterLink class="nav-link" to="/profile">Profil</RouterLink>
-              </li>
-              <li v-if="stateAuth.user" class="nav-item nav-link">
-                <i class="bi bi-person"></i>
-                <span v-if="stateAuth.user"> {{ stateAuth.user }}</span>
-              </li>
-            </ul>
-          </div>
-        </nav>
+    <div :class="{'sidebar': true, 'active': sidebarActive}">
+      <div class="logo">
+        <RouterLink to="/">Sportverseny</RouterLink>
+        <hr>
       </div>
-    </header>
 
-    <!-- Dinamikus tartalom megjelenítése -->
+      <nav class="navbar navbar-dark">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <RouterLink to="/" class="nav-link">Kezdőlap</RouterLink>
+          </li>
+          <li v-if="stateAuth.user && stateAuth.roleId === 4" class="nav-item">
+            <RouterLink to="/admin" class="nav-link">Admin Felület</RouterLink>
+          </li>
+          <li v-if="!stateAuth.user" class="nav-item">
+            <RouterLink to="/login" class="nav-link">Bejelentkezés</RouterLink>
+          </li>
+          <li v-if="!stateAuth.user" class="nav-item">
+            <RouterLink to="/register" class="nav-link">Regisztráció</RouterLink>
+          </li>
+          <li v-if="stateAuth.user" class="nav-item">
+            <RouterLink class="nav-link" to="/" @click="Logout()">Kijelentkezés</RouterLink>
+          </li>
+          <li v-if="stateAuth.user" class="nav-item">
+            <RouterLink class="nav-link" to="/profile">Profil</RouterLink>
+          </li>
+          <li v-if="stateAuth.user" class="nav-item nav-link">
+            <i class="bi bi-person"></i>
+            <span v-if="stateAuth.user"> {{ stateAuth.user }}</span>
+          </li>
+        </ul>
+      </nav>
+
+      <button class="toggle-btn" @click="toggleSidebar">
+        {{ sidebarActive ? '<<' : '>>' }}
+      </button>
+    </div>
+
     <RouterView />
   </div>
 </template>
@@ -119,6 +52,7 @@ export default {
   data() {
     return {
       stateAuth: useAuthStore(),
+      sidebarActive: false,
     };
   },
   methods: {
@@ -134,18 +68,17 @@ export default {
         console.error("Error:", error);
       }
 
-      // Töröld a felhasználói adatokat a store-ból és a localStorage-ból
       this.stateAuth.clearStoredData();
-
-      // Kényszerített oldalfrissítés
-      window.location.reload(); // Ezzel frissíti az oldalt és törli a helyben tárolt adatokat
+      window.location.reload();
+    },
+    toggleSidebar() {
+      this.sidebarActive = !this.sidebarActive;
     },
   },
 };
 </script>
 
 <style scoped>
-/* Alap stílusok */
 * {
   margin: 0;
   padding: 0;
@@ -157,75 +90,89 @@ body {
   background-color: #f4f4f4;
 }
 
-/* Fejléc és navigáció */
-.wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #2c3e50; /* Sötét kékeszöld háttér */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background-color: #2c3e50;
+  transition: transform 0.3s ease;
+  z-index: 1000;
 }
 
-.logo a {
+hr {
+  margin-top: 10px;
+  color: #fff;
+}
+
+.sidebar.active {
+  transform: translateX(250px);
+}
+
+.sidebar .logo a {
   font-family: 'Cinzel', serif;
   font-size: 32px;
   color: #fff;
   text-decoration: none;
   font-weight: bold;
+  padding: 20px;
 }
 
-/* A Bootstrap navbar osztályok most biztosítják a menü megjelenését és rejtését */
 .navbar-nav {
   display: flex;
+  flex-direction: column;
+  padding-top: 20px;
 }
 
 .nav-item {
-  margin-left: 20px;
+  margin-bottom: 10px;
 }
 
 .nav-link {
-  color: #ecf0f1; /* Világos szürke szín */
+  color: #ecf0f1;
   text-decoration: none;
   font-size: 16px;
-  padding: 8px 12px;
+  padding: 12px;
   border-radius: 4px;
-  transition: background-color 0.3s ease;
+  transition: color 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, #3498db, #2c3e50, #2c3e50);
+  transition: left 0.3s ease;
+  z-index: -1;
 }
 
 .nav-link:hover {
-  background-color: #3498db; /* Kék szín hover esetén */
   color: white;
 }
 
-/* Mobil reszponzív menü */
-@media (max-width: 768px) {
-  /* Az alapértelmezett menü el van rejtve, és csak a hamburger ikon jelenik meg */
-  .navbar-collapse {
-    display: none;
-  }
+.nav-link:hover:before {
+  left: 0;
+}
 
-  .navbar-toggler {
-    display: block; /* Hamburger ikon */
-  }
+.toggle-btn {
+  position: absolute;
+  top: 20px;
+  left: 250px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 2000;
+}
 
-  .navbar-collapse.show {
-    display: block; /* A menü akkor jelenik meg, ha a hamburger ikonra kattintanak */
-  }
-
-  .navbar-nav {
-    display: block;
-    width: 100%;
-    text-align: center;
-  }
-
-  .nav-item {
-    margin: 10px 0;
-  }
-
-  .nav-link {
-    display: block;
-    padding: 15px;
-    font-size: 18px;
-  }
+.toggle-btn:hover {
+  background-color: #2980b9;
 }
 </style>

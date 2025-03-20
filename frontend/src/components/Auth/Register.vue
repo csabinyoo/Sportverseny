@@ -132,17 +132,15 @@ export default {
 </script>
 
 <style scoped>
-/* 📌 Háttér */
 .register-container {
  display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 80vh; /* Mindig legalább a teljes képernyőt lefedi */
-  padding: 20px; /* Megakadályozza, hogy teljesen a tetejére kerüljön */
+  min-height: 80vh;
+  padding: 20px;
   background: #f9f9f9;
 }
 
-/* 📌 Regisztrációs kártya */
 .register-card {
    background: white;
   padding: 30px;
@@ -150,16 +148,14 @@ export default {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   width: 350px;
-  transition: transform 0.3s ease-in-out; /* Finom animáció a méretváltozásra */
+  transition: transform 0.3s ease-in-out;
 }
 
-/* 📌 Cím */
 .register-title {
   font-size: 1.8rem;
   margin-bottom: 20px;
 }
 
-/* 📌 Input mezők */
 .input-group {
   display: flex;
   align-items: center;
@@ -183,7 +179,6 @@ input {
   font-size: 1rem;
 }
 
-/* 📌 Regisztrációs gomb */
 .register-button {
   background: #007bff;
   color: white;
@@ -200,7 +195,6 @@ input {
   background: #0056b3;
 }
 
-/* 📌 Hibaüzenetek */
 .error-message {
   color: red;
   margin-top: 5px;

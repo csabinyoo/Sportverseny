@@ -74,10 +74,6 @@ export default {
           }
         );
 
-        console.log(response.data);
-        console.log(response.data.user.name);
-        
-
         if (response.data && response.data.user.name) {
           this.store.setId(response.data.user.id);
           this.store.setUser(response.data.user.name);
@@ -85,7 +81,6 @@ export default {
           this.store.setToken(response.data.user.token);
           this.store.setRoleId(response.data.user.roleId);
 
-          // 🔴 Itt állítsd be az új tokent az Axios fejlécekhez
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${response.data.user.token}`;
@@ -100,7 +95,6 @@ export default {
       } finally {
         this.loading = false;
       }
-      // Fixálja a magasságot, hogy az UI ne ugráljon a billentyűzet feljövetelekor
       function setDynamicHeight() {
         document.documentElement.style.setProperty(
           "--vh",
@@ -108,7 +102,6 @@ export default {
         );
       }
 
-      // Meghívás betöltéskor és méretváltozáskor
       window.addEventListener("resize", setDynamicHeight);
       setDynamicHeight();
     },
@@ -119,21 +112,19 @@ export default {
 <style scoped>
 html,
 body {
-  height: var(--vh, 100vh); /* Dinamikus magasság a JavaScript alapján */
-  overflow: hidden; /* Megakadályozza a görgetést */
+  height: var(--vh, 100vh);
+  overflow: hidden;
 }
 
-/* 📌 Teljes képernyős bejelentkezési doboz */
 .login-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 80vh; /* Mindig legalább a teljes képernyőt lefedi */
-  padding: 20px; /* Megakadályozza, hogy teljesen a tetejére kerüljön */
+  height: 100vh;
+  padding: 20px;
   background: #f9f9f9;
 }
 
-/* 📌 Középre igazított bejelentkezési kártya */
 .login-card {
   background: white;
   padding: 30px;
@@ -141,16 +132,14 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   width: 350px;
-  transition: transform 0.3s ease-in-out; /* Finom animáció a méretváltozásra */
+  transition: transform 0.3s ease-in-out;
 }
 
-/* 📌 Cím */
 .login-title {
   font-size: 1.8rem;
   margin-bottom: 20px;
 }
 
-/* 📌 Bemeneti mezők */
 .input-group {
   display: flex;
   align-items: center;
@@ -174,7 +163,6 @@ input {
   font-size: 1rem;
 }
 
-/* 📌 Bejelentkezés gomb */
 .login-button {
   background: #007bff;
   color: white;
@@ -191,7 +179,6 @@ input {
   background: #0056b3;
 }
 
-/* 📌 Hibaüzenet */
 .error-message {
   color: red;
   margin-top: 10px;
