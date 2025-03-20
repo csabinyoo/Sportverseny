@@ -1,7 +1,7 @@
-username;name;email;password;roleId
-mCsaba;Medgyes Csaba;medgyescsaba@gmail.com;MedgyesCsaba2025;4
-lBence;Ledacs-Kiss Bence;ledacs-kissbence@gmail.com;LedacsKissBence2025;4
-fDorain;Fehér Zsolt Dorián;feherzsoltdorian@gmail.com;FeherZsoltDorian2025;4
+﻿username;name;email;password;roleId
+mCsaba;Medgyes Csaba;medgyescsaba@gmail.com;MedgyesCsaba2025;1
+lBence;Ledacs-Kiss Bence;ledacs-kissbence@gmail.com;LedacsKissBence2025;1
+fDorain;Fehér Zsolt Dorián;feherzsoltdorian@gmail.com;FeherZsoltDorian2025;1
 supervisor;Supervisor;supervisor@supervisor.com;SuperVisor2025;2
 supervisor2;Supervisor2;supervisor@supervisor.com;SuperVisor2025;2
 supervisor3;Supervisor3;supervisor@supervisor.com;SuperVisor2025;2

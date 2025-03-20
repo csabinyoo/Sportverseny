@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div :class="{'sidebar': true, 'active': sidebarActive}">
+    <div :class="{ sidebar: true, active: sidebarActive }">
       <div class="logo">
         <RouterLink to="/">Sportverseny</RouterLink>
-        <hr>
+        <hr />
       </div>
 
       <nav class="navbar navbar-dark">
@@ -18,23 +18,40 @@
             <RouterLink to="/login" class="nav-link">Bejelentkezés</RouterLink>
           </li>
           <li v-if="!stateAuth.user" class="nav-item">
-            <RouterLink to="/register" class="nav-link">Regisztráció</RouterLink>
+            <RouterLink to="/register" class="nav-link"
+              >Regisztráció</RouterLink
+            >
           </li>
           <li v-if="stateAuth.user" class="nav-item">
-            <RouterLink class="nav-link" to="/" @click="Logout()">Kijelentkezés</RouterLink>
+            <RouterLink class="nav-link" to="/" @click="Logout()"
+              >Kijelentkezés</RouterLink
+            >
           </li>
           <li v-if="stateAuth.user" class="nav-item">
             <RouterLink class="nav-link" to="/profile">Profil</RouterLink>
           </li>
-          <li v-if="stateAuth.user" class="nav-item nav-link">
-            <i class="bi bi-person"></i>
-            <span v-if="stateAuth.user"> {{ stateAuth.user }}</span>
-          </li>
         </ul>
       </nav>
+      <div v-if="stateAuth.user" class="user-info">
+        <i class="bi bi-person"></i>
+        <span>{{ stateAuth.user }}</span>
+        <p>
+          (
+          {{
+            stateAuth.roleId === 1
+              ? "Admin"
+              : stateAuth.roleId === 2
+              ? "Supervisor"
+              : stateAuth.roleId === 3
+              ? "Student"
+              : "Guest"
+          }}
+          )
+        </p>
+      </div>
 
       <button class="toggle-btn" @click="toggleSidebar">
-        {{ sidebarActive ? '<<' : '>>' }}
+        {{ sidebarActive ? "<<" : ">>" }}
       </button>
     </div>
 
@@ -85,6 +102,28 @@ export default {
   box-sizing: border-box;
 }
 
+.user-info {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  padding: 20px;
+  color: #ecf0f1;
+  width: 100%; /* ensures the user info takes full width */
+}
+
+.user-info::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  left: 0;
+  top: 10px;
+  background: #fff;
+}
+
+
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
@@ -111,7 +150,7 @@ hr {
 }
 
 .sidebar .logo a {
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   font-size: 32px;
   color: #fff;
   text-decoration: none;
@@ -135,13 +174,14 @@ hr {
   font-size: 16px;
   padding: 12px;
   border-radius: 4px;
+  width: 250px;
   transition: color 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
 .nav-link:before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
