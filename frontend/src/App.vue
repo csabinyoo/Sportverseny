@@ -11,7 +11,7 @@
           <li class="nav-item">
             <RouterLink to="/" class="nav-link">Kezdőlap</RouterLink>
           </li>
-          <li v-if="stateAuth.user && stateAuth.roleId === 4" class="nav-item">
+          <li v-if="stateAuth.user && stateAuth.roleId === 1" class="nav-item">
             <RouterLink to="/admin" class="nav-link">Admin Felület</RouterLink>
           </li>
           <li v-if="!stateAuth.user" class="nav-item">
@@ -23,18 +23,18 @@
             >
           </li>
           <li v-if="stateAuth.user" class="nav-item">
+            <RouterLink class="nav-link" to="/profile">Profil</RouterLink>
+          </li>
+          <li v-if="stateAuth.user" class="nav-item">
             <RouterLink class="nav-link" to="/" @click="Logout()"
               >Kijelentkezés</RouterLink
             >
-          </li>
-          <li v-if="stateAuth.user" class="nav-item">
-            <RouterLink class="nav-link" to="/profile">Profil</RouterLink>
           </li>
         </ul>
       </nav>
       <div v-if="stateAuth.user" class="user-info">
         <i class="bi bi-person"></i>
-        <span>{{ stateAuth.user }}</span>
+        <span>{{ stateAuth.user }} | {{ stateAuth.username }}</span>
         <p>
           (
           {{
@@ -72,6 +72,12 @@ export default {
       sidebarActive: false,
     };
   },
+  created() {
+    const savedSidebarState = localStorage.getItem("sidebarActive");
+    if (savedSidebarState) {
+      this.sidebarActive = JSON.parse(savedSidebarState);
+    }
+  },
   methods: {
     async Logout() {
       const url = `${BASE_URL}/users/logout`;
@@ -90,6 +96,8 @@ export default {
     },
     toggleSidebar() {
       this.sidebarActive = !this.sidebarActive;
+
+      localStorage.setItem("sidebarActive", JSON.stringify(this.sidebarActive));
     },
   },
 };
@@ -110,7 +118,7 @@ export default {
   text-align: center;
   padding: 20px;
   color: #ecf0f1;
-  width: 100%; /* ensures the user info takes full width */
+  width: 100%;
 }
 
 .user-info::before {
@@ -122,7 +130,6 @@ export default {
   top: 10px;
   background: #fff;
 }
-
 
 body {
   font-family: Arial, sans-serif;
@@ -210,6 +217,7 @@ hr {
   padding: 10px;
   cursor: pointer;
   z-index: 2000;
+  transition: .3s;
 }
 
 .toggle-btn:hover {

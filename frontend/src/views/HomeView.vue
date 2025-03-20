@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="title">Kezdőlap</h1>
+    <!-- <h1 class="title">Kezdőlap</h1> -->
 
     <div v-if="!user" class="card">
       <p>Üdvözlünk! Kérlek, jelentkezz be, vagy regisztrálj!</p>
@@ -11,7 +11,7 @@
     </div>
 
     <div v-else-if="roleId > 0" class="card">
-      <img src="/avatar-5.png" alt="" class="avatar">
+      <img src="/avatar.gif" alt="" class="avatar">
       <p class="mb-0">Üdvözlünk, <strong>{{ user }} ({{ username }})</strong>! </p> <p class="mt-0 p-0">Itt kezelheted a felhasználókat és a tartalmakat.</p>
       <div class="btn-group">
         <router-link to="/versenyek" class="btn">Versenyek</router-link>
@@ -41,21 +41,20 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 80vh;
+  height: 100vh;
   padding: 20px;
 }
 
-.title {
+/* .title {
   font-size: 2rem;
   margin-bottom: 20px;
-}
+} */
 
 .avatar {
   border-radius: 50%;
-  width: 120px;
-  height: 120px;
-  margin-bottom: 20px;
-  object-fit: cover;
+  width: 100px;
+  height: 100px;
+  margin: auto;
   border: 4px solid #007bff;
   animation: pulseAvatar 1.5s infinite alternate;
 }
@@ -68,13 +67,6 @@ export default {
   text-align: center;
   max-width: 400px;
   width: 100%;
-}
-
-.card img {
-  border-radius: 50%;
-  height: 75px;
-  width: 75px;
-  margin: auto;
 }
 
 .btn-group {
