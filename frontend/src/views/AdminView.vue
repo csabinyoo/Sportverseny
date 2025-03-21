@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1 class="text-center my-4">Diákok</h1>
+    <h1 class="text-center my-4">Felhasználók</h1>
+    <hr />
     <ErrorMessage
       :errorMessages="errorMessages"
       @close="onClickCloseErrorMessage"
@@ -27,7 +28,6 @@
                 <th>Email</th>
                 <th>Password</th>
                 <th>RoleId</th>
-                <th class="text-center">Műveletek</th>
               </tr>
             </thead>
             <tbody>
@@ -40,20 +40,14 @@
                   active: user.id === selectedRowId,
                 }"
               >
-                <td>{{ user.id }}</td>
-                <td>{{ user.username }}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.password }}</td>
-                <td>{{ getRoleName(user.roleId) }}</td>
-                <td class="text-nowrap text-center">
-                  <OperationsCrud
-                    @onClickDeleteButton="onClickDeleteButton"
-                    @onClickUpdate="onClickUpdate"
-                    @onClickCreate="onClickCreate"
-                    :data="user"
-                  />
+                <td data-label="ID">{{ user.id }}</td>
+                <td data-label="Username">{{ user.username }}</td>
+                <td data-label="Name">{{ user.name }}</td>
+                <td data-label="Email">{{ user.email }}</td>
+                <td data-label="Password" class="password">
+                  <span>{{ user.password }} </span>
                 </td>
+                <td data-label="Role">{{ getRoleName(user.roleId) }}</td>
               </tr>
             </tbody>
           </table>
@@ -106,12 +100,11 @@ class User {
 }
 import { BASE_URL } from "../helpers/baseUrls";
 import { useAuthStore } from "@/stores/useAuthStore.js";
-import OperationsCrud from "@/components/OperationsCrud.vue";
 import ErrorMessage from "@/components/ErrorMessage.vue";
 import axios from "axios";
 import * as bootstrap from "bootstrap";
 export default {
-  components: { OperationsCrud, ErrorMessage },
+  components: { ErrorMessage },
   data() {
     return {
       urlApi: `${BASE_URL}/users`,
@@ -152,11 +145,15 @@ export default {
   methods: {
     async getCollections() {
       const url = this.urlApi;
+      const token = this.stateAuth.token;
+
       const headers = {
         Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       };
       try {
-        const response = await axios.get(url, headers);
+        const response = await axios.get(url, { headers });
         this.users = response.data.data;
 
         this.loading = false;
@@ -165,151 +162,194 @@ export default {
       }
     },
 
-    async deleteItemById() {
-      const id = this.selectedRowId;
-      const token = this.stateAuth.token;
-
-      const url = `${this.urlApi}/${id}`;
-      const headers = {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      };
-
-      try {
-        const response = await axios.delete(url, { headers });
-        // this.items = this.users.filter((sport) => sport.id !== id);
-        this.getCollections();
-      } catch (error) {
-        this.errorMessages = "User nem törölhető";
-      }
-    },
-
-    async createItem() {
-      const token = this.stateAuth.token;
-      const url = this.urlApi;
-      const headers = {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      };
-
-      const data = {
-        name: this.item.name,
-        email: this.item.email,
-        password: this.item.password,
-        roleId: this.item.roleId,
-      };
-      try {
-        const response = await axios.post(url, data, { headers });
-        // this.users.push(response.data.data);
-        this.getCollections();
-      } catch (error) {
-        this.errorMessages = "A bővítés nem sikerült.";
-      }
-      this.state = "Read";
-    },
-
-    async getOsztalyok() {
-      const url = `${this.urlApiSport}/queryOsztalynevIdvel`;
-      const headers = {
-        Accept: "application/json",
-      };
-      const response = await axios.get(url, { headers });
-      this.osztalyok = response.data.data;
-    },
-
-    async updateItem() {
-      this.loading = true;
-      const id = this.selectedRowId;
-      const url = `${this.urlApi}/${id}`;
-      const headers = {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${this.stateAuth.token}`,
-      };
-
-      const data = {
-        name: this.item.name,
-        email: this.item.email,
-        passowrd: this.item.password,
-        roleId: this.item.roleId,
-      };
-      try {
-        const response = await axios.patch(url, data, { headers });
-        this.getCollections();
-      } catch (error) {
-        this.errorMessages = "A módosítás nem sikerült.";
-      }
-      this.state = "Read";
-    },
-
-    yesEventHandler() {
-      if (this.state == "Delete") {
-        this.deleteItemById();
-        this.goToPage(1);
-      }
-    },
-
-    onClickDeleteButton(item) {
-      this.state = "Delete";
-      this.title = "Törlés";
-      this.messageYesNo = `Valóban törölni akarod a(z) ${item.name} nevű diákot?`;
-      this.yes = "Igen";
-      this.no = "Nem";
-      this.size = null;
-    },
-
-    onClickUpdate(item) {
-      this.state = "Update";
-      this.title = "Diák módosítása";
-      this.yes = null;
-      this.no = "Mégsem";
-      this.size = "lg";
-      this.item = { ...item };
-    },
-
-    onClickCreate() {
-      this.title = "Új diák bevitele";
-      this.yes = null;
-      this.no = "Mégsem";
-      this.size = "lg";
-      this.state = "Create";
-      this.item = new Item();
-    },
-
-    onClickTr(id) {
-      this.selectedRowId = id;
-    },
-
-    onClickCloseErrorMessage() {
-      this.errorMessages = null;
-      this.loading = false;
-      this.state = "Read";
-    },
-
-    saveItemHandler() {
-      if (this.state === "Update") {
-        this.updateItem();
-      } else if (this.state === "Create") {
-        this.createItem();
-      }
-
-      this.modal.hide();
-    },
-
     getRoleName(roleId) {
-      return roleId === 1 ? "Admin" : 
-      roleId === 2 ? "Supervisor" : 
-      roleId === 3 ? "Student" : "";
+      return roleId === 1
+        ? "Admin"
+        : roleId === 2
+        ? "Supervisor"
+        : roleId === 3
+        ? "Student"
+        : "";
     },
 
     goToPage(page) {
       this.currentPage = page;
     },
+
+    onClickTr(id) {
+      if (this.selectedRowId === id) {
+        this.selectedRowId = null;
+      } else {
+        this.selectedRowId = id;
+      }
+    },
   },
 };
 </script>
 
-<style>
+<style scoped>
+.active {
+  --bs-table-bg: rgba(0, 0, 255, 0.1) !important;
+}
+
+.tabla-container {
+  max-height: 600px;
+  overflow: auto;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+  overflow: hidden;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+.table th,
+.table td {
+  text-align: center;
+}
+
+.table-dark th {
+  background-color: #343a40;
+  color: white;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f8f9fa;
+}
+
+.shadow-sm {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.rounded {
+  border-radius: 8px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.updating {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.pagination-container {
+  display: flex;
+  max-width: 1000px;
+  overflow-x: auto;
+  gap: 5px;
+}
+
+.page-box {
+  min-width: 40px;
+  line-height: 40px;
+  margin-bottom: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #f8f9fa;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.page-box:hover {
+  background-color: #58c2ff;
+  background-image: -webkit-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.4) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.4) 75%,
+    transparent 75%,
+    transparent
+  );
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.active-page {
+  background-color: #58c2ff;
+  color: white;
+  transition: 0.3s;
+  background-image: -webkit-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.4) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.4) 75%,
+    transparent 75%,
+    transparent
+  );
+}
+
+@media (max-width: 991px) {
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    border: 0;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody {
+    display: block;
+    width: 100%;
+  }
+
+  tbody tr {
+    display: block;
+    margin-bottom: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f8f9fa;
+  }
+
+  tbody tr:hover {
+    background-color: #e9ecef;
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    border-bottom: 1px solid #222 !important;
+  }
+
+  td:last-child {
+    justify-content: center;
+    border-bottom: 0 !important;
+  }
+
+  td:before {
+    content: attr(data-label);
+    font-weight: bold;
+    text-transform: capitalize;
+    color: #6c757d;
+  }
+
+  td span {
+    text-align: right;
+    /* color: #212529; */
+  }
+}
+
+.password span {
+  font-size: 12px;
+}
 </style>

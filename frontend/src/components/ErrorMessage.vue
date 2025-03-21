@@ -21,7 +21,7 @@
         if (newVal) {
           setTimeout(() => {
             this.$emit("close");
-          }, 4000);
+          }, 4000000);
         }
       },
     },

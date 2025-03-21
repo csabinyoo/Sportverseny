@@ -79,6 +79,7 @@ export default {
           this.store.setUser(response.data.user.name);
           this.store.setUsername(response.data.user.username);
           this.store.setToken(response.data.user.token);
+          
           this.store.setRoleId(response.data.user.roleId);
 
           axios.defaults.headers.common[

@@ -12,7 +12,7 @@
 
     <div v-else-if="roleId > 0" class="card">
       <img src="/avatar.gif" alt="" class="avatar">
-      <p class="mb-0">Üdvözlünk, <strong>{{ user }} ({{ username }})</strong>! </p> <p class="mt-0 p-0">Itt kezelheted a felhasználókat és a tartalmakat.</p>
+      <p class="mb-0">Üdvözlünk, <strong>{{ user }} ({{ username }})</strong>!</p>
       <div class="btn-group">
         <router-link to="/versenyek" class="btn">Versenyek</router-link>
       </div>
@@ -41,14 +41,8 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  padding: 20px;
+  height: 90vh;
 }
-
-/* .title {
-  font-size: 2rem;
-  margin-bottom: 20px;
-} */
 
 .avatar {
   border-radius: 50%;
@@ -56,7 +50,7 @@ export default {
   height: 100px;
   margin: auto;
   border: 4px solid #007bff;
-  animation: pulseAvatar 1.5s infinite alternate;
+  margin-bottom: 10px;
 }
 
 .card {

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div :class="{ sidebar: true, active: sidebarActive }">
+  <div class="layout">
+    <div class="sidebar">
       <div class="logo">
         <RouterLink to="/">Sportverseny</RouterLink>
         <hr />
@@ -18,17 +18,13 @@
             <RouterLink to="/login" class="nav-link">Bejelentkezés</RouterLink>
           </li>
           <li v-if="!stateAuth.user" class="nav-item">
-            <RouterLink to="/register" class="nav-link"
-              >Regisztráció</RouterLink
-            >
+            <RouterLink to="/register" class="nav-link">Regisztráció</RouterLink>
           </li>
           <li v-if="stateAuth.user" class="nav-item">
             <RouterLink class="nav-link" to="/profile">Profil</RouterLink>
           </li>
           <li v-if="stateAuth.user" class="nav-item">
-            <RouterLink class="nav-link" to="/" @click="Logout()"
-              >Kijelentkezés</RouterLink
-            >
+            <RouterLink class="nav-link" to="/" @click="Logout()">Kijelentkezés</RouterLink>
           </li>
         </ul>
       </nav>
@@ -49,13 +45,10 @@
           )
         </p>
       </div>
-
-      <button class="toggle-btn" @click="toggleSidebar">
-        {{ sidebarActive ? "<<" : ">>" }}
-      </button>
     </div>
-
-    <RouterView />
+    <div class="content">
+      <RouterView />
+    </div>
   </div>
 </template>
 
@@ -69,14 +62,7 @@ export default {
   data() {
     return {
       stateAuth: useAuthStore(),
-      sidebarActive: false,
     };
-  },
-  created() {
-    const savedSidebarState = localStorage.getItem("sidebarActive");
-    if (savedSidebarState) {
-      this.sidebarActive = JSON.parse(savedSidebarState);
-    }
   },
   methods: {
     async Logout() {
@@ -90,14 +76,8 @@ export default {
       } catch (error) {
         console.error("Error:", error);
       }
-
       this.stateAuth.clearStoredData();
       window.location.reload();
-    },
-    toggleSidebar() {
-      this.sidebarActive = !this.sidebarActive;
-
-      localStorage.setItem("sidebarActive", JSON.stringify(this.sidebarActive));
     },
   },
 };
@@ -110,50 +90,31 @@ export default {
   box-sizing: border-box;
 }
 
-.user-info {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  padding: 20px;
-  color: #ecf0f1;
-  width: 100%;
-}
-
-.user-info::before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  left: 0;
-  top: 10px;
-  background: #fff;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+.layout {
+  display: flex;
+  height: 100vh;
 }
 
 .sidebar {
-  position: fixed;
-  top: 0;
-  left: -250px;
   width: 250px;
-  height: 100%;
+  height: 100vh;
   background-color: #2c3e50;
+  /* padding: 20px 0 20px 0; */
+  padding: 0 20px 0 20px;
+  color: white;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto;
   transition: transform 0.3s ease;
-  z-index: 1000;
 }
 
-hr {
-  margin-top: 10px;
-  color: #fff;
-}
-
-.sidebar.active {
-  transform: translateX(250px);
+.content {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  padding: 20px;
+  overflow-y: auto;
 }
 
 .sidebar .logo a {
@@ -162,13 +123,13 @@ hr {
   color: #fff;
   text-decoration: none;
   font-weight: bold;
-  padding: 20px;
+  display: block;
+  text-align: center;
 }
 
 .navbar-nav {
-  display: flex;
-  flex-direction: column;
-  padding-top: 20px;
+  list-style: none;
+  padding: 0;
 }
 
 .nav-item {
@@ -181,46 +142,61 @@ hr {
   font-size: 16px;
   padding: 12px;
   border-radius: 4px;
-  width: 250px;
-  transition: color 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.nav-link:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to right, #3498db, #2c3e50, #2c3e50);
-  transition: left 0.3s ease;
-  z-index: -1;
+  display: block;
+  transition: background 0.3s ease;
 }
 
 .nav-link:hover {
-  color: white;
+  background: rgba(255, 255, 255, 0.2);
 }
 
-.nav-link:hover:before {
-  left: 0;
-}
-
-.toggle-btn {
+.user-info {
   position: absolute;
-  top: 20px;
-  left: 250px;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  z-index: 2000;
-  transition: .3s;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: 100%;
 }
 
-.toggle-btn:hover {
-  background-color: #2980b9;
+.user-info::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  left: 0;
+  top: -10px;
+  background: #fff;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .navbar-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .nav-item {
+    margin-bottom: 5px;
+  }
+
+  .user-info {
+    display: none;
+  }
 }
 </style>
