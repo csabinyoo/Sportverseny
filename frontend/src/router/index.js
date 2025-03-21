@@ -38,6 +38,13 @@ const router = createRouter({
       meta: { title: (route) => 'Profile' }
     },
     {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('../views/AdminView.vue'),
+      beforeEnter: [checkIfNotLogged],
+      meta: { title: (route) => 'Admin' }
+    },
+    {
       path: "/:pathMatch(.*)*",
       name: "NotFound",
       component: HomeView,

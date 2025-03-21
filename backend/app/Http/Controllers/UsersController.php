@@ -67,7 +67,8 @@ class UsersController extends Controller
         // $user->tokens()->delete();
 
         //Adunk egy tokent
-        $user->token = $user->createToken('access')->plainTextToken;
+        $token = $user->createToken('access')->plainTextToken;
+        $user->token = $token;
         return response()->json(['user' => $user], options:JSON_UNESCAPED_UNICODE);
     }
 

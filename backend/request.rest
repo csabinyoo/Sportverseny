@@ -30,7 +30,7 @@ Content-Type: application/json
 }
  
 ###
-@token = {{login.response.body.data.token}}
+@token = {{login.response.body.user.token}}
  
 ### logout user
 POST  {{host}}/api/users/logout
@@ -39,7 +39,7 @@ Authorization: Bearer {{token}}
  
 # ------------- competitions -------------
 ### competitions
-GET {{host}}/api/users/1
+GET {{host}}/api/users
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
