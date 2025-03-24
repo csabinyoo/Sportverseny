@@ -18,13 +18,17 @@
             <RouterLink to="/login" class="nav-link">Bejelentkezés</RouterLink>
           </li>
           <li v-if="!stateAuth.user" class="nav-item">
-            <RouterLink to="/register" class="nav-link">Regisztráció</RouterLink>
+            <RouterLink to="/register" class="nav-link"
+              >Regisztráció</RouterLink
+            >
           </li>
           <li v-if="stateAuth.user" class="nav-item">
-            <RouterLink class="nav-link" to="/profile">Profil</RouterLink>
+            <RouterLink class="nav-link" :to="`/profile/${stateAuth.id}`">Profil</RouterLink>
           </li>
           <li v-if="stateAuth.user" class="nav-item">
-            <RouterLink class="nav-link" to="/" @click="Logout()">Kijelentkezés</RouterLink>
+            <RouterLink class="nav-link" to="/" @click="Logout()"
+              >Kijelentkezés</RouterLink
+            >
           </li>
         </ul>
       </nav>

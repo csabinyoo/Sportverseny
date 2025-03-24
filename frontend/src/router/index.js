@@ -31,7 +31,7 @@ const router = createRouter({
       meta: { title: (route) => 'Register' }
     },
     {
-      path: '/profile',
+      path: '/profile/:id',
       name: 'profile',
       component: () => import('@/components/Auth/Profile.vue'),
       beforeEnter: [checkIfNotLogged],

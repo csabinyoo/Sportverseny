@@ -177,11 +177,13 @@ export default {
     },
 
     onClickTr(id) {
-      if (this.selectedRowId === id) {
-        this.selectedRowId = null;
-      } else {
-        this.selectedRowId = id;
-      }
+      // if (this.selectedRowId === id) {
+      //   this.selectedRowId = null;
+      // } else {
+      //   this.selectedRowId = id;
+      // }
+      this.selectedRowId = id;
+      this.$router.push(`/profile/${id}`);
     },
   },
 };

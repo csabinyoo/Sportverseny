@@ -1,7 +1,6 @@
 <template>
   <div class="container">
-    <!-- <h1 class="title">Kezdőlap</h1> -->
-
+    <!-- Check if user is not logged in -->
     <div v-if="!user" class="card">
       <p>Üdvözlünk! Kérlek, jelentkezz be, vagy regisztrálj!</p>
       <div class="btn-group">
@@ -10,6 +9,7 @@
       </div>
     </div>
 
+    <!-- Check if user is logged in and has a valid role -->
     <div v-else-if="roleId > 0" class="card">
       <img src="/avatar.gif" alt="" class="avatar">
       <p class="mb-0">Üdvözlünk, <strong>{{ user }} ({{ username }})</strong>!</p>
@@ -26,10 +26,17 @@ import { useAuthStore } from "@/stores/useAuthStore.js";
 export default {
   setup() {
     const store = useAuthStore();
+
+    // Use computed properties for reactivity
+    const user = store.user;
+    const username = store.username;
+    const roleId = store.roleId;
+
+    // Return all reactive data
     return {
-      user: store.user,
-      username: store.username,
-      roleId: store.roleId,
+      user,
+      username,
+      roleId,
     };
   },
 };

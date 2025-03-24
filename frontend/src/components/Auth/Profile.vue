@@ -2,7 +2,7 @@
   <div class="container mt-2">
     <Notification ref="notification" />
     <h1 class="title">Profil szerkesztése</h1>
-    <hr>
+    <hr />
 
     <!-- Username -->
     <div class="content">
@@ -35,7 +35,7 @@
         </div>
       </div>
 
-      <!-- Username -->
+      <!-- Name -->
       <div class="card mb-3">
         <div
           class="card-body d-flex justify-content-between align-items-center"
@@ -52,7 +52,7 @@
               type="text"
               class="form-control me-2"
               v-model="updatedField.name"
-              placeholder="Enter new username"
+              placeholder="Enter new name"
             />
             <button class="btn btn-success me-2" @click="saveField('name')">
               Mentés
@@ -134,11 +134,11 @@
 import axios from "axios";
 import { BASE_URL } from "../../helpers/baseUrls";
 import { useAuthStore } from "../../stores/useAuthStore";
-import Notification from "../../components/Notification.vue"; // importáljuk az értesítést
+import Notification from "../../components/Notification.vue";
 
 export default {
   components: {
-    Notification, // regisztráljuk a Notification komponenst
+    Notification,
   },
   data() {
     return {
@@ -149,8 +149,9 @@ export default {
     };
   },
   async created() {
+    const userId = this.$route.params.id;
     try {
-      const response = await axios.get(`${BASE_URL}/users/${this.store.id}`, {
+      const response = await axios.get(`${BASE_URL}/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${this.store.token}`,
         },
@@ -172,9 +173,10 @@ export default {
     async saveField(field) {
       try {
         const updatedUser = { ...this.user, [field]: this.updatedField[field] };
+        const userId = this.$route.params.id;
 
         const response = await axios.patch(
-          `${BASE_URL}/users/${this.store.id}`,
+          `${BASE_URL}/users/${userId}`,
           updatedUser,
           {
             headers: {
@@ -183,47 +185,70 @@ export default {
           }
         );
 
-        console.log("Szerver válasza:", response.data);
-
         if (response.data.message === "This email already exists") {
-          this.$refs.notification.showMessage("Error: Ez az e-mail már használatban van.", "error");
+          this.$refs.notification.showMessage(
+            "Error: Ez az e-mail már használatban van.",
+            "error"
+          );
         } else {
-          this.$refs.notification.showMessage(`${field} sikeresen frissítve.`, "success");
+          this.$refs.notification.showMessage(
+            `${field} sikeresen frissítve.`,
+            "success"
+          );
           this.user = response.data.data;
 
-          if (field === "username") {
+          if (field === "username" && this.store.id.toString() === userId) {
             this.store.setUsername(this.updatedField.username);
-          } else if (field === "name") {
+          } else if (field === "name" && this.store.id.toString() === userId) {
             this.store.setUser(this.updatedField.name);
           }
 
           this.cancelEdit();
 
-          if (field === "email" || field === "password") {
-            this.$refs.notification.showMessage("Kérlek jelentkezz be újra.", "info");
+          if (
+            (field === "email" || field === "password") &&
+            this.store.id.toString() === userId
+          ) {
+            this.$refs.notification.showMessage(
+              "Kérlek jelentkezz be újra.",
+              "info"
+            );
             this.store.clearStoredData();
             this.$router.push("/bejelentkezes");
           }
         }
       } catch (error) {
         console.error("Error updating field:", error);
-        this.$refs.notification.showMessage("Nem sikerült frissíteni a mezőt. Kérjük, próbálja újra.", "error");
+        this.$refs.notification.showMessage(
+          "Nem sikerült frissíteni a mezőt. Kérjük, próbálja újra.",
+          "error"
+        );
       }
     },
     async deleteUser() {
       if (confirm("Biztosan le akarod törölni a fiókodat?")) {
         try {
-          await axios.delete(`${BASE_URL}/users/${this.store.id}`, {
+          const userId = this.$route.params.id;
+
+          await axios.delete(`${BASE_URL}/users/${userId}`, {
             headers: {
               Authorization: `Bearer ${this.store.token}`,
             },
           });
-          this.$refs.notification.showMessage("Felhasználó sikeresen törölve", "success");
-          this.store.clearStoredData();
-          this.$router.push("/register");
+          this.$refs.notification.showMessage(
+            "Felhasználó sikeresen törölve",
+            "success"
+          );
+          if (this.store.id.toString() === userId) {
+            this.store.clearStoredData();
+          }
+          this.$router.push("/");
         } catch (error) {
           console.error("Error deleting user:", error);
-          this.$refs.notification.showMessage("Nem sikerült letörölni a fiókot. Kérlek próbáld újra.", "error");
+          this.$refs.notification.showMessage(
+            "Nem sikerült letörölni a fiókot. Kérlek próbáld újra.",
+            "error"
+          );
         }
       }
     },
@@ -236,7 +261,6 @@ export default {
   max-width: 600px;
   margin: auto;
 }
-
 .content {
   display: flex;
   flex-direction: column;
@@ -244,12 +268,10 @@ export default {
   align-items: center;
   height: 80vh;
 }
-
 .card {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
 }
-
 .card-body {
   display: flex;
   flex-direction: column;
@@ -258,29 +280,23 @@ export default {
   text-align: center;
   padding: 20px;
 }
-
 .card-body p {
   margin: 0;
 }
-
 button {
   margin-top: 10px;
   width: auto;
 }
-
 .title {
   text-align: center;
 }
-
 .card .btn {
   margin: 5px 0;
   background: #3498db;
   color: #fff;
-  transition: .3s;
+  transition: 0.3s;
 }
-
 .card .btn:hover {
   background: #035b95;
 }
 </style>
-
