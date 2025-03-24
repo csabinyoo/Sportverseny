@@ -149,19 +149,25 @@ export default {
     };
   },
   async created() {
-    const userId = this.$route.params.id;
-    try {
-      const response = await axios.get(`${BASE_URL}/users/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${this.store.token}`,
-        },
-      });
-      this.user = response.data.data;
-    } catch (error) {
-      console.error("Error fetching user profile:", error);
-    }
+    await this.fetchUserData();
+  },
+  watch: {
+    $route: "fetchUserData",
   },
   methods: {
+    async fetchUserData() {
+      const userId = this.$route.params.id;
+      try {
+        const response = await axios.get(`${BASE_URL}/users/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${this.store.token}`,
+          },
+        });
+        this.user = response.data.data;
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    },
     startEdit(field) {
       this.isEditingField = field;
       this.updatedField[field] = this.user[field];
