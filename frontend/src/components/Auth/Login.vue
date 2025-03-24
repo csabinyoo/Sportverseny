@@ -121,9 +121,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 90vh;
   padding: 20px;
-  background: #f9f9f9;
+  /* background: #f9f9f9; */
 }
 
 .login-card {
