@@ -18,17 +18,13 @@
             <RouterLink to="/login" class="nav-link">Bejelentkezés</RouterLink>
           </li>
           <li v-if="!stateAuth.user" class="nav-item">
-            <RouterLink to="/register" class="nav-link"
-              >Regisztráció</RouterLink
-            >
+            <RouterLink to="/register" class="nav-link">Regisztráció</RouterLink>
           </li>
           <li v-if="stateAuth.user" class="nav-item">
             <RouterLink class="nav-link" :to="`/profile/${stateAuth.id}`">Profil</RouterLink>
           </li>
           <li v-if="stateAuth.user" class="nav-item">
-            <RouterLink class="nav-link" to="/" @click="Logout()"
-              >Kijelentkezés</RouterLink
-            >
+            <RouterLink class="nav-link" to="/" @click="Logout()">Kijelentkezés</RouterLink>
           </li>
         </ul>
       </nav>
@@ -83,7 +79,23 @@ export default {
       this.stateAuth.clearStoredData();
       window.location.reload();
     },
+    checkProfileAccess() {
+      // Ha a felhasználó Student (roleId === 3), akkor csak a saját profilját láthatja
+      const profileId = this.$route.params.id;
+      if (this.stateAuth.roleId === 3 && this.stateAuth.id.toString() !== profileId) {
+        // Ha a felhasználó megpróbál más profiljára navigálni, átirányítjuk a saját profiljára
+        this.$router.push(`/profile/${this.stateAuth.id}`);
+      }
+    }
   },
+  watch: {
+    $route(to, from) {
+      this.checkProfileAccess();
+    }
+  },
+  created() {
+    this.checkProfileAccess();
+  }
 };
 </script>
 
@@ -103,7 +115,6 @@ export default {
   width: 250px;
   height: 100vh;
   background-color: #2c3e50;
-  /* padding: 20px 0 20px 0; */
   padding: 0 20px 0 20px;
   color: white;
   position: fixed;
