@@ -105,8 +105,6 @@ export default {
   data() {
     return {
       urlApi: `${BASE_URL}/teams`,
-      urlApiCompetitions: `${BASE_URL}/competitions`,
-      urlApiUsers: `${BASE_URL}/users`,
       stateAuth: useAuthStore(),
       items: [],
       loading: false,
@@ -331,7 +329,6 @@ h1 {
   }
 
   td:last-child {
-    justify-content: center;
     border-bottom: 0 !important;
   }
 
