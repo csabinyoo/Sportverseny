@@ -45,6 +45,13 @@ const router = createRouter({
       meta: { title: (route) => 'Admin' }
     },
     {
+      path: '/teams',
+      name: 'teams',
+      component: () => import('../views/TeamView.vue'),
+      beforeEnter: [checkIfNotLogged],
+      meta: { title: (route) => 'Teams' }
+    },
+    {
       path: "/:pathMatch(.*)*",
       name: "NotFound",
       component: HomeView,

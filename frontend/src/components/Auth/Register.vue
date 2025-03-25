@@ -1,5 +1,6 @@
 <template>
   <div class="register-container">
+    <Notification ref="notification" />
     <div class="register-card">
       <h2 class="register-title">Regisztráció</h2>
       <form @submit.prevent="handleSubmit">
@@ -9,12 +10,27 @@
           <input
             type="text"
             v-model="username"
-            placeholder="Felhasználónév*"
+            placeholder="Felhasználónév | kPisti"
             required
           />
         </div>
-        <p v-if="username && username.length < 2" class="error-message">
-           Legalább 2 karakter hosszúnak kell lennie.
+        <p v-if="username && username.length < 5" class="error-message">
+          Legalább 5 karakter hosszúnak kell lennie.
+        </p>
+
+        <div class="input-group">
+          <span class="icon"><i class="fas fa-user"></i></span>
+          <input
+            type="text"
+            v-model="name"
+            placeholder="Név | Kocsi Pista"
+            required
+          />
+        </div>
+
+        <p v-if="!name || !/\S+\s+\S+/.test(name)" class="error-message">
+          Legalább egy szóköz kell, hogy legyen a névben, és nem lehet csak
+          szóköz.
         </p>
 
         <!-- Email -->
@@ -23,7 +39,7 @@
           <input
             type="email"
             v-model="email"
-            placeholder="E-mail cím*"
+            placeholder="E-mail cím | kocsipista@gmail.com"
             required
           />
         </div>
@@ -39,7 +55,7 @@
           />
         </div>
         <p v-if="password && password.length < 6" class="error-message">
-           A jelszónak minimum 6 karakter hosszúnak kell lennie.
+          A jelszónak minimum 6 karakter hosszúnak kell lennie.
         </p>
 
         <!-- Jelszó megerősítés -->
@@ -52,12 +68,19 @@
             required
           />
         </div>
-        <p v-if="confirmPassword && confirmPassword !== password" class="error-message">
-           A jelszavak nem egyeznek!
+        <p
+          v-if="confirmPassword && confirmPassword !== password"
+          class="error-message"
+        >
+          A jelszavak nem egyeznek!
         </p>
 
         <!-- Regisztráció gomb -->
-        <button type="submit" class="register-button" :disabled="isFormInvalid || isLoading">
+        <button
+          type="submit"
+          class="register-button"
+          :disabled="isFormInvalid || isLoading"
+        >
           <span v-if="isLoading"> Regisztráció...</span>
           <span v-else> Regisztrálás</span>
         </button>
@@ -71,15 +94,18 @@
 <script>
 import axios from "axios";
 import { BASE_URL } from "../../helpers/baseUrls";
+import Notification from "../../components/Notification.vue";
 
 export default {
+  components: { Notification },
   data() {
     return {
       username: "",
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
-      roleId: 2, // Minden új felhasználó alapból roleId = 2 (normál felhasználó)
+      roleId: 3,
       isLoading: false,
       errorMessage: null,
     };
@@ -104,7 +130,8 @@ export default {
       }
 
       const payload = {
-        name: this.username,
+        username: this.username,
+        name: this.name,
         email: this.email,
         password: this.password,
         roleId: this.roleId,
@@ -115,11 +142,19 @@ export default {
 
       try {
         await axios.post(`${BASE_URL}/users`, payload, {
-          headers: { Accept: "application/json", "Content-Type": "application/json" },
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
         });
 
-        alert(" Sikeres regisztráció!");
-        this.$router.push("/bejelentkezes");
+        this.$refs.notification.showMessage(
+          `sikeresen regisztráció.`,
+          "success"
+        );
+        setTimeout(() => {
+          this.$router.push("/bejelentkezes");
+        }, 1500);
       } catch (error) {
         console.error("Hiba:", error);
         this.errorMessage = " Hiba történt. Próbáld újra!";
@@ -133,7 +168,7 @@ export default {
 
 <style scoped>
 .register-container {
- display: flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   min-height: 80vh;
@@ -142,7 +177,7 @@ export default {
 }
 
 .register-card {
-   background: white;
+  background: white;
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);

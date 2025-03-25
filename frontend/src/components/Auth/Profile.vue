@@ -100,7 +100,7 @@
         <div
           class="card-body d-flex justify-content-between align-items-center"
         >
-          <p><strong>Jelszó:</strong>******</p>
+          <p><strong>Jelszó:</strong> {{ passwordStars }}</p>
           <div
             v-if="isEditingField === 'password'"
             class="d-flex align-items-center"
@@ -149,28 +149,48 @@ export default {
     };
   },
   async created() {
-    await this.fetchUserData();    
+    await this.fetchUserData();
   },
   watch: {
     $route: "fetchUserData",
+  },
+  computed: {
+    passwordStars() {
+      return '*'.repeat(this.user.password.length/2);
+    }
   },
   methods: {
     async fetchUserData() {
       const userId = this.$route.params.id;
       try {
-        const response = await axios.get(`${BASE_URL}/users/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${this.store.token}`,
-          },
-        });
-        this.user = response.data.data;
+        if (userId != this.store.id && this.store.roleId === 3) {
+          const response = await axios.get(`${BASE_URL}/users/${this.store.id}`, {
+            headers: {
+              Authorization: `Bearer ${this.store.token}`,
+            },
+          });
+          this.user = response.data.data;
+          this.$router.push(`/profile/${this.store.id}`);
+        } else {
+          const response = await axios.get(`${BASE_URL}/users/${userId}`, {
+            headers: {
+              Authorization: `Bearer ${this.store.token}`,
+            },
+          });
+          this.user = response.data.data;
+        }
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }
     },
     startEdit(field) {
       this.isEditingField = field;
-      this.updatedField[field] = this.user[field];
+      if (field === 'password') {
+        this.updatedField = ''
+      } else {
+
+        this.updatedField[field] = this.user[field];
+      }
     },
     cancelEdit() {
       this.isEditingField = null;

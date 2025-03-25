@@ -26,6 +26,9 @@
               <RouterLink class="nav-link" :to="`/profile/${stateAuth.id}`">Profil</RouterLink>
           </li>
           <li v-if="stateAuth.user" class="nav-item">
+              <RouterLink class="nav-link" to="/teams">Csapatok</RouterLink>
+          </li>
+          <li v-if="stateAuth.user" class="nav-item">
             <RouterLink class="nav-link" to="/" @click="Logout()"
               >Kijelentkezés</RouterLink
             >
