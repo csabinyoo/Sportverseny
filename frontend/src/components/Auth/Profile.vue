@@ -149,7 +149,7 @@ export default {
     };
   },
   async created() {
-    await this.fetchUserData();
+    await this.fetchUserData();    
   },
   watch: {
     $route: "fetchUserData",
