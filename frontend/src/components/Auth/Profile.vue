@@ -100,7 +100,7 @@
         <div
           class="card-body d-flex justify-content-between align-items-center"
         >
-          <p><strong>Jelszó:</strong> {{ passwordStars }}</p>
+          <p><strong>Jelszó:</strong> ******* </p>
           <div
             v-if="isEditingField === 'password'"
             class="d-flex align-items-center"
@@ -154,11 +154,6 @@ export default {
   watch: {
     $route: "fetchUserData",
   },
-  computed: {
-    passwordStars() {
-      return '*'.repeat(this.user.password.length/2);
-    }
-  },
   methods: {
     async fetchUserData() {
       const userId = this.$route.params.id;
@@ -185,12 +180,7 @@ export default {
     },
     startEdit(field) {
       this.isEditingField = field;
-      if (field === 'password') {
-        this.updatedField = ''
-      } else {
-
-        this.updatedField[field] = this.user[field];
-      }
+      this.updatedField[field] = this.user[field];
     },
     cancelEdit() {
       this.isEditingField = null;
@@ -239,8 +229,13 @@ export default {
               "Kérlek jelentkezz be újra.",
               "info"
             );
+            console.log(this.updatedField[field]);
+            
             this.store.clearStoredData();
-            this.$router.push("/bejelentkezes");
+            setTimeout(() => {
+              
+              this.$router.push("/bejelentkezes");
+            }, 1500);
           }
         }
       } catch (error) {

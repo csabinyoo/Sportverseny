@@ -74,7 +74,7 @@ export default {
           }
         );
 
-        if (response.data && response.data.user.name) {
+        if (response.data && response.data.user) {
           this.store.setId(response.data.user.id);
           this.store.setUser(response.data.user.name);
           this.store.setUsername(response.data.user.username);
