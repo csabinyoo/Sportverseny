@@ -152,6 +152,7 @@ export default {
           `sikeresen regisztráció.`,
           "success"
         );
+        
         setTimeout(() => {
           this.$router.push("/bejelentkezes");
         }, 1500);

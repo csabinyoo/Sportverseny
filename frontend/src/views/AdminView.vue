@@ -26,8 +26,8 @@
                 <th>Username</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Password</th>
-                <th>RoleId</th>
+                <!-- <th>Password</th> -->
+                <th>Role</th>
               </tr>
             </thead>
             <tbody>
@@ -44,9 +44,9 @@
                 <td data-label="Username">{{ user.username }}</td>
                 <td data-label="Name">{{ user.name }}</td>
                 <td data-label="Email">{{ user.email }}</td>
-                <td data-label="Password" class="password">
+                <!-- <td data-label="Password" class="password">
                   <span>{{ user.password }} </span>
-                </td>
+                </td> -->
                 <td data-label="Role">{{ getRoleName(user.roleId) }}</td>
               </tr>
             </tbody>
@@ -195,6 +195,7 @@ export default {
 }
 
 .tabla-container {
+  width: 1000px;
   max-height: 600px;
   overflow: auto;
 }
@@ -334,7 +335,7 @@ h1 {
   }
 
   td:last-child {
-    justify-content: center;
+    /* justify-content: center; */
     border-bottom: 0 !important;
   }
 

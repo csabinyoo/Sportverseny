@@ -263,7 +263,7 @@ export default {
           if (this.store.id.toString() === userId) {
             this.store.clearStoredData();
           }
-          this.$router.push("/");
+          this.$router.push("/admin");
         } catch (error) {
           console.error("Error deleting user:", error);
           this.$refs.notification.showMessage(
