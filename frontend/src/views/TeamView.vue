@@ -61,7 +61,7 @@
                 <td data-label="Kapitány">{{ getUserName(item.userId) }}</td>
 
                 <!-- CRUD gombok component -->
-                <td class="text-nowrap text-center">
+                <td data-label="Műveletek">
                   <OperationsCrud
                     @onClickDeleteButton="onClickDeleteButton"
                     @onClickUpdate="onClickUpdate"

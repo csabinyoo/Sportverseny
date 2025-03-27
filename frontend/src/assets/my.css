@@ -148,7 +148,7 @@ h1 {
     }
 
     td:last-child {
-        justify-content: center;
+        /* justify-content: center; */
         border-bottom: 0 !important;
     }
 
