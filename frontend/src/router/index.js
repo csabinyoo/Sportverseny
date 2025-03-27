@@ -2,11 +2,17 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { useAuthStore } from "@/stores/useAuthStore.js";
 
-function checkIfNotLogged() {
+function checkIfNotLogged(to, from, next) {
   const storeAuth = useAuthStore();
   if (!storeAuth.user) {
-    return "/login";
+    return next("/bejelentkezes");
   }
+
+  if (to.meta.requiresAdmin && storeAuth.roleId !== 1) {
+    return next("/");
+  }
+
+  next();
 }
 
 const router = createRouter({
@@ -42,14 +48,14 @@ const router = createRouter({
       name: 'admin',
       component: () => import('../views/AdminView.vue'),
       beforeEnter: [checkIfNotLogged],
-      meta: { title: (route) => 'Admin' }
+      meta: { title: (route) => 'Admin', requiresAdmin: true }
     },
     {
       path: '/teams',
       name: 'teams',
       component: () => import('../views/TeamView.vue'),
       beforeEnter: [checkIfNotLogged],
-      meta: { title: (route) => 'Teams' }
+      meta: { title: (route) => 'Teams', requiresAdmin: true }
     },
     {
       path: "/:pathMatch(.*)*",
