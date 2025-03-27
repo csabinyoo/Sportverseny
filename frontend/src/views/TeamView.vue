@@ -16,21 +16,24 @@
           <span class="visually-hidden m-0">Loading...</span>
         </div>
 
-        <div class="col-12 col-lg-12 tabla-container" v-if="items.length > 0">
+        <div class="col-12 col-lg-10 tabla-container" v-if="items.length > 0">
+          <!-- Táblázat -->
           <table
             class="table table-bordered table-hover table-striped shadow-sm rounded"
           >
             <thead class="table-dark">
+              <!-- Módosítás -->
               <tr>
-                <th>#</th>
+                <th v-if="debug">#</th>
                 <th>Verseny</th>
                 <th>Csapatnév</th>
-                <th>Helyszín</th>
+                <th>Iskola</th>
                 <th>Csapatkapitány</th>
                 <th>Műveletek</th>
               </tr>
             </thead>
             <tbody>
+              <!-- Módosítás -->
               <tr
                 v-for="item in paginatedCollections"
                 :key="item.id"
@@ -40,12 +43,25 @@
                   active: item.id === selectedRowId,
                 }"
               >
-                <td data-label="ID">{{ item.id }}</td>
-                <td data-label="Competition">{{ item.competitionId }}</td>
-                <td data-label="Team">{{ item.name }}</td>
-                <td data-label="Location">{{ item.school }}</td>
-                <td data-label="Captain">{{ item.userId }}</td>
-                <td data-label="Műveletek" class="text-nowrap text-center">
+                <td data-label="ID" v-if="debug">{{ item.id }}</td>
+                <td data-label="Verseny">
+                  {{ getCompetitionName(item.competitionId) }}
+                </td>
+                <td data-label="Csapatnév">
+                  {{ item.name }}
+                  <span
+                    class="spinner-border text-primary spinner-border-sm m-0 p-0"
+                    role="status"
+                    v-if="item.id === selectedRowId && loading"
+                  >
+                    <span class="visually-hidden m-0">Loading...</span>
+                  </span>
+                </td>
+                <td data-label="Iskola">{{ item.school }}</td>
+                <td data-label="Kapitány">{{ getUserName(item.userId) }}</td>
+
+                <!-- CRUD gombok component -->
+                <td class="text-nowrap text-center">
                   <OperationsCrud
                     @onClickDeleteButton="onClickDeleteButton"
                     @onClickUpdate="onClickUpdate"
@@ -65,9 +81,20 @@
           :size="size"
           @yesEvent="yesEventHandler"
         >
+          <!-- Igen/Nem válasz -->
           <div v-if="state == 'Delete'">
             {{ messageYesNo }}
           </div>
+
+          <!-- Beviteli form -->
+          <ItemForm
+            v-if="state == 'Create' || state == 'Update'"
+            :itemForm="item"
+            :debug="debug"
+            :competitions="competitions"
+            :users="users"
+            @saveItem="saveItemHandler"
+          />
         </Modal>
       </div>
       <div class="d-flex justify-content-center my-3">
@@ -85,57 +112,66 @@
     </div>
   </div>
 </template>
-        
-  
-  <script>
-class User {
+    
+<script>
+// Módosítás
+class Item {
   constructor(
     id = null,
+    competitionId = null,
     name = null,
-    email = null,
-    password = null,
-    roleId = null
+    school = null,
+    userId = null
   ) {
     this.id = id;
+    this.competitionId = competitionId;
     this.name = name;
-    this.email = email;
-    this.password = password;
-    this.roleId = roleId;
+    this.school = school;
+    this.userId = userId;
   }
 }
 import { BASE_URL } from "../helpers/baseUrls";
-import { useAuthStore } from "@/stores/useAuthStore.js";
+import { DEBUG } from "../helpers/debug";
 import ErrorMessage from "@/components/ErrorMessage.vue";
-import axios from "axios";
+import { useAuthStore } from "@/stores/useAuthStore.js";
+import ItemForm from "@/components/TeamForm.vue";
 import OperationsCrud from "@/components/OperationsCrud.vue";
+import axios from "axios";
 import * as bootstrap from "bootstrap";
+
 export default {
-  components: { ErrorMessage, OperationsCrud },
+  components: { ItemForm, OperationsCrud, ErrorMessage },
   data() {
     return {
+      urlBase: BASE_URL,
       urlApi: `${BASE_URL}/teams`,
+      urlCompetitions: `${BASE_URL}/competitions`,
+      urlUsers: `${BASE_URL}/users`,
       stateAuth: useAuthStore(),
       items: [],
+      competitions: [],
+      users: [],
       loading: false,
       modal: null,
       currentPage: 1,
       itemsPerPage: 10,
-      user: new User(),
+      item: {},
       selectedRowId: null,
       messageYesNo: null,
-      state: "Read", //CRUD: Create, Read, Update, Delete
+      state: "Read",
       title: null,
       yes: null,
       no: null,
       size: null,
       errorMessages: null,
+      debug: DEBUG,
     };
   },
   mounted() {
     this.getCollections();
-    this.modal = new bootstrap.Modal("#modal", {
-      keyboard: false,
-    });
+    this.getCompetitions(); // Versenyek lekérése
+    this.getUsers(); // Felhasználók lekérése
+    this.modal = new bootstrap.Modal("#modal", { keyboard: false });
   },
   computed: {
     paginatedCollections() {
@@ -150,210 +186,197 @@ export default {
   methods: {
     async getCollections() {
       const url = this.urlApi;
-      const token = this.stateAuth.token;
-
       const headers = {
         Accept: "application/json",
       };
       try {
-        const response = await axios.get(url, { headers });
+        const response = await axios.get(url, headers);
         this.items = response.data.data;
-
         this.loading = false;
       } catch (error) {
         this.errorMessages = "Szerver hiba";
       }
     },
-    
-    getRoleName(roleId) {
-      return roleId === 1
-        ? "Admin"
-        : roleId === 2
-        ? "Supervisor"
-        : roleId === 3
-        ? "Student"
-        : "";
+
+    // Versenyek lekérése
+    async getCompetitions() {
+      const url = this.urlCompetitions;
+      const headers = {
+        Accept: "application/json",
+      };
+      try {
+        const response = await axios.get(url, headers);
+        this.competitions = response.data.data;
+      } catch (error) {
+        this.errorMessages = "A versenyek betöltése nem sikerült.";
+      }
+    },
+
+    // Felhasználók lekérése
+    async getUsers() {
+      const url = this.urlUsers;
+      const token = this.stateAuth.token;
+      const headers = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+      try {
+        // const response = await axios.get(url, headers);
+        const response = await axios.get(url, { headers });
+        this.users = response.data.data;
+        console.log(response.data.data);
+      } catch (error) {
+        this.errorMessages = "A felhasználók betöltése nem sikerült.";
+      }
+    },
+
+    // A versenyek és felhasználók nevének megjelenítése
+    getCompetitionName(competitionId) {
+      const competition = this.competitions.find(
+        (comp) => comp.id === competitionId
+      );
+      return competition ? competition.name : "Nincs verseny";
+    },
+
+    getUserName(userId) {
+      const user = this.users.find((user) => user.id === userId);
+      return user ? user.name : "Nincs felhasználó";
+    },
+
+    async deleteItemById() {
+      const id = this.selectedRowId;
+      const token = this.stateAuth.token;
+
+      const url = `${this.urlApi}/${id}`;
+      const headers = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+
+      try {
+        const response = await axios.delete(url, { headers });
+        this.getCollections();
+      } catch (error) {
+        this.errorMessages =
+          "A sport nem törölhető, mert már ilyet sportolnak a diákok.";
+      }
+    },
+
+    async updateItem() {
+      this.loading = true;
+      const id = this.selectedRowId;
+      const url = `${this.urlApi}/${id}`;
+      const headers = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.stateAuth.token}`,
+      };
+
+      // Módosłtás
+      const data = {
+        competitionId: this.item.competitionId,
+        name: this.item.name,
+        school: this.item.school,
+        userId: this.item.userId,
+      };
+      try {
+        const response = await axios.patch(url, data, { headers });
+        this.getCollections();
+      } catch (error) {
+        this.errorMessages = "A módosítás nem sikerült.";
+        console.log(error);
+      }
+      this.state = "Read";
+    },
+
+    async createItem() {
+      const token = this.stateAuth.token;
+      const url = this.urlApi;
+      const headers = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+
+      // Módosítás
+      const data = {
+        competitionId: this.item.competitionId,
+        name: this.item.name,
+        school: this.item.school,
+        userId: this.item.userId,
+      };
+      try {
+        const response = await axios.post(url, data, { headers });
+        // this.items.push(response.data.data);
+        this.getCollections();
+      } catch (error) {
+        this.errorMessages = "A bővítés nem sikerült.";
+      }
+      this.state = "Read";
+    },
+
+    // További CRUD műveletek és metódusok
+    yesEventHandler() {
+      if (this.state == "Delete") {
+        this.deleteItemById();
+        this.goToPage(1);
+      }
+    },
+
+    onClickDeleteButton(item) {
+      this.state = "Delete";
+      this.title = "Törlés";
+      this.messageYesNo = `Valóban törölni akarod a(z) ${item.name} nevű elemet?`;
+      this.yes = "Igen";
+      this.no = "Nem";
+      this.size = null;
+    },
+
+    onClickUpdate(item) {
+      this.state = "Update";
+      this.title = `Elem módosítása | ${item.name}`;
+      this.yes = null;
+      this.no = "Mégsem";
+      this.size = "lg";
+      this.item = { ...item };
+    },
+
+    onClickCreate() {
+      this.title = "Új adat bevitele";
+      this.yes = null;
+      this.no = "Mégsem";
+      this.size = "lg";
+      this.state = "Create";
+      this.item = new Item();
+    },
+
+    onClickTr(id) {
+      this.selectedRowId = id;
+    },
+
+    onClickCloseErrorMessage() {
+      this.errorMessages = null;
+      this.loading = false;
+      this.state = "Read";
+    },
+
+    saveItemHandler() {
+      if (this.state === "Update") {
+        this.updateItem();
+      } else if (this.state === "Create") {
+        this.createItem();
+      }
+      this.modal.hide();
     },
 
     goToPage(page) {
       this.currentPage = page;
     },
-
-    onClickTr(id) {
-      if (this.selectedRowId === id) {
-        this.selectedRowId = null;
-      } else {
-        this.selectedRowId = id;
-      }
-      // this.selectedRowId = id;
-    },
   },
 };
 </script>
-  
+    
 <style scoped>
-
-.active {
-  --bs-table-bg: rgba(0, 0, 255, 0.1) !important;
-}
-
-.tabla-container {
-  max-height: 600px;
-  overflow: auto;
-}
-
-.table th,
-.table td {
-  vertical-align: middle;
-  overflow: hidden;
-}
-
-.table-hover tbody tr:hover {
-  background-color: #f1f1f1;
-  cursor: pointer;
-}
-
-.table th,
-.table td {
-  text-align: center;
-}
-
-.table-dark th {
-  background-color: #343a40;
-  color: white;
-}
-
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: #f8f9fa;
-}
-
-.shadow-sm {
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.rounded {
-  border-radius: 8px;
-}
-
-h1 {
-  font-size: 2.5rem;
-  font-weight: bold;
-}
-
-.updating {
-  pointer-events: none;
-  opacity: 0.6;
-}
-
-.pagination-container {
-  display: flex;
-  max-width: 1000px;
-  overflow-x: auto;
-  gap: 5px;
-}
-
-.page-box {
-  min-width: 40px;
-  line-height: 40px;
-  margin-bottom: 10px;
-  text-align: center;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: #f8f9fa;
-  font-weight: bold;
-  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.page-box:hover {
-  background-color: #58c2ff;
-  background-image: -webkit-linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0.4) 25%,
-    transparent 25%,
-    transparent 50%,
-    rgba(255, 255, 255, 0.4) 50%,
-    rgba(255, 255, 255, 0.4) 75%,
-    transparent 75%,
-    transparent
-  );
-  color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.active-page {
-  background-color: #58c2ff;
-  color: white;
-  transition: 0.3s;
-  background-image: -webkit-linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0.4) 25%,
-    transparent 25%,
-    transparent 50%,
-    rgba(255, 255, 255, 0.4) 50%,
-    rgba(255, 255, 255, 0.4) 75%,
-    transparent 75%,
-    transparent
-  );
-}
-
-@media (max-width: 991px) {
-  table {
-    display: block;
-    width: 100%;
-    overflow-x: auto;
-    border: 0;
-  }
-
-  thead {
-    display: none;
-  }
-
-  tbody {
-    display: block;
-    width: 100%;
-  }
-
-  tbody tr {
-    display: block;
-    margin-bottom: 5px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    background-color: #f8f9fa;
-  }
-
-  tbody tr:hover {
-    background-color: #e9ecef;
-  }
-
-  td {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.9rem;
-    padding: 5px 10px;
-    border-bottom: 1px solid #222 !important;
-  }
-
-  td:last-child {
-    border-bottom: 0 !important;
-  }
-
-  td:before {
-    content: attr(data-label);
-    font-weight: bold;
-    text-transform: capitalize;
-    color: #6c757d;
-  }
-
-  td span {
-    text-align: right;
-    /* color: #212529; */
-  }
-}
-
-.password span {
-  font-size: 12px;
-}
 </style>
