@@ -1,0 +1,27 @@
+Menüpontok
+- Versenyek felvétele (3)
+- Verseny állmások hozzárendelése (3)
+- Eredménytípusok (3)
+- Csapat regisztráció (1,3)
+- Eredmény böngészése
+
+Admin - 3
+Felügyelő - 2
+Regisztráló - 1
+Guest
+
+
+
+
+DIZÁJN
+
+1. Kezdőlap
+2. Admin felület
+3. Versenyek ( Lenyíló rész )
+- Versenyek felvétele (3)
+- Verseny állmások hozzárendelése (3)
+4. Eredménytípusok
+5. Csapat
+- Csapat regisztráció
+- Csapatok
+6. Eredmények

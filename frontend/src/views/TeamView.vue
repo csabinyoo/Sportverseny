@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-center my-4">Csapatok</h1>
+    <h1 class="text-center">Csapatok</h1>
     <hr />
     <ErrorMessage
       :errorMessages="errorMessages"
@@ -11,12 +11,12 @@
         <div
           class="spinner-border m-0 p-0 text-center"
           role="status"
-          v-if="teams.length == 0"
+          v-if="items.length == 0"
         >
           <span class="visually-hidden m-0">Loading...</span>
         </div>
 
-        <div class="col-12 col-lg-12 tabla-container" v-if="teams.length > 0">
+        <div class="col-12 col-lg-12 tabla-container" v-if="items.length > 0">
           <table
             class="table table-bordered table-hover table-striped shadow-sm rounded"
           >
@@ -27,24 +27,32 @@
                 <th>Csapatnév</th>
                 <th>Helyszín</th>
                 <th>Csapatkapitány</th>
+                <th>Műveletek</th>
               </tr>
             </thead>
             <tbody>
               <tr
-                v-for="team in paginatedCollections"
-                :key="team.id"
-                @click="onClickTr(team.id)"
+                v-for="item in paginatedCollections"
+                :key="item.id"
+                @click="onClickTr(item.id)"
                 :class="{
                   updating: loading,
-                  active: team.id === selectedRowId,
+                  active: item.id === selectedRowId,
                 }"
               >
-                <td data-label="ID">{{ team.id }}</td>
-                <td data-label="Username">{{ team.competitionId }}</td>
-                <td data-label="Name">{{ team.name }}</td>
-                <td data-label="Email">{{ team.school }}</td>
-                <td data-label="Role">{{ team.userId }}</td>
-
+                <td data-label="ID">{{ item.id }}</td>
+                <td data-label="Competition">{{ item.competitionId }}</td>
+                <td data-label="Team">{{ item.name }}</td>
+                <td data-label="Location">{{ item.school }}</td>
+                <td data-label="Captain">{{ item.userId }}</td>
+                <td data-label="Műveletek" class="text-nowrap text-center">
+                  <OperationsCrud
+                    @onClickDeleteButton="onClickDeleteButton"
+                    @onClickUpdate="onClickUpdate"
+                    @onClickCreate="onClickCreate"
+                    :data="item"
+                  />
+                </td>
               </tr>
             </tbody>
           </table>
@@ -99,9 +107,10 @@ import { BASE_URL } from "../helpers/baseUrls";
 import { useAuthStore } from "@/stores/useAuthStore.js";
 import ErrorMessage from "@/components/ErrorMessage.vue";
 import axios from "axios";
+import OperationsCrud from "@/components/OperationsCrud.vue";
 import * as bootstrap from "bootstrap";
 export default {
-  components: { ErrorMessage },
+  components: { ErrorMessage, OperationsCrud },
   data() {
     return {
       urlApi: `${BASE_URL}/teams`,
@@ -120,7 +129,6 @@ export default {
       no: null,
       size: null,
       errorMessages: null,
-      teams: [],
     };
   },
   mounted() {
@@ -133,10 +141,10 @@ export default {
     paginatedCollections() {
       const start = (this.currentPage - 1) * this.itemsPerPage;
       const end = start + this.itemsPerPage;
-      return this.teams.slice(start, end);
+      return this.items.slice(start, end);
     },
     totalPages() {
-      return Math.ceil(this.teams.length / this.itemsPerPage);
+      return Math.ceil(this.items.length / this.itemsPerPage);
     },
   },
   methods: {
@@ -149,7 +157,7 @@ export default {
       };
       try {
         const response = await axios.get(url, { headers });
-        this.teams = response.data.data;
+        this.items = response.data.data;
 
         this.loading = false;
       } catch (error) {
@@ -172,19 +180,19 @@ export default {
     },
 
     onClickTr(id) {
-      // if (this.selectedRowId === id) {
-      //   this.selectedRowId = null;
-      // } else {
-      //   this.selectedRowId = id;
-      // }
-      this.selectedRowId = id;
-      // this.$router.push(`/profile/${id}`);
+      if (this.selectedRowId === id) {
+        this.selectedRowId = null;
+      } else {
+        this.selectedRowId = id;
+      }
+      // this.selectedRowId = id;
     },
   },
 };
 </script>
   
-  <style scoped>
+<style scoped>
+
 .active {
   --bs-table-bg: rgba(0, 0, 255, 0.1) !important;
 }
