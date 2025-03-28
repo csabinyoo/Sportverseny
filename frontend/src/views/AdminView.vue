@@ -22,11 +22,10 @@
           >
             <thead class="table-dark">
               <tr>
-                <th>#</th>
+                <th v-if="debug">#</th>
                 <th>Username</th>
                 <th>Name</th>
                 <th>Email</th>
-                <!-- <th>Password</th> -->
                 <th>Role</th>
               </tr>
             </thead>
@@ -40,30 +39,15 @@
                   active: user.id === selectedRowId,
                 }"
               >
-                <td data-label="ID">{{ user.id }}</td>
+                <td data-label="ID" v-if="debug">{{ user.id }}</td>
                 <td data-label="Username">{{ user.username }}</td>
                 <td data-label="Name">{{ user.name }}</td>
                 <td data-label="Email">{{ user.email }}</td>
-                <!-- <td data-label="Password" class="password">
-                  <span>{{ user.password }} </span>
-                </td> -->
                 <td data-label="Role">{{ getRoleName(user.roleId) }}</td>
               </tr>
             </tbody>
           </table>
         </div>
-
-        <!-- <Modal
-          :title="title"
-          :yes="yes"
-          :no="no"
-          :size="size"
-          @yesEvent="yesEventHandler"
-        >
-          <div v-if="state == 'Delete'">
-            {{ messageYesNo }}
-          </div>
-        </Modal> -->
       </div>
       <div class="d-flex justify-content-center my-3">
         <div class="pagination-container d-flex">
@@ -99,10 +83,10 @@ class User {
   }
 }
 import { BASE_URL } from "../helpers/baseUrls";
+import { DEBUG } from "../helpers/debug";
 import { useAuthStore } from "@/stores/useAuthStore.js";
 import ErrorMessage from "@/components/ErrorMessage.vue";
 import axios from "axios";
-// import * as bootstrap from "bootstrap";
 export default {
   components: { ErrorMessage },
   data() {
@@ -111,19 +95,13 @@ export default {
       stateAuth: useAuthStore(),
       items: [],
       loading: false,
-      // modal: null,
       currentPage: 1,
       itemsPerPage: 10,
       user: new User(),
       selectedRowId: null,
-      // messageYesNo: null,
-      // state: "Read",
-      // title: null,
-      // yes: null,
-      // no: null,
-      // size: null,
       errorMessages: null,
       users: [],
+      debug: DEBUG
     };
   },
   mounted() {
