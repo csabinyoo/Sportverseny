@@ -53,7 +53,7 @@
           </table>
         </div>
 
-        <Modal
+        <!-- <Modal
           :title="title"
           :yes="yes"
           :no="no"
@@ -63,7 +63,7 @@
           <div v-if="state == 'Delete'">
             {{ messageYesNo }}
           </div>
-        </Modal>
+        </Modal> -->
       </div>
       <div class="d-flex justify-content-center my-3">
         <div class="pagination-container d-flex">
@@ -102,7 +102,7 @@ import { BASE_URL } from "../helpers/baseUrls";
 import { useAuthStore } from "@/stores/useAuthStore.js";
 import ErrorMessage from "@/components/ErrorMessage.vue";
 import axios from "axios";
-import * as bootstrap from "bootstrap";
+// import * as bootstrap from "bootstrap";
 export default {
   components: { ErrorMessage },
   data() {
@@ -111,26 +111,26 @@ export default {
       stateAuth: useAuthStore(),
       items: [],
       loading: false,
-      modal: null,
+      // modal: null,
       currentPage: 1,
       itemsPerPage: 10,
       user: new User(),
       selectedRowId: null,
-      messageYesNo: null,
-      state: "Read", //CRUD: Create, Read, Update, Delete
-      title: null,
-      yes: null,
-      no: null,
-      size: null,
+      // messageYesNo: null,
+      // state: "Read",
+      // title: null,
+      // yes: null,
+      // no: null,
+      // size: null,
       errorMessages: null,
       users: [],
     };
   },
   mounted() {
     this.getCollections();
-    this.modal = new bootstrap.Modal("#modal", {
-      keyboard: false,
-    });
+    // this.modal = new bootstrap.Modal("#modal", {
+    //   keyboard: false,
+    // });
   },
   computed: {
     paginatedCollections() {
@@ -184,6 +184,12 @@ export default {
       // }
       this.selectedRowId = id;
       this.$router.push(`/profile/${id}`);
+    },
+
+    onClickCloseErrorMessage() {
+      this.errorMessages = null;      
+      this.loading = false;
+      // this.state = "Read";
     },
   },
 };

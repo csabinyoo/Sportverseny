@@ -100,7 +100,7 @@
         <div
           class="card-body d-flex justify-content-between align-items-center"
         >
-          <p><strong>Jelszó:</strong> ******* </p>
+          <p><strong>Jelszó:</strong> *******</p>
           <div
             v-if="isEditingField === 'password'"
             class="d-flex align-items-center"
@@ -117,6 +117,35 @@
             <button class="btn btn-secondary" @click="cancelEdit">Mégse</button>
           </div>
           <button v-else class="btn" @click="startEdit('password')">
+            Módosítás
+          </button>
+        </div>
+      </div>
+
+      <!-- Role -->
+      <div class="card mb-3" v-if="store.roleId === 1">
+        <div
+          class="card-body d-flex justify-content-between align-items-center"
+        >
+          <p>
+            <strong>Jog:</strong>
+            {{ isEditingField === "roleId" ? "" : getRoleName(user.roleId) }}
+          </p>
+          <div
+            v-if="isEditingField === 'roleId'"
+            class="d-flex align-items-center"
+          >
+            <select class="form-control me-2" v-model="updatedField.roleId">
+              <option v-for="role in roles" :key="role.id" :value="role.id">
+                {{ role.role }}
+              </option>
+            </select>
+            <button class="btn btn-success me-2" @click="saveField('roleId')">
+              Mentés
+            </button>
+            <button class="btn btn-secondary" @click="cancelEdit">Mégse</button>
+          </div>
+          <button v-else class="btn" @click="startEdit('roleId')">
             Módosítás
           </button>
         </div>
@@ -143,6 +172,7 @@ export default {
   data() {
     return {
       user: {},
+      roles: [],
       updatedField: {},
       isEditingField: null,
       store: useAuthStore(),
@@ -150,6 +180,7 @@ export default {
   },
   async created() {
     await this.fetchUserData();
+    await this.fetchRoles();
   },
   watch: {
     $route: "fetchUserData",
@@ -159,13 +190,17 @@ export default {
       const userId = this.$route.params.id;
       try {
         if (userId != this.store.id && this.store.roleId === 3) {
-          const response = await axios.get(`${BASE_URL}/users/${this.store.id}`, {
-            headers: {
-              Authorization: `Bearer ${this.store.token}`,
-            },
-          });
+          const response = await axios.get(
+            `${BASE_URL}/users/${this.store.id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${this.store.token}`,
+              },
+            }
+          );
           this.user = response.data.data;
           this.$router.push(`/profile/${this.store.id}`);
+          
         } else {
           const response = await axios.get(`${BASE_URL}/users/${userId}`, {
             headers: {
@@ -177,6 +212,22 @@ export default {
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }
+    },
+    async fetchRoles() {
+      try {
+        const response = await axios.get(`${BASE_URL}/roles`, {
+          headers: {
+            Authorization: `Bearer ${this.store.token}`,
+          },
+        });
+        this.roles = response.data.data;
+      } catch (error) {
+        console.error("Error fetching roles:", error);
+      }
+    },
+    getRoleName(roleId) {
+      const role = this.roles.find((role) => role.id === roleId);
+      return role ? role.role : "Nincs kijelölt jog";
     },
     startEdit(field) {
       this.isEditingField = field;
@@ -215,8 +266,12 @@ export default {
 
           if (field === "username" && this.store.id.toString() === userId) {
             this.store.setUsername(this.updatedField.username);
-          } else if (field === "name" && this.store.id.toString() === userId) {
+          }
+          if (field === "name" && this.store.id.toString() === userId) {
             this.store.setUser(this.updatedField.name);
+          }
+          if (field === "roleId" && this.store.id.toString() === userId) {
+            this.store.setRoleId(this.updatedField.roleId);
           }
 
           this.cancelEdit();
@@ -230,10 +285,9 @@ export default {
               "info"
             );
             console.log(this.updatedField[field]);
-            
+
             this.store.clearStoredData();
             setTimeout(() => {
-              
               this.$router.push("/bejelentkezes");
             }, 1500);
           }
