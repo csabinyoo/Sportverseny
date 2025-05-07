@@ -49,20 +49,23 @@
             class="member-row"
           >
             <span class="icon plus" @click="addMember(index)">＋</span>
-            <input
+            <select
               v-model="member.name"
-              type="text"
               class="form-control member-input"
-              placeholder="Tag neve"
               required
-            />
+            >
+              <option value="" disabled selected>Válassz egy tagot</option>
+              <option v-for="user in getAvailableUsers(index)" :key="user.id" :value="user.name">
+                {{ user.name }}
+              </option>
+            </select>
             <span class="icon remove" @click="removeMember(index)">×</span>
           </div>
 
           <button
             type="submit"
             class="btn submit-btn"
-            :disabled="!teamName || !schoolName || teamMembers.length < 0"
+            :disabled="!teamName || !schoolName || teamMembers.length < 1"
           >
             Csapat regisztrálása
           </button>
@@ -71,7 +74,6 @@
     </div>
   </div>
 </template>
-
 
 <script>
 import axios from "axios";
@@ -90,14 +92,41 @@ export default {
       teamMembers: [{ name: "" }],
       teamRegistered: false,
       stateAuth: useAuthStore(),
+      users: [],
     };
   },
   mounted() {
     this.checkIfTeamRegistered();
+    this.fetchUsers();
   },
   methods: {
-    addMember(index) {
-      this.teamMembers.splice(index + 1, 0, { name: "" });
+    getAvailableUsers(index) {
+      const selectedNames = this.teamMembers
+        .map((member, i) => i !== index && member.name)
+        .filter(Boolean);
+      return this.users.filter((user) => !selectedNames.includes(user.name));
+    },
+
+    async fetchUsers() {
+      this.loading = true;
+      const token = this.stateAuth.token;
+
+      try {
+        const response = await axios.get(`${BASE_URL}/users`, {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        this.users = response.data.data.filter(
+          (user) => user.roleId === 3 && !user.teamId
+        );
+      } catch (error) {
+        console.error("Hiba történt a felhasználók lekérésekor:", error);
+      }
+      this.loading = false;
     },
 
     async checkIfTeamRegistered() {
@@ -134,7 +163,6 @@ export default {
     },
 
     async submitForm() {
-      // if (this.teamRegistered) return;
       this.loading = true;
       const token = this.stateAuth.token;
       const headers = {
@@ -155,18 +183,22 @@ export default {
           { headers }
         );
 
-        const teamId = teamResponse.data.id;
+        console.log("Team Response:", teamResponse.data);
+
+        const teamId = teamResponse.data.data.id;
 
         for (const member of this.teamMembers) {
-          await axios.post(
-            `${BASE_URL}/teammember`,
-            {
-              teamId,
-              name: member.name,
-              captain: 0,
-            },
-            { headers }
-          );
+          if (member.name) {
+            await axios.post(
+              `${BASE_URL}/teammember`,
+              {
+                teamId,
+                name: member.name,
+                captain: 0,
+              },
+              { headers }
+            );
+          }
         }
 
         toast("A csapat és a tagok sikeresen regisztrálva!");
@@ -225,13 +257,6 @@ label {
 .form-control:focus {
   border-color: var(--color);
   outline: none;
-}
-
-.members-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
 }
 
 .member-row {
@@ -299,12 +324,16 @@ label {
   color: var(--color);
 }
 
-.btn {
-  background: var(--color);
-  color: #fff;
+select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
-.btn:hover {
-  background: var(--bg-color);
+select:focus {
+  border-color: var(--color);
+  outline: none;
 }
 </style>

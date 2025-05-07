@@ -132,7 +132,13 @@
                     :key="member.id"
                     class="col-md-6 col-lg-4 mb-3"
                   >
-                    <div class="card shadow-sm h-100">
+                    <div class="card shadow-sm h-100 position-relative">
+                      <!-- Delete Button (X) -->
+                      <button
+                        class="btn-close position-absolute top-0 end-0"
+                        @click="onClickDeleteTeamMember(member.id)"
+                        aria-label="Close"
+                      ></button>
                       <div class="card-body">
                         <h5 class="card-title">{{ member.name }}</h5>
                         <p class="card-text">
@@ -312,6 +318,7 @@ export default {
       } catch (error) {
         toast.error("Szerver hiba");
       }
+      this.loading = false;
     },
 
     async updateItem() {
@@ -367,7 +374,6 @@ export default {
       this.state = "Read";
     },
 
-    // További CRUD műveletek és metódusok
     yesEventHandler() {
       if (this.state == "Delete") {
         this.deleteItemById();
@@ -421,6 +427,24 @@ export default {
       modal.show();
     },
 
+    async onClickDeleteTeamMember(memberId) {
+      const token = this.stateAuth.token;
+      const url = `${this.urlBase}/teammember/${memberId}`;
+      const headers = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+
+      try {
+        await axios.delete(url, { headers });
+        await this.getTeamMembers(this.selectedRowId);
+        toast.success("Csapattag törölve.");
+      } catch (error) {
+        toast.error("Szerver hiba!");
+      }
+    },
+
     saveItemHandler() {
       if (this.state === "Update") {
         this.updateItem();
@@ -429,6 +453,7 @@ export default {
       }
       this.modal.hide();
     },
+
     async onClickTr(id) {
       this.selectedRowId = id;
     },
