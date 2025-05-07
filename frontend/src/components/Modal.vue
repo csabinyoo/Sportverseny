@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade" id="modal" tabindex="-1">
+  <div class="modal" id="modal" tabindex="-1">
     <div
       class="modal-dialog modal-dialog-centered"
       :class="{
@@ -9,8 +9,8 @@
       }"
     >
       <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">{{ title }}</h1>
+        <div class="modal-header text-center">
+          <h1 class="modal-title fs-5 w-100" id="exampleModalLabel">{{ title }}</h1>
           <button
             type="button"
             class="btn-close"
@@ -58,5 +58,13 @@ export default {
 };
 </script>
   
-  <style>
+<style scoped>
+.btn {
+  background: var(--color);
+  border: 0;
+}
+.modal-body {
+  max-height: 600px;
+  overflow: auto;
+}
 </style>

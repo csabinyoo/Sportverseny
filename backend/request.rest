@@ -44,6 +44,10 @@ Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
+### get comp
+get {{host}}/api/getCurrentComp
+Accept: application/json
+
 ### competition by id
 GET {{host}}/api/competitions/1
 Accept: application/json
@@ -59,18 +63,26 @@ Authorization: Bearer {{token}}
     "date": "2025-05-05",
     "location": "Budapest",
     "registerFrom": "2025-04-04",
-    "registerTo" : "2025-05-02"
+    "registerTo" : "2025-05-02",
+    "currentComp": false
 }
  
 ### patch competition
-PATCH {{host}}/api/competitions/7
+PATCH {{host}}/api/competitions/2
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
  
 {
-    "name": "test3"
+    "currentComp": true
 }
+
+### patch competition
+PATCH {{host}}/api/competitionCurrentCompToFalse
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
  
 ### delete competition
 DELETE {{host}}/api/competitions/6
@@ -372,3 +384,12 @@ DELETE {{host}}/api/teammember/3
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+### get teamAtStation
+get {{host}}/api/teamAtStation/2
+Accept: application/json
+
+### get teamAtStation
+get {{host}}/api/membersResultsAtStation/12/10
+Accept: application/json
+

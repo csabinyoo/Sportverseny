@@ -1,46 +1,107 @@
 <template>
-  <div class="container">
-    <!-- Check if user is not logged in -->
-    <div v-if="!user" class="card">
-      <p>Üdvözlünk! Kérlek, jelentkezz be, vagy regisztrálj!</p>
-      <div class="btn-group">
-        <router-link to="/login" class="btn">Bejelentkezés</router-link>
-        <router-link to="/register" class="btn">Regisztráció</router-link>
-      </div>
-    </div>
+  <div>
+    <div class="container">
+      <!-- Check if user is not logged in -->
+      <div v-if="!stateAuth.user" class="card">
+        <p class="mb-0">Üdvözlünk! Kérlek, jelentkezz be, vagy regisztrálj!</p>
+        <div class="btn-group">
+          <router-link to="/login" class="btn">Bejelentkezés</router-link>
+          <router-link to="/register" class="btn">Regisztráció</router-link>
+        </div>
 
-    <!-- Check if user is logged in and has a valid role -->
-    <div v-else-if="roleId > 0" class="card">
-      <img src="/avatar.gif" alt="" class="avatar">
-      <p class="mb-0">Üdvözlünk, <strong>{{ user }} ({{ username }})</strong>!</p>
-      <div class="btn-group">
-        <router-link to="/versenyek" class="btn">Versenyek</router-link>
+        <div class="btn-group-vertical mt-2">
+          <button @click="setGuest" class="btn">Folytatás vendégként</button>
+        </div>
+      </div>
+
+      <div v-else-if="stateAuth.user" class="card">
+        <img src="/profile-img.jpg" alt="" class="avatar" />
+        <p class="mb-0">
+          Üdvözlünk, <strong>{{ stateAuth.user }}</strong> (<strong>{{ stateAuth.username }}</strong>)!
+        </p>
+        <p class="mb-0">
+          Jog:
+          <strong>
+            {{ stateAuth.roleId === 1
+              ? "Admin"
+              : stateAuth.roleId === 2
+                ? "Supervisor"
+                : stateAuth.roleId === 3
+                  ? "Student"
+                  : "Guest" }}
+          </strong>
+        </p>
+        <p class="mb-0">Aktív verseny: <strong>{{ stateAuth.currentCompName }}</strong></p>
+        <div class="btn-group-vertical">
+          <router-link to="/versenyek" class="btn mt-2">Versenyek</router-link>
+          <router-link to="/competitions" class="btn mt-2" v-if="stateAuth.roleId < 3 && stateAuth.roleId > 0">Versenyek
+            kezelése</router-link>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { BASE_URL } from "../helpers/baseUrls";
 import { useAuthStore } from "@/stores/useAuthStore.js";
+import { useToast } from "vue-toastification";
+import axios from "axios";
+const toast = useToast();
 
 export default {
-  setup() {
-    const store = useAuthStore();
-
-    // Use computed properties for reactivity
-    const user = store.user;
-    const username = store.username;
-    const roleId = store.roleId;
-
-    // Return all reactive data
+  data() {
     return {
-      user,
-      username,
-      roleId,
+      urlBase: BASE_URL,
+      stateAuth: useAuthStore(),
+      competitions: [],
     };
+  },
+  methods: {
+    setGuest() {
+      try {
+        this.stateAuth.setGuestUser(); // Beállítjuk a vendég felhasználót
+        this.getCurrentComp();
+        toast("Sikeres bejelentkezés!");
+      } catch (error) {
+        toast("Sikertelen bejelentkezés!");
+      }
+    },
+    async getCompetitions() {
+      const url = this.urlCompetitions;
+      const headers = {
+        Accept: "application/json",
+      };
+      try {
+        const response = await axios.get(url, headers);
+        this.competitions = response.data.data;
+      } catch (error) {
+        toast.error("Szerver hiba!")
+      }
+    },
+    async getCurrentComp() {
+      const url = `${BASE_URL}/getCurrentComp`;
+      const headers = {
+        Accept: "application/json"
+      };
+      try {
+        const response = await axios.get(url, { headers });
+        const data = response.data.data;
+        
+        if (data.length > 0) {
+          this.stateAuth.setCurrentCompId(data[0].id, data[0].name)
+        } else {
+          this.stateAuth.setCurrentCompId(null, null)
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
   },
 };
 </script>
+
+
 
 <style scoped>
 .container {
@@ -56,7 +117,7 @@ export default {
   width: 100px;
   height: 100px;
   margin: auto;
-  border: 4px solid #007bff;
+  border: 4px solid var(--color);
   margin-bottom: 10px;
 }
 
@@ -75,11 +136,13 @@ export default {
   justify-content: center;
   gap: 10px;
   margin-top: 15px;
-} 
+}
 
 .btn {
-  background: #007bff;
-  color: white;
+  background: var(--color) !important;
+  color: white !important;
+  font-weight: 600 !important;
+  border: 1px solid var(--color) !important;
   padding: 10px 15px;
   border-radius: 5px;
   text-decoration: none;
@@ -87,7 +150,8 @@ export default {
 }
 
 .btn:hover {
-  background: #0056b3;
+  background: var(--bg-color) !important;
   color: #fff;
+  border-color: transparent !important;
 }
 </style>

@@ -1,6 +1,5 @@
 <template>
   <div class="register-container">
-    <Notification ref="notification" />
     <div class="register-card">
       <h2 class="register-title">Regisztráció</h2>
       <form @submit.prevent="handleSubmit">
@@ -17,7 +16,6 @@
         <p v-if="username && username.length < 5" class="error-message">
           Legalább 5 karakter hosszúnak kell lennie.
         </p>
-
         <div class="input-group">
           <span class="icon"><i class="fas fa-user"></i></span>
           <input
@@ -28,7 +26,8 @@
           />
         </div>
 
-        <p v-if="!name || !/\S+\s+\S+/.test(name)" class="error-message">
+        <!-- <p v-if="!name || !/\S+\s+\S+/.test(name)" class="error-message"> -->
+        <p v-if="name && !/\S+\s+\S+/.test(name)" class="error-message">
           Legalább egy szóköz kell, hogy legyen a névben, és nem lehet csak
           szóköz.
         </p>
@@ -94,7 +93,8 @@
 <script>
 import axios from "axios";
 import { BASE_URL } from "../../helpers/baseUrls";
-import Notification from "../../components/Notification.vue";
+import { useToast } from "vue-toastification";
+const toast = useToast();
 
 export default {
   components: { Notification },
@@ -148,20 +148,14 @@ export default {
           },
         });
 
-        this.$refs.notification.showMessage(
-          `sikeresen regisztráció.`,
-          "success"
-        );
-        
-        setTimeout(() => {
-          this.$router.push("/bejelentkezes");
-        }, 1500);
+        toast("Sikeres regisztráció!");
+
+        this.$router.push("/login");
       } catch (error) {
         console.error("Hiba:", error);
         this.errorMessage = " Hiba történt. Próbáld újra!";
-      } finally {
-        this.isLoading = false;
       }
+      this.isLoading = false;
     },
   },
 };
@@ -172,9 +166,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 80vh;
-  padding: 20px;
-  background: #f9f9f9;
+  min-height: 100vh;
 }
 
 .register-card {
@@ -204,7 +196,7 @@ export default {
 
 .input-group .icon {
   margin-right: 10px;
-  color: #007bff;
+  color: var(--color);
 }
 
 input {
@@ -216,7 +208,7 @@ input {
 }
 
 .register-button {
-  background: #007bff;
+  background: var(--color);
   color: white;
   border: none;
   padding: 12px;
@@ -228,7 +220,7 @@ input {
 }
 
 .register-button:hover {
-  background: #0056b3;
+  background: var(--bg-color);
 }
 
 .error-message {

@@ -5,12 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Station;
 use App\Http\Requests\StoreStationRequest;
 use App\Http\Requests\UpdateStationRequest;
+use DB;
 
 class StationController extends Controller
 {
     public function index()
     {
-        $rows = Station::all();
+        // $rows = Station::all();
+        $rows = DB::table('competitions as c')
+            ->join('stations as s', 'c.id', '=', 's.competitionId')
+            ->where('c.currentComp', 1)
+            ->select('s.id', 's.name', 's.location', 's.weighting', 's.moreIsBetter', 's.typeId', 's.userId', 's.competitionId', 'c.name as competitionName')
+            ->get();
+
         return response()->json(['data' => $rows], options: JSON_UNESCAPED_UNICODE);
     }
 

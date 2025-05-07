@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\member_results_at_station;
 use App\Http\Requests\Storemember_results_at_stationRequest;
 use App\Http\Requests\Updatemember_results_at_stationRequest;
+use Illuminate\Support\Facades\DB;
 
 class MemberResultsAtStationController extends Controller
 {
@@ -92,4 +93,19 @@ class MemberResultsAtStationController extends Controller
         }
         return response()->json($data, options: JSON_UNESCAPED_UNICODE);
     }
+    public function membersResultsAtStation(int $teamAtStationId, int $teamId){
+        $query = '
+SELECT m.id, m.teamAtStationId, m.teamMemberId, t.name, m.result, m.resultTime  FROM member_results_at_stations m 
+  INNER JOIN team_members t ON t.id = m.teamMemberId
+  WHERE m.teamAtStationId = ? AND t.teamId = ?
+ORDER BY t.name
+        ';
+        $rows = DB::select($query, [$teamAtStationId, $teamId]);
+        $data = [
+            'message' => 'ok',
+            'data' => $rows
+        ];
+        return response()->json($data, options: JSON_UNESCAPED_UNICODE);
+    }
+
 }

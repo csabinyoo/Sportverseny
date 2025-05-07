@@ -20,7 +20,7 @@
       <i class="bi bi-pencil"></i>
     </button>
 
-    <button
+    <!-- <button
       type="button"
       class="btn btn-outline-success btn-sm ms-2"
       data-bs-toggle="modal"
@@ -28,14 +28,15 @@
       @click="onClickCreate()"
     >
       <i class="bi bi-plus-lg"></i>
-    </button>
+    </button> -->
   </div>
 </template>
   
   <script>
 export default {
   props: ["data"],
-  emits: ["onClickDeleteButton", "onClickUpdate", "onClickCreate"],
+  // emits: ["onClickDeleteButton", "onClickUpdate", "onClickCreate"],
+  emits: ["onClickDeleteButton", "onClickUpdate"],
   methods: {
     onClickDeleteButton(data) {
       this.$emit("onClickDeleteButton", data);
@@ -45,9 +46,9 @@ export default {
       this.$emit("onClickUpdate", data);
     },
 
-    onClickCreate() {
-      this.$emit("onClickCreate");
-    },
+    // onClickCreate() {
+    //   this.$emit("onClickCreate");
+    // },
   },
 };
 </script>

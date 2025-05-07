@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-center">Csapatok</h1>
+    <h1 class="text-center">Roles</h1>
     <hr />
     <div v-if="loading" class="loading-overlay">
       <div class="loading-content">
@@ -18,34 +18,45 @@
           data-bs-target="#modal"
           @click="onClickCreate()"
         >
-          Új csapat hozzáadása
+          Új rang hozzáadása
         </button>
       </div>
       <div class="row d-flex justify-content-center">
+        <!-- <div
+          class="spinner-border m-0 p-0 text-center"
+          role="status"
+          v-if="items.length == 0"
+        >
+          <span class="visually-hidden m-0">Loading...</span>
+        </div> -->
+
         <div class="col-12 col-lg-10 tabla-container pe-0">
+          <!-- Táblázat -->
           <div class="d-flex justify-content-between w-100 mb-2">
             <div class="w-100">
-              <h2>{{ stateAuth.currentCompName }}</h2>
+              <h2>
+                {{ stateAuth.currentCompName }}
+              </h2>
             </div>
             <div class="inputBox" v-if="items.length > 0">
               <input type="text" v-model="searchQuery" required="required" />
               <span>keresés</span>
             </div>
           </div>
-
           <table
             class="table table-bordered table-hover table-striped shadow-sm rounded"
           >
             <thead class="table-dark">
+              <!-- Módosítás -->
               <tr>
                 <th v-if="debug">#</th>
-                <th>Csapatnév</th>
-                <th>Iskola</th>
-                <th>Csapatkapitány</th>
+                <th>Rang</th>
+                <th>Jog</th>
                 <th v-if="edit">Műveletek</th>
               </tr>
             </thead>
             <tbody>
+              <!-- Módosítás -->
               <tr
                 v-for="item in paginatedCollections"
                 :key="item.id"
@@ -55,11 +66,16 @@
                   active: item.id === selectedRowId,
                 }"
               >
-                <td v-if="debug">{{ item.id }}</td>
-                <td @click="onClickTeam(item.id)">{{ item.name }}</td>
-                <td>{{ item.school }}</td>
-                <td>{{ getUserName(item.userId) }}</td>
-                <td v-if="edit">
+                <td data-label="ID" v-if="debug">{{ item.id }}</td>
+                <td data-label="Rang">
+                  {{ item.role }}
+                </td>
+                <td data-label="Jog">
+                  {{ item.permission }}
+                </td>
+
+                <!-- CRUD gombok component -->
+                <td data-label="Műveletek" v-if="edit">
                   <OperationsCrud
                     @onClickDeleteButton="onClickDeleteButton"
                     @onClickUpdate="onClickUpdate"
@@ -70,14 +86,16 @@
             </tbody>
           </table>
 
-          <div class="pagination-container d-flex justify-content-center">
-            <div
-              v-for="page in totalPages"
-              :key="page"
-              @click="goToPage(page)"
-              :class="['page-box', { 'active-page': currentPage === page }]"
-            >
-              {{ page }}
+          <div class="justify-content-center">
+            <div class="pagination-container d-flex">
+              <div
+                v-for="page in totalPages"
+                :key="page"
+                @click="goToPage(page)"
+                :class="['page-box', { 'active-page': currentPage === page }]"
+              >
+                {{ page }}
+              </div>
             </div>
           </div>
         </div>
@@ -89,84 +107,38 @@
           :size="size"
           @yesEvent="yesEventHandler"
         >
+          <!-- Igen/Nem válasz -->
           <div v-if="state == 'Delete'">
             {{ messageYesNo }}
           </div>
+
+          <!-- Beviteli form -->
           <ItemForm
             v-if="state == 'Create' || state == 'Update'"
             :itemForm="item"
             :debug="debug"
-            :competitions="competitions"
-            :users="users"
             @saveItem="saveItemHandler"
           />
         </Modal>
-
-        <div
-          class="modal fade"
-          id="teamMembersModal"
-          tabindex="-1"
-          aria-labelledby="teamMembersModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="teamMembersModalLabel">
-                  Csapattagok
-                </h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">
-                <div v-if="teamMembers.length === 0" class="text-center">
-                  <p>Nincs adat</p>
-                </div>
-                <div v-else class="row">
-                  <div
-                    v-for="member in teamMembers"
-                    :key="member.id"
-                    class="col-md-6 col-lg-4 mb-3"
-                  >
-                    <div class="card shadow-sm h-100">
-                      <div class="card-body">
-                        <h5 class="card-title">{{ member.name }}</h5>
-                        <p class="card-text">
-                          <strong>Tag ID:</strong> {{ member.id }}<br />
-                          <strong>Csapat ID:</strong> {{ member.teamId }}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Bezárás
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
 </template>
-
+    
 <script>
+// Módosítás
+class Item {
+  constructor(id = null, role = null, permission = null) {
+    this.id = id;
+    this.role = role;
+    this.permission = permission;
+  }
+}
 import { BASE_URL } from "../helpers/baseUrls";
 import { DEBUG } from "../helpers/debug";
 import ErrorMessage from "@/components/ErrorMessage.vue";
 import { useAuthStore } from "@/stores/useAuthStore.js";
-import ItemForm from "@/components/TeamForm.vue";
+import ItemForm from "@/components/RoleForm.vue";
 import OperationsCrud from "@/components/OperationsCrud.vue";
 import axios from "axios";
 import * as bootstrap from "bootstrap";
@@ -174,41 +146,22 @@ import { useToast } from "vue-toastification";
 
 const toast = useToast();
 
-class Item {
-  constructor(
-    id = null,
-    competitionId = null,
-    name = null,
-    school = null,
-    userId = null
-  ) {
-    this.id = id;
-    this.competitionId = competitionId;
-    this.name = name;
-    this.school = school;
-    this.userId = userId;
-  }
-}
-
 export default {
   components: { ItemForm, OperationsCrud, ErrorMessage },
   data() {
     return {
       modal: null,
       urlBase: BASE_URL,
-      urlApi: `${BASE_URL}/teams`,
-      urlCompetitions: `${BASE_URL}/competitions`,
-      urlUsers: `${BASE_URL}/users`,
+      urlApi: `${BASE_URL}/roles`,
       stateAuth: useAuthStore(),
       items: [],
       competitions: [],
-      users: [],
-      teamMembers: [],
-      item: {},
-      loading: false,
       searchQuery: "",
+      users: [],
+      loading: false,
       currentPage: 1,
       itemsPerPage: 10,
+      item: {},
       selectedRowId: null,
       messageYesNo: null,
       state: "Read",
@@ -217,84 +170,53 @@ export default {
       no: null,
       size: null,
       debug: DEBUG,
-      edit: true,
+      edit: false,
     };
+  },
+  mounted() {
+    this.getCollections();
+    this.edit = false;
+    setTimeout(() => {
+      this.modal = new bootstrap.Modal("#modal", {
+        keyboard: false,
+      });
+      this.edit = true;
+    }, 1500);
   },
   computed: {
     paginatedCollections() {
       const filtered = this.filteredItems;
       const start = (this.currentPage - 1) * this.itemsPerPage;
-      return filtered.slice(start, start + this.itemsPerPage);
+      const end = start + this.itemsPerPage;
+      return filtered.slice(start, end);
     },
     filteredItems() {
       if (!this.searchQuery) return this.items;
       const regex = new RegExp(this.searchQuery, "i");
       return this.items.filter(
-        (item) =>
-          regex.test(item.name) ||
-          regex.test(item.school) ||
-          regex.test(this.getUserName(item.userId))
+        (item) => regex.test(item.role) || regex.test(item.permission)
       );
     },
     totalPages() {
       return Math.ceil(this.filteredItems.length / this.itemsPerPage);
     },
   },
-  mounted() {
-    this.loadInitialData();
-    this.modal = new bootstrap.Modal("#modal", { keyboard: false });
-  },
+
   methods: {
-    async loadInitialData() {
-      await Promise.all([
-        this.getUsers(),
-        this.getCompetitions(),
-        this.getCollections(),
-      ]);
-    },
     async getCollections() {
+      const url = this.urlApi;
+      const headers = {
+        Accept: "application/json",
+      };
       try {
-        const response = await axios.get(this.urlApi);
+        const response = await axios.get(url, headers);
         this.items = response.data.data;
-      } catch (err) {
+      } catch (error) {
         toast.error("Szerver hiba!");
       }
       this.loading = false;
     },
-    async getUsers() {
-      const headers = {
-        Authorization: `Bearer ${this.stateAuth.token}`,
-        Accept: "application/json",
-      };
-      try {
-        const response = await axios.get(this.urlUsers, { headers });
-        this.users = response.data.data;
-      } catch {
-        toast.error("Szerver hiba");
-      }
-    },
-    async getCompetitions() {
-      try {
-        const response = await axios.get(this.urlCompetitions);
-        this.competitions = response.data.data;
-      } catch {
-        toast.error("Szerver hiba");
-      }
-    },
-    getUserName(userId) {
-      const user = this.users.find((u) => String(u.id) === String(userId));
-      return user ? user.name : "Ismeretlen felhasználó";
-    },
-    async getTeamMembers(teamId) {
-      try {
-        const response = await axios.get(`${this.urlBase}/teammember`);
-        this.teamMembers = response.data.data.filter(
-          (m) => m.teamId === teamId
-        );
-      } catch {
-        toast.error("Szerver hiba");
-      }
-    },
+
     async deleteItemById() {
       this.loading = true;
       const id = this.selectedRowId;
@@ -311,7 +233,7 @@ export default {
         const response = await axios.delete(url, { headers });
         this.getCollections();
       } catch (error) {
-        toast.error("Szerver hiba");
+        toast.error("Szerver hiba!");
       }
     },
 
@@ -327,16 +249,14 @@ export default {
 
       // Módosítás
       const data = {
-        competitionId: this.stateAuth.currentCompId,
-        name: this.item.name,
-        school: this.item.school,
-        userId: this.item.userId,
+        role: this.item.role,
+        permission: this.item.permission,
       };
       try {
         const response = await axios.patch(url, data, { headers });
         this.getCollections();
       } catch (error) {
-        toast.error("Szerver hiba");
+        toast.error("Szerver hiba!");
       }
       this.state = "Read";
     },
@@ -353,17 +273,15 @@ export default {
 
       // Módosítás
       const data = {
-        competitionId: this.stateAuth.currentCompId,
-        name: this.item.name,
-        school: this.item.school,
-        userId: this.item.userId,
+        role: this.item.role,
+        permission: this.item.permission,
       };
       try {
         const response = await axios.post(url, data, { headers });
         // this.items.push(response.data.data);
         this.getCollections();
       } catch (error) {
-        toast.error("Szerver hiba");
+        toast.error("Szerver hiba!");
       }
       this.state = "Read";
     },
@@ -376,14 +294,10 @@ export default {
       }
     },
 
-    goToPage(page) {
-      this.currentPage = page;
-    },
-
     onClickDeleteButton(item) {
       this.state = "Delete";
       this.title = "Törlés";
-      this.messageYesNo = `Valóban törölni akarod a(z) ${item.name} nevű elemet?`;
+      this.messageYesNo = `Valóban törölni akarod a(z) ${item.role} nevű elemet?`;
       this.yes = "Igen";
       this.no = "Nem";
       this.size = null;
@@ -391,7 +305,7 @@ export default {
 
     onClickUpdate(item) {
       this.state = "Update";
-      this.title = `Elem módosítása • ${item.name}`;
+      this.title = `Elem módosítása • ${item.role}`;
       this.yes = null;
       this.no = "Mégsem";
       this.size = "lg";
@@ -411,17 +325,6 @@ export default {
       this.selectedRowId = id;
     },
 
-    async onClickTeam(id) {
-      if (!this.users.length) {
-        await this.getUsers();
-      }
-      await this.getTeamMembers(id);
-      const modal = new bootstrap.Modal(
-        document.getElementById("teamMembersModal")
-      );
-      modal.show();
-    },
-
     saveItemHandler() {
       if (this.state === "Update") {
         this.updateItem();
@@ -430,22 +333,15 @@ export default {
       }
       this.modal.hide();
     },
-    async onClickTr(id) {
-      this.selectedRowId = id;
+
+    goToPage(page) {
+      this.currentPage = page;
     },
   },
 };
 </script>
-
+    
 <style scoped>
-.card {
-  border-radius: 1rem;
-  transition: transform 0.2s ease-in-out;
-}
-.card:hover {
-  transform: translateY(-5px);
-}
-
 .container {
   display: flex;
   flex-direction: column;

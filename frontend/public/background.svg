@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice" style="overflow: hidden; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;" width="100%" height="100%">
+  <defs>
+    <radialGradient id="gradient" cx="50%" cy="50%" r="70%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#FBBF24" stop-opacity="0.2"/>
+      <stop offset="50%" stop-color="#D99E0B" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#151515" stop-opacity="0"/>
+    </radialGradient>
+    <style type="text/css">      
+      @keyframes float-small {
+        0% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0); }
+      }
+      
+      @keyframes twinkle {
+        0%, 100% { opacity: 0.1; }
+        50% { opacity: 0.3; }
+      }
+      
+      .float-slow {
+        animation: float-small 15s ease-in-out infinite;
+        will-change: transform;
+      }
+      
+      .float-medium {
+        animation: float-small 8s ease-in-out infinite;
+        will-change: transform;
+      }
+      
+      .float-fast {
+        animation: float-small 5s ease-in-out infinite;
+        will-change: transform;
+      }
+      
+      .twinkle {
+        animation: twinkle 7s ease-in-out infinite;
+        will-change: opacity;
+      }
+      
+      .twinkle-delay-1 {
+        animation-delay: 2s;
+      }
+      
+      .twinkle-delay-2 {
+        animation-delay: 4s;
+      }
+      
+      @media (prefers-reduced-motion: reduce) {
+        .float-slow, .float-medium, .float-fast, .twinkle {
+          animation: none !important;
+        }
+      }
+      
+      @media (max-width: 768px) {
+        .mobile-hide {
+          display: none;
+        }
+        
+        .mobile-reduce {
+          opacity: 0.05 !important;
+        }
+      }
+    </style>
+    <circle id="star-sm" r="1" fill="#FBBF24"/>
+    <circle id="star-md" r="1.5" fill="#FBBF24"/>
+    <circle id="star-lg" r="2" fill="#FBBF24"/>
+  </defs>
+  
+  <rect width="100%" height="100%" fill="#1d1d1d"/>
+  
+  <path class="float-slow" d="M0,400 Q200,550 400,350 T700,450 T1000,350" fill="#212121" opacity="0.25" pathLength="1" shape-rendering="optimizeSpeed"/>
+  
+  <circle cx="250" cy="200" r="80" fill="#FBBF24" opacity="0.1" shape-rendering="optimizeSpeed"/>
+  <circle class="mobile-hide" cx="750" cy="350" r="120" fill="#FBBF24" opacity="0.08" shape-rendering="optimizeSpeed"/>
+  
+  <circle class="float-medium" cx="450" cy="300" r="100" fill="#FDDF89" opacity="0.1" shape-rendering="optimizeSpeed"/>
+  
+  <circle class="mobile-hide" cx="150" cy="500" r="90" fill="#D99E0B" opacity="0.11" shape-rendering="optimizeSpeed"/>
+  <circle class="mobile-hide" cx="650" cy="200" r="60" fill="#D99E0B" opacity="0.08" shape-rendering="optimizeSpeed"/>
+  
+  <circle class="mobile-hide" cx="850" cy="500" r="70" fill="#A17A00" opacity="0.09" shape-rendering="optimizeSpeed"/>
+  <circle class="mobile-hide" cx="600" cy="100" r="50" fill="#FEF3C7" opacity="0.1" shape-rendering="optimizeSpeed"/>
+  
+  <g opacity="0.2" class="mobile-reduce">
+    <use href="#star-lg" class="twinkle" x="100" y="100" fill="#FBBF24"/>
+    <use href="#star-lg" class="twinkle twinkle-delay-1" x="550" y="80" fill="#FBBF24"/>
+    <use href="#star-sm" class="twinkle twinkle-delay-2" x="950" y="530" fill="#FEF3C7"/>
+    
+    <g class="mobile-hide">
+      <use href="#star-sm" class="twinkle" x="200" y="80" fill="#FDDF89"/>
+      <use href="#star-md" class="twinkle twinkle-delay-2" x="600" y="100" fill="#FDDF89"/>
+      <use href="#star-sm" class="twinkle twinkle-delay-1" x="900" y="150" fill="#FDDF89"/>
+      <use href="#star-lg" class="twinkle" x="100" y="480" fill="#FDDF89"/>
+      <use href="#star-sm" x="350" y="550" fill="#FDDF89"/>
+      <use href="#star-md" class="twinkle twinkle-delay-2" x="700" y="520" fill="#FDDF89"/>
+    </g>
+  </g>
+  
+  <rect x="0" y="0" width="100%" height="100%" fill="url(#gradient)" opacity="0.06"/>
+  
+  <circle class="float-medium" cx="300" cy="400" r="180" fill="#1C1C1C" opacity="0.2" shape-rendering="optimizeSpeed"/>
+  <circle class="mobile-hide" cx="700" cy="250" r="150" fill="#1E1E1E" opacity="0.15" shape-rendering="optimizeSpeed"/>
+</svg>

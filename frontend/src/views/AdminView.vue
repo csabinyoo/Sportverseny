@@ -1,26 +1,25 @@
 <template>
   <div>
     <h1 class="text-center">Felhasználók</h1>
+    <div class="inputBox" v-if="users.length > 0">
+      <input type="text" v-model="searchQuery" required="required" />
+      <span>keresés</span>
+    </div>
     <hr />
-    <ErrorMessage
-      :errorMessages="errorMessages"
-      @close="onClickCloseErrorMessage"
-    />
 
-    <div class="container">
-      <input
-        v-if="users.length > 0"
-        v-model="searchQuery"
-        class="form-control mb-3"
-        placeholder="Keresés..."
-      />
-
+    <div class="container" v-if="filteredUsers.length > 0">
       <div
         v-for="(users, role) in paginatedUsersByRole"
         :key="role"
         class="mb-5"
       >
-        <h2 class="text-center">{{ getRoleName(role) }}</h2>
+        <h2 class="text-center">
+          {{ getRoleName(role) }} •
+          <span style="color: var(--color); font-weight: bold"
+            >{{ users.length * totalPages(role) }}
+          </span>
+          fő
+        </h2>
         <div class="table-responsive">
           <table
             class="table table-bordered table-hover table-striped shadow-sm rounded"
@@ -67,6 +66,16 @@
         <hr />
       </div>
     </div>
+    <div class="empty" v-else>
+      <div v-if="users.length === 0">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden m-0">Loading...</span>
+        </div>
+      </div>
+      <div v-else>
+        <p>Nincs találat a keresésben.</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -76,7 +85,10 @@ import { DEBUG } from "../helpers/debug";
 import { useAuthStore } from "@/stores/useAuthStore.js";
 import ErrorMessage from "@/components/ErrorMessage.vue";
 import axios from "axios";
-import { reactive } from "vue"; // Importáljuk a reactive-ot
+import { reactive } from "vue";
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
 
 export default {
   components: { ErrorMessage },
@@ -87,10 +99,8 @@ export default {
       users: [],
       searchQuery: "",
       selectedRowId: null,
-      errorMessages: null,
       debug: DEBUG,
       itemsPerPage: 10,
-      // Beállítjuk alapértelmezetten a currentPage-t minden szerepkörre 1-re
       currentPage: reactive({
         1: 1, // Admin
         2: 1, // Supervisor
@@ -139,7 +149,7 @@ export default {
         });
         this.users = response.data.data;
       } catch (error) {
-        this.errorMessages = "Szerver hiba";
+        toast.error("Szerver hiba!");
       }
     },
     getRoleName(roleId) {
@@ -157,14 +167,11 @@ export default {
       );
     },
     goToPage(role, page) {
-      this.currentPage[role] = page; // A reactive változót közvetlenül módosítjuk
+      this.currentPage[role] = page;
     },
     onClickTr(id) {
       this.selectedRowId = id;
       this.$router.push(`/profile/${id}`);
-    },
-    onClickCloseErrorMessage() {
-      this.errorMessages = null;
     },
   },
 };
@@ -173,4 +180,10 @@ export default {
 
 
 <style scoped>
+.spinner-border {
+  width: 4rem;
+  height: 4rem;
+  border-width: 0.5em;
+  color: var(--color);
+}
 </style>

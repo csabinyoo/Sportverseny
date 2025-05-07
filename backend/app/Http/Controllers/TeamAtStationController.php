@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\team_at_station;
 use App\Http\Requests\Storeteam_at_stationRequest;
 use App\Http\Requests\Updateteam_at_stationRequest;
+use Illuminate\Support\Facades\DB;
 
 class TeamAtStationController extends Controller
 {
@@ -90,6 +91,20 @@ class TeamAtStationController extends Controller
                 ]
             ];
         }
+        return response()->json($data, options: JSON_UNESCAPED_UNICODE);
+    }
+    public function teamAtStation(int $stationId){
+        $query = '
+        SELECT ts.id, t.name, ts.stationId, t.id teamId FROM team_at_stations ts
+  INNER JOIN teams t ON ts.teamId = t.id
+  WHERE ts.stationId = ?
+  ORDER BY t.name
+        ';
+        $rows = DB::select($query, [$stationId]);
+        $data = [
+            'message' => 'ok',
+            'data' => $rows
+        ];
         return response()->json($data, options: JSON_UNESCAPED_UNICODE);
     }
 }

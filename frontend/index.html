@@ -1,13 +1,76 @@
 <!DOCTYPE html>
 <html lang="">
-  <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vite App</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+
+<body>
+  <!-- <body oncontextmenu="return false;" onkeydown="return disableDevTools(event)"> -->
+  <div id="app"></div>
+  <script type="module" src="/src/main.js"></script>
+  <!-- <script>
+    // 1. Jobb kattintás és billentyűparancsok tiltása
+    function disableDevTools(event) {
+      if (event.keyCode === 123 || // F12
+        (event.ctrlKey && event.shiftKey && event.keyCode === 73) || // Ctrl+Shift+I
+        (event.ctrlKey && event.shiftKey && event.keyCode === 74) || // Ctrl+Shift+J
+        (event.ctrlKey && event.keyCode === 85) // Ctrl+U (forráskód megtekintése)
+      ) {
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    // 2. Fejlesztői eszközök észlelése és oldalletiltás
+    (function () {
+      let threshold = 160;
+      setInterval(function () {
+        if (window.outerWidth - window.innerWidth > threshold ||
+          window.outerHeight - window.innerHeight > threshold) {
+          document.body.innerHTML = "";
+          alert("Fejlesztői eszközök tiltva!");
+          window.location = "about:blank";
+        }
+      }, 1000);
+    })();
+
+    // 3. Console.log megfigyelése
+    (function () {
+      let devtools = { open: false };
+      let threshold = 160;
+
+      const detect = () => {
+        let widthDiff = window.outerWidth - window.innerWidth > threshold;
+        let heightDiff = window.outerHeight - window.innerHeight > threshold;
+        if (widthDiff || heightDiff) {
+          devtools.open = true;
+          document.body.innerHTML = "";
+          alert("Fejlesztői eszközök tiltva!");
+          window.location = "about:blank";
+        }
+      };
+
+      window.addEventListener('resize', detect);
+    })();
+
+    // 4. Debugger észlelése
+    function detectDevTools() {
+      let before = new Date().getTime();
+      debugger; // Ha a fejlesztői eszköz nyitva van, itt megáll
+      let after = new Date().getTime();
+      if (after - before > 100) {
+        alert("Fejlesztői eszközök észlelve!");
+        window.location = "about:blank";
+      }
+    }
+    setInterval(detectDevTools, 3000);
+  </script> -->
+</body>
+
 </html>

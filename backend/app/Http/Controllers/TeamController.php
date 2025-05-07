@@ -5,12 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\team;
 use App\Http\Requests\StoreteamRequest;
 use App\Http\Requests\UpdateteamRequest;
+use DB;
 
 class TeamController extends Controller
 {
     public function index()
     {
-        $rows = team::all();
+        // $rows = team::all();
+        $rows = DB::table('teams as t')
+            ->join('competitions as c', 't.competitionId', '=', 'c.id')
+            ->join('users as u', 't.userId', '=', 'u.id')
+            ->where('c.currentComp', 1)
+            ->select('t.id', 't.name', 't.school', 't.userId')
+            ->get();
+
         return response()->json(['data' => $rows], options: JSON_UNESCAPED_UNICODE);
     }
 

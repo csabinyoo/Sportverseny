@@ -5,7 +5,7 @@ import { useAuthStore } from "@/stores/useAuthStore.js";
 function checkIfNotLogged(to, from, next) {
   const storeAuth = useAuthStore();
   if (!storeAuth.user) {
-    return next("/bejelentkezes");
+    return next("/");
   }
 
   if (to.meta.requiresAdmin && storeAuth.roleId !== 1) {
@@ -51,6 +51,13 @@ const router = createRouter({
       meta: { title: (route) => 'Admin', requiresAdmin: true }
     },
     {
+      path: '/tables',
+      name: 'tables',
+      component: () => import('../views/TableView.vue'),
+      beforeEnter: [checkIfNotLogged],
+      meta: { title: (route) => 'Admin', requiresAdmin: true }
+    },
+    {
       path: '/teams',
       name: 'teams',
       component: () => import('../views/TeamView.vue'),
@@ -58,10 +65,39 @@ const router = createRouter({
       meta: { title: (route) => 'Teams', requiresAdmin: true }
     },
     {
+      path: '/registerteam',
+      name: 'registerteam',
+      component: () => import('../views/TeamRegView.vue'),
+      beforeEnter: [checkIfNotLogged],
+      meta: { title: (route) => 'Teams' }
+    },
+    {
+      path: '/roles',
+      name: 'roles',
+      component: () => import('../views/RoleView.vue'),
+      beforeEnter: [checkIfNotLogged],
+      meta: { title: (route) => 'Roles', requiresAdmin: true }
+    },
+    {
+      path: '/stations',
+      name: 'stations',
+      component: () => import('../views/StationView.vue'),
+      beforeEnter: [checkIfNotLogged],
+      meta: { title: (route) => 'Roles', requiresAdmin: true }
+    },
+    {
+      path: '/competitions',
+      name: 'competitions',
+      component: () => import('../views/CompetitionView.vue'),
+      beforeEnter: [checkIfNotLogged],
+      meta: { title: (route) => 'Roles', requiresAdmin: true }
+    },
+    {
       path: "/:pathMatch(.*)*",
       name: "NotFound",
-      component: HomeView,
-      meta: { title: (route) => 'FőOldal' }
+      component: () => import('../views/404.vue'),
+      // component: HomeView,
+      meta: { title: (route) => '404 - Page Not Found' }
     }
   ],
 })

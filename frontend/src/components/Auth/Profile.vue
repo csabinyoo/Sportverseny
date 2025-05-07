@@ -1,160 +1,107 @@
 <template>
-  <div class="container mt-2">
-    <Notification ref="notification" />
+  <div>
     <h1 class="title">Profil szerkesztése</h1>
     <hr />
-
-    <!-- Username -->
-    <div class="content">
-      <div class="card mb-3">
-        <div
-          class="card-body d-flex justify-content-between align-items-center"
-        >
-          <p>
-            <strong>Felhasználónév:</strong>
-            {{ isEditingField === "username" ? "" : user.username }}
-          </p>
-          <div
-            v-if="isEditingField === 'username'"
-            class="d-flex align-items-center"
-          >
-            <input
-              type="text"
-              class="form-control me-2"
-              v-model="updatedField.username"
-              placeholder="Enter new username"
-            />
-            <button class="btn btn-success me-2" @click="saveField('username')">
-              Mentés
-            </button>
-            <button class="btn btn-secondary" @click="cancelEdit">Mégse</button>
+    <div class="container">
+      <div v-if="loading" class="loading-overlay">
+        <div class="loading-content">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
           </div>
-          <button v-else class="btn" @click="startEdit('username')">
-            Módosítás
-          </button>
+          <div class="loading-text">Loading...</div>
         </div>
       </div>
 
-      <!-- Name -->
-      <div class="card mb-3">
-        <div
-          class="card-body d-flex justify-content-between align-items-center"
-        >
-          <p>
-            <strong>Felhasználónév:</strong>
-            {{ isEditingField === "name" ? "" : user.name }}
-          </p>
+      <div class="content-profile">
+        <div v-for="field in fields" :key="field.key" class="card mb-3">
           <div
-            v-if="isEditingField === 'name'"
-            class="d-flex align-items-center"
+            class="card-body d-flex justify-content-between align-items-center"
           >
-            <input
-              type="text"
-              class="form-control me-2"
-              v-model="updatedField.name"
-              placeholder="Enter new name"
-            />
-            <button class="btn btn-success me-2" @click="saveField('name')">
-              Mentés
-            </button>
-            <button class="btn btn-secondary" @click="cancelEdit">Mégse</button>
-          </div>
-          <button v-else class="btn" @click="startEdit('name')">
-            Módosítás
-          </button>
-        </div>
-      </div>
+            <p>
+              <strong>{{ field.label }}:</strong>
+              <span v-if="field.key !== 'password'">
+                {{
+                  isEditingField === field.key
+                    ? ""
+                    : " " + (user[field.key] || "Nincs megadva")
+                }}
+              </span>
+              <span v-else>*******</span>
+            </p>
 
-      <!-- Email -->
-      <div class="card mb-3">
-        <div
-          class="card-body d-flex justify-content-between align-items-center"
-        >
-          <p>
-            <strong>Email:</strong>
-            {{ isEditingField === "email" ? "" : user.email }}
-          </p>
+            <div
+              v-if="isEditingField === field.key"
+              class="d-flex flex-column align-items-center"
+            >
+              <input
+                :type="field.type"
+                @focus="clearValue(field.key)"
+                class="form-control me-2"
+                v-model="updatedField[field.key]"
+                :placeholder="`Enter new ${field.label.toLowerCase()}`"
+              />
+              <div class="d-flex justify-content-center gap-2">
+                <button class="btn" @click="saveField(field.key)">
+                  Mentés
+                </button>
+                <button class="btn" @click="cancelEdit">Mégse</button>
+              </div>
+            </div>
+
+            <button
+              v-if="user[field.key] && isEditingField !== field.key"
+              class="btn"
+              @click="startEdit(field.key)"
+            >
+              Módosítás
+            </button>
+          </div>
+        </div>
+
+        <div class="card mb-3" v-if="store.roleId === 1">
           <div
-            v-if="isEditingField === 'email'"
-            class="d-flex align-items-center"
+            class="card-body d-flex justify-content-between align-items-center"
           >
-            <input
-              type="email"
-              class="form-control me-2"
-              v-model="updatedField.email"
-              placeholder="Enter new email"
-            />
-            <button class="btn btn-success me-2" @click="saveField('email')">
-              Mentés
+            <p>
+              <strong>Jog:</strong>
+              {{
+                isEditingField === "roleId"
+                  ? ""
+                  : " " + getRoleName(user.roleId)
+              }}
+            </p>
+            <div
+              v-if="isEditingField === 'roleId'"
+              class="d-flex flex-column align-items-center"
+            >
+              <select class="form-control me-2" v-model="updatedField.roleId">
+                <option v-for="role in roles" :key="role.id" :value="role.id">
+                  {{ role.role }}
+                </option>
+              </select>
+              <div class="d-flex justify-content-center gap-2">
+                <button class="btn btn-success" @click="saveField('roleId')">
+                  Mentés
+                </button>
+                <button class="btn btn-secondary" @click="cancelEdit">
+                  Mégse
+                </button>
+              </div>
+            </div>
+            <button
+              v-if="user.roleId && isEditingField !== 'roleId'"
+              class="btn"
+              @click="startEdit('roleId')"
+            >
+              Módosítás
             </button>
-            <button class="btn btn-secondary" @click="cancelEdit">Mégse</button>
           </div>
-          <button v-else class="btn" @click="startEdit('email')">
-            Módosítás
-          </button>
         </div>
-      </div>
 
-      <!-- Password -->
-      <div class="card mb-3">
-        <div
-          class="card-body d-flex justify-content-between align-items-center"
-        >
-          <p><strong>Jelszó:</strong> *******</p>
-          <div
-            v-if="isEditingField === 'password'"
-            class="d-flex align-items-center"
-          >
-            <input
-              type="password"
-              class="form-control me-2"
-              v-model="updatedField.password"
-              placeholder="Enter new password"
-            />
-            <button class="btn btn-success me-2" @click="saveField('password')">
-              Mentés
-            </button>
-            <button class="btn btn-secondary" @click="cancelEdit">Mégse</button>
-          </div>
-          <button v-else class="btn" @click="startEdit('password')">
-            Módosítás
-          </button>
-        </div>
+        <button class="btn mt-1 delete" @click="deleteUser">
+          Fiók törlése
+        </button>
       </div>
-
-      <!-- Role -->
-      <div class="card mb-3" v-if="store.roleId === 1">
-        <div
-          class="card-body d-flex justify-content-between align-items-center"
-        >
-          <p>
-            <strong>Jog:</strong>
-            {{ isEditingField === "roleId" ? "" : getRoleName(user.roleId) }}
-          </p>
-          <div
-            v-if="isEditingField === 'roleId'"
-            class="d-flex align-items-center"
-          >
-            <select class="form-control me-2" v-model="updatedField.roleId">
-              <option v-for="role in roles" :key="role.id" :value="role.id">
-                {{ role.role }}
-              </option>
-            </select>
-            <button class="btn btn-success me-2" @click="saveField('roleId')">
-              Mentés
-            </button>
-            <button class="btn btn-secondary" @click="cancelEdit">Mégse</button>
-          </div>
-          <button v-else class="btn" @click="startEdit('roleId')">
-            Módosítás
-          </button>
-        </div>
-      </div>
-
-      <!-- Delete Account -->
-      <button class="btn btn-danger mt-3" @click="deleteUser">
-        Fiók törlése
-      </button>
     </div>
   </div>
 </template>
@@ -163,62 +110,86 @@
 import axios from "axios";
 import { BASE_URL } from "../../helpers/baseUrls";
 import { useAuthStore } from "../../stores/useAuthStore";
-import Notification from "../../components/Notification.vue";
+import { useToast } from "vue-toastification";
+const toast = useToast();
 
 export default {
-  components: {
-    Notification,
-  },
+  components: { Notification },
   data() {
     return {
       user: {},
       roles: [],
+      loading: false,
       updatedField: {},
       isEditingField: null,
       store: useAuthStore(),
+      fields: [
+        { key: "username", label: "Username", type: "text" },
+        { key: "name", label: "Name", type: "text" },
+        { key: "email", label: "Email", type: "email" },
+        { key: "password", label: "Password", type: "password" },
+      ],
     };
   },
-  async created() {
-    await this.fetchUserData();
-    await this.fetchRoles();
+  mounted() {
+    // const userIdFromRoute = this.$route.params.id;
+    // const isAdmin = this.store.roleId === 1;
+    // const isOwnProfile = this.store.id.toString() === userIdFromRoute;
+
+    // if (!isAdmin && !isOwnProfile) {
+    //   this.$router.replace(`/profile/${this.store.id}`);
+    //   return;
+    // }
+    this.fetchUserData();
+    this.fetchRoles();
   },
+
   watch: {
     $route: "fetchUserData",
   },
   methods: {
     async fetchUserData() {
-      const userId = this.$route.params.id;
+      const userIdFromRoute = this.$route.params.id;
+      const isAdmin = this.store.roleId === 1;
+      const isGuest = this.store.roleId === 4;
+      const isOwnProfile = this.store.id.toString() === userIdFromRoute;
+
+      if (isGuest) {
+        toast.error("Vengédként nincsen jogosultságod!");
+        this.$router.replace(`/`);
+        return;
+      }
+
+      if (!isAdmin && !isOwnProfile) {
+        this.$router.replace(`/profile/${this.store.id}`);
+        return;
+      }
+
       try {
-        if (userId != this.store.id && this.store.roleId === 3) {
-          const response = await axios.get(
-            `${BASE_URL}/users/${this.store.id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${this.store.token}`,
-              },
-            }
-          );
-          this.user = response.data.data;
-          this.$router.push(`/profile/${this.store.id}`);
-          
-        } else {
-          const response = await axios.get(`${BASE_URL}/users/${userId}`, {
-            headers: {
-              Authorization: `Bearer ${this.store.token}`,
-            },
-          });
-          this.user = response.data.data;
-        }
+        this.loading = true;
+        const response = await axios.get(
+          `${BASE_URL}/users/${userIdFromRoute}`,
+          {
+            headers: { Authorization: `Bearer ${this.store.token}` },
+          }
+        );
+        this.user = response.data.data;
       } catch (error) {
         console.error("Error fetching user profile:", error);
+      }
+      setTimeout(() => {
+        this.loading = false;
+      }, 1000);
+    },
+    arValue(key) {
+      if (key === "password") {
+        this.updatedField[key] = null;
       }
     },
     async fetchRoles() {
       try {
         const response = await axios.get(`${BASE_URL}/roles`, {
-          headers: {
-            Authorization: `Bearer ${this.store.token}`,
-          },
+          headers: { Authorization: `Bearer ${this.store.token}` },
         });
         this.roles = response.data.data;
       } catch (error) {
@@ -238,92 +209,69 @@ export default {
       this.updatedField = {};
     },
     async saveField(field) {
-      try {
-        const updatedUser = { ...this.user, [field]: this.updatedField[field] };
-        const userId = this.$route.params.id;
+      if (this.updatedField[field] === this.user[field]) {
+        this.cancelEdit();
+        return;
+      }
 
+      try {
+        this.loading = true;
+        const userId = this.$route.params.id;
+        const updatedUser = { ...this.user, [field]: this.updatedField[field] };
         const response = await axios.patch(
           `${BASE_URL}/users/${userId}`,
           updatedUser,
           {
-            headers: {
-              Authorization: `Bearer ${this.store.token}`,
-            },
+            headers: { Authorization: `Bearer ${this.store.token}` },
           }
         );
 
-        if (response.data.message === "This email already exists") {
-          this.$refs.notification.showMessage(
-            "Error: Ez az e-mail már használatban van.",
-            "error"
-          );
-        } else {
-          this.$refs.notification.showMessage(
-            `${field} sikeresen frissítve.`,
-            "success"
-          );
-          this.user = response.data.data;
+        this.user = response.data.data;
+        toast(`${field} sikeresen frissítve`);
 
-          if (field === "username" && this.store.id.toString() === userId) {
-            this.store.setUsername(this.updatedField.username);
-          }
-          if (field === "name" && this.store.id.toString() === userId) {
-            this.store.setUser(this.updatedField.name);
-          }
-          if (field === "roleId" && this.store.id.toString() === userId) {
-            this.store.setRoleId(this.updatedField.roleId);
-          }
-
-          this.cancelEdit();
-
-          if (
-            (field === "email" || field === "password") &&
-            this.store.id.toString() === userId
-          ) {
-            this.$refs.notification.showMessage(
-              "Kérlek jelentkezz be újra.",
-              "info"
-            );
-            console.log(this.updatedField[field]);
-
-            this.store.clearStoredData();
-            setTimeout(() => {
-              this.$router.push("/bejelentkezes");
-            }, 1500);
-          }
+        if (field === "username" && this.store.id.toString() === userId) {
+          this.store.setUsername(this.updatedField.username);
         }
+        if (field === "name" && this.store.id.toString() === userId) {
+          this.store.setUser(this.updatedField.name);
+        }
+        if (field === "roleId" && this.store.id.toString() === userId) {
+          this.store.setRoleId(this.updatedField.roleId);
+        }
+
+        if (
+          (field === "email" || field === "password") &&
+          this.store.id.toString() === userId
+        ) {
+          toast.warning("Jelentkezz be újra!");
+
+          this.store.clearStoredData();
+          setTimeout(() => {
+            this.$router.push("/bejelentkezes");
+          }, 1500);
+        }
+
+        this.cancelEdit();
       } catch (error) {
         console.error("Error updating field:", error);
-        this.$refs.notification.showMessage(
-          "Nem sikerült frissíteni a mezőt. Kérjük, próbálja újra.",
-          "error"
-        );
+        this.cancelEdit();
+        toast.error("Hiba a frissítéskor!");
       }
+      this.loading = false;
     },
     async deleteUser() {
-      if (confirm("Biztosan le akarod törölni a fiókodat?")) {
+      if (confirm("Biztosan törölni szeretnéd a fiókot?")) {
         try {
           const userId = this.$route.params.id;
-
           await axios.delete(`${BASE_URL}/users/${userId}`, {
-            headers: {
-              Authorization: `Bearer ${this.store.token}`,
-            },
+            headers: { Authorization: `Bearer ${this.store.token}` },
           });
-          this.$refs.notification.showMessage(
-            "Felhasználó sikeresen törölve",
-            "success"
-          );
-          if (this.store.id.toString() === userId) {
-            this.store.clearStoredData();
-          }
+          toast("Felhasználó törölve!");
+          this.store.clearStoredData();
           this.$router.push("/admin");
         } catch (error) {
           console.error("Error deleting user:", error);
-          this.$refs.notification.showMessage(
-            "Nem sikerült letörölni a fiókot. Kérlek próbáld újra.",
-            "error"
-          );
+          toast.error("Hiba a törléskor!");
         }
       }
     },
@@ -331,47 +279,110 @@ export default {
 };
 </script>
 
+
 <style scoped>
 .container {
   max-width: 600px;
-  margin: auto;
 }
-.content {
+
+.content-profile {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 80vh;
 }
+
 .card {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
 }
+
 .card-body {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  padding: 20px;
 }
+
 .card-body p {
   margin: 0;
 }
+
 button {
   margin-top: 10px;
   width: auto;
 }
+
 .title {
   text-align: center;
 }
-.card .btn {
-  margin: 5px 0;
-  background: #3498db;
-  color: #fff;
-  transition: 0.3s;
+
+.card input {
+  width: 120%;
 }
-.card .btn:hover {
-  background: #035b95;
+
+.btn {
+  background: var(--color) !important;
+  color: white !important;
+  font-weight: 600 !important;
+  border: 1px solid var(--color) !important;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background: var(--bg-color) !important;
+  color: #fff;
+  border-color: transparent !important;
+}
+
+.card:nth-child(1),
+.card:nth-child(2),
+.card:nth-child(3),
+.card:nth-child(4),
+.card:nth-child(5),
+.delete {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+/* Animáció definíciója */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.card:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+.card:nth-child(4) {
+  animation-delay: 0.9s;
+}
+
+.card:nth-child(5) {
+  animation-delay: 1.2s;
+}
+
+.delete {
+  animation-delay: 1.5s;
+}
+
+.spinner-border {
+  width: 4rem;
+  height: 4rem;
+  border-width: 0.5em;
+  color: var(--color);
 }
 </style>

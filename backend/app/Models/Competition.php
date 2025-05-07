@@ -17,7 +17,8 @@ class Competition extends Model
         'date',
         'location',
         'registerFrom',
-        'registerTo'
+        'registerTo',
+        'currentComp'
     ];
 
     protected function casts(): array
@@ -25,7 +26,8 @@ class Competition extends Model
         return [
             'date' => 'date:Y-m-d',
             'registerFrom' => 'date:Y-m-d',
-            'registerTo' => 'date:Y-m-d'
+            'registerTo' => 'date:Y-m-d',
+            'currentComp' => 'boolean' 
         ];
     }
 }

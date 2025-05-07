@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('location');
             $table->date('registerFrom');
             $table->date('registerTo');
+            $table->boolean('currentComp')->default(false);
             $table->unique('name');
         });
     }

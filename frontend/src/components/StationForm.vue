@@ -6,16 +6,18 @@
     <p v-if="debug" class="debug-text">{{ itemForm }}</p>
 
     <!-- Verseny kiválasztása -->
-    <div class="form-group mb-0 mt-0 d-flex justify-content-between competition">
+    <div
+      class="form-group mb-0 mt-0 d-flex justify-content-between competition"
+    >
       <p for="competitionId" class="form-label">Verseny</p>
       <p for="competitionId" class="form-label">
         <strong>{{ stateAuth.currentCompName }}</strong>
       </p>
     </div>
 
-    <!-- Csapatnév -->
-    <div class="col-md-6 form-group">
-      <label for="name" class="form-label">Csapatnév:</label>
+    <!-- Sportnév -->
+    <div class="form-group col-md-4">
+      <label for="name" class="form-label">Sportnév:</label>
       <input
         type="text"
         class="form-control"
@@ -27,9 +29,70 @@
       <div class="valid invalid-feedback">•</div>
     </div>
 
-    <!-- Kapitány kiválasztása -->
-    <div class="col-md-6 form-group">
-      <label for="userId" class="form-label">Kapitány:</label>
+    <!-- Helyszín -->
+    <div class="form-group col-md-4">
+      <label for="location" class="form-label">Helyszín:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="location"
+        required
+        v-model="itemForm.location"
+      />
+      <div class="valid valid-feedback">•</div>
+      <div class="valid invalid-feedback">•</div>
+    </div>
+
+    <!-- Súlyozás -->
+    <div class="form-group col-md-4">
+      <label for="weighting" class="form-label">Súlyozás:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="weighting"
+        required
+        v-model="itemForm.weighting"
+      />
+      <div class="valid valid-feedback">•</div>
+      <div class="valid invalid-feedback">•</div>
+    </div>
+
+    <!-- Több a jobb -->
+    <div class="form-group col-md-4">
+      <label for="moreIsBetter" class="form-label">Több a jobb:</label>
+      <select
+        class="form-select"
+        id="moreIsBetter"
+        v-model="itemForm.moreIsBetter"
+        required
+      >
+        <option value="1">Igen</option>
+        <option value="0">Nem</option>
+      </select>
+      <div class="valid valid-feedback">•</div>
+      <div class="valid invalid-feedback">•</div>
+    </div>
+
+    <!-- Felügyelő kiválasztása -->
+    <div class="form-group col-md-4">
+      <label for="typeId" class="form-label">Típus:</label>
+      <select
+        class="form-select"
+        id="typeId"
+        v-model="itemForm.typeId"
+        required
+      >
+        <option v-for="type in types" :key="type.id" :value="type.id">
+          {{ type.type }}
+        </option>
+      </select>
+      <div class="valid valid-feedback">•</div>
+      <div class="valid invalid-feedback">•</div>
+    </div>
+
+    <!-- Felügyelő kiválasztása -->
+    <div class="form-group col-md-4">
+      <label for="userId" class="form-label">Felügyelő:</label>
       <select
         class="form-select"
         id="userId"
@@ -44,20 +107,6 @@
       <div class="valid invalid-feedback">•</div>
     </div>
 
-    <!-- Iskola -->
-    <div class="form-group">
-      <label for="school" class="form-label">Iskola:</label>
-      <input
-        type="text"
-        class="form-control"
-        id="school"
-        required
-        v-model="itemForm.school"
-      />
-      <div class="valid valid-feedback">•</div>
-      <div class="valid invalid-feedback">•</div>
-    </div>
-
     <!-- Mentés gomb -->
     <button type="submit" class="btn btn-submit">Mentés</button>
   </form>
@@ -66,7 +115,7 @@
 <script>
 import { useAuthStore } from "@/stores/useAuthStore.js";
 export default {
-  props: ["itemForm", "debug", "competitions", "users"],
+  props: ["itemForm", "debug", "competitions", "users", "types"],
   emits: ["saveItem"],
   data() {
     return {
@@ -75,7 +124,7 @@ export default {
   },
   computed: {
     filteredUsers() {
-      return this.users.filter((user) => user.roleId === 3);
+      return this.users.filter((user) => user.roleId === 2);
     },
   },
   methods: {

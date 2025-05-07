@@ -6,7 +6,9 @@
     <p v-if="debug" class="debug-text">{{ itemForm }}</p>
 
     <!-- Verseny kiválasztása -->
-    <div class="form-group mb-0 mt-0 d-flex justify-content-between competition">
+    <div
+      class="form-group mb-0 mt-0 d-flex justify-content-between competition"
+    >
       <p for="competitionId" class="form-label">Verseny</p>
       <p for="competitionId" class="form-label">
         <strong>{{ stateAuth.currentCompName }}</strong>
@@ -14,8 +16,8 @@
     </div>
 
     <!-- Csapatnév -->
-    <div class="col-md-6 form-group">
-      <label for="name" class="form-label">Csapatnév:</label>
+    <div class="col-md-5 form-group">
+      <label for="name" class="form-label">Név:</label>
       <input
         type="text"
         class="form-control"
@@ -27,32 +29,57 @@
       <div class="valid invalid-feedback">•</div>
     </div>
 
-    <!-- Kapitány kiválasztása -->
-    <div class="col-md-6 form-group">
-      <label for="userId" class="form-label">Kapitány:</label>
-      <select
-        class="form-select"
-        id="userId"
-        v-model="itemForm.userId"
+    <!-- Helyszín -->
+    <div class="col-md-7 form-group">
+      <label for="location" class="form-label">Helyszín:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="location"
         required
-      >
-        <option v-for="user in filteredUsers" :key="user.id" :value="user.id">
-          {{ user.name }}
-        </option>
-      </select>
+        v-model="itemForm.location"
+      />
       <div class="valid valid-feedback">•</div>
       <div class="valid invalid-feedback">•</div>
     </div>
 
-    <!-- Iskola -->
-    <div class="form-group">
-      <label for="school" class="form-label">Iskola:</label>
+    <!-- Dátum -->
+    <div class="col-md-4 form-group">
+      <label for="date" class="form-label">Dátum:</label>
       <input
-        type="text"
+        type="date"
         class="form-control"
-        id="school"
+        id="date"
         required
-        v-model="itemForm.school"
+        v-model="itemForm.date"
+      />
+      <div class="valid valid-feedback">•</div>
+      <div class="valid invalid-feedback">•</div>
+    </div>
+
+    <!-- Regisztráció (tól) -->
+    <div class="col-md-4 form-group">
+      <label for="registerFrom" class="form-label">Regisztráció(tól):</label>
+      <input
+        type="date"
+        class="form-control"
+        id="registerFrom"
+        required
+        v-model="itemForm.registerFrom"
+      />
+      <div class="valid valid-feedback">•</div>
+      <div class="valid invalid-feedback">•</div>
+    </div>
+
+    <!-- Regisztráció (ig) -->
+    <div class="col-md-4 form-group">
+      <label for="registerTo" class="form-label">Regisztráció(ig):</label>
+      <input
+        type="date"
+        class="form-control"
+        id="registerTo"
+        required
+        v-model="itemForm.registerTo"
       />
       <div class="valid valid-feedback">•</div>
       <div class="valid invalid-feedback">•</div>
@@ -66,17 +93,12 @@
 <script>
 import { useAuthStore } from "@/stores/useAuthStore.js";
 export default {
-  props: ["itemForm", "debug", "competitions", "users"],
+  props: ["itemForm", "debug"],
   emits: ["saveItem"],
   data() {
     return {
       stateAuth: useAuthStore(),
     };
-  },
-  computed: {
-    filteredUsers() {
-      return this.users.filter((user) => user.roleId === 3);
-    },
   },
   methods: {
     onClickSubmit() {
@@ -195,7 +217,7 @@ export default {
 }
 
 .competition::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;

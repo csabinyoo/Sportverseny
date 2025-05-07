@@ -1,35 +1,39 @@
 <template>
-  <div class="login-container">
-    <div class="login-card">
-      <h2 class="login-title">Bejelentkezés</h2>
-      <form @submit.prevent="userAuth">
-        <div class="input-group">
-          <span class="icon"><i class="fas fa-envelope"></i></span>
-          <input
-            type="email"
-            v-model="user.email"
-            placeholder="Email cím*"
-            required
-          />
-        </div>
+  <div>
+    <div class="login-container">
+      <div class="login-card">
+        <h2 class="login-title">Bejelentkezés</h2>
+        <form @submit.prevent="userAuth">
+          <div class="input-group">
+            <span class="icon"><i class="fas fa-envelope"></i></span>
+            <input
+              id="email"
+              type="email"
+              v-model="user.email"
+              placeholder="Email cím*"
+              required
+            />
+          </div>
 
-        <div class="input-group">
-          <span class="icon"><i class="fas fa-lock"></i></span>
-          <input
-            type="password"
-            v-model="user.password"
-            placeholder="Jelszó*"
-            required
-          />
-        </div>
+          <div class="input-group">
+            <span class="icon"><i class="fas fa-lock"></i></span>
+            <input
+              id="password"
+              type="password"
+              v-model="user.password"
+              placeholder="Jelszó*"
+              required
+            />
+          </div>
 
-        <button type="submit" class="login-button">
-          <span v-if="loading"> Bejelentkezés...</span>
-          <span v-else> Bejelentkezés</span>
-        </button>
+          <button type="submit" class="login-button">
+            <span v-if="loading"> Bejelentkezés...</span>
+            <span v-else> Bejelentkezés</span>
+          </button>
 
-        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
-      </form>
+          <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -38,14 +42,20 @@
 import { useAuthStore } from "../../stores/useAuthStore.js";
 import axios from "axios";
 import { BASE_URL } from "../../helpers/baseUrls";
+import { useToast } from "vue-toastification";
+const toast = useToast();
 
 export default {
+  components: { Notification },
   data() {
     return {
       user: {
         email: "medgyescsaba@gmail.com",
         password: "MedgyesCsaba2025",
+        // email: "",
+        // password: ""
       },
+      urlBase: BASE_URL,
       store: useAuthStore(),
       errorMessage: null,
       loading: false,
@@ -79,23 +89,24 @@ export default {
           this.store.setUser(response.data.user.name);
           this.store.setUsername(response.data.user.username);
           this.store.setToken(response.data.user.token);
-          
+
           this.store.setRoleId(response.data.user.roleId);
 
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${response.data.user.token}`;
-
+          toast("Sikeres bejelentkezés!");
           this.$router.push("/");
+          this.getCurrentComp();
         } else {
           this.errorMessage = "Helytelen bejelentkezési adatok!";
+          toast.error("Sikertelen bejelentkezés!");
         }
       } catch (error) {
         console.error("Error:", error);
         this.errorMessage = "Sikertelen bejelentkezés!";
-      } finally {
-        this.loading = false;
       }
+      this.loading = false;
       function setDynamicHeight() {
         document.documentElement.style.setProperty(
           "--vh",
@@ -105,6 +116,24 @@ export default {
 
       window.addEventListener("resize", setDynamicHeight);
       setDynamicHeight();
+    },
+    async getCurrentComp() {
+      const url = `${BASE_URL}/getCurrentComp`;
+      const headers = {
+        Accept: "application/json",
+      };
+      try {
+        const response = await axios.get(url, { headers });
+        const data = response.data.data;
+
+        if (data.length > 0) {
+          this.store.setCurrentCompId(data[0].id, data[0].name);
+        } else {
+          this.store.setCurrentCompId(null, null);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
     },
   },
 };
@@ -153,7 +182,7 @@ body {
 
 .input-group .icon {
   margin-right: 10px;
-  color: #007bff;
+  color: var(--color);
 }
 
 input {
@@ -165,7 +194,7 @@ input {
 }
 
 .login-button {
-  background: #007bff;
+  background: var(--color);
   color: white;
   border: none;
   padding: 12px;
@@ -177,7 +206,7 @@ input {
 }
 
 .login-button:hover {
-  background: #0056b3;
+  background: var(--bg-color);
 }
 
 .error-message {

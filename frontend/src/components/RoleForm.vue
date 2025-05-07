@@ -6,54 +6,42 @@
     <p v-if="debug" class="debug-text">{{ itemForm }}</p>
 
     <!-- Verseny kiválasztása -->
-    <div class="form-group mb-0 mt-0 d-flex justify-content-between competition">
+    <div
+      class="form-group mb-0 mt-0 d-flex justify-content-between competition"
+    >
       <p for="competitionId" class="form-label">Verseny</p>
       <p for="competitionId" class="form-label">
         <strong>{{ stateAuth.currentCompName }}</strong>
       </p>
     </div>
 
-    <!-- Csapatnév -->
-    <div class="col-md-6 form-group">
-      <label for="name" class="form-label">Csapatnév:</label>
+    <!-- Role -->
+    <div class="form-group col-md-6">
+      <label for="name" class="form-label">Rang neve:</label>
       <input
         type="text"
         class="form-control"
-        id="name"
+        id="role"
         required
-        v-model="itemForm.name"
+        v-model="itemForm.role"
       />
       <div class="valid valid-feedback">•</div>
       <div class="valid invalid-feedback">•</div>
     </div>
 
-    <!-- Kapitány kiválasztása -->
-    <div class="col-md-6 form-group">
-      <label for="userId" class="form-label">Kapitány:</label>
+    <!-- Permission -->
+    <div class="form-group col-md-6">
+      <label for="userId" class="form-label">Jog:</label>
       <select
         class="form-select"
-        id="userId"
-        v-model="itemForm.userId"
+        id="permission"
+        v-model="itemForm.permission"
         required
       >
-        <option v-for="user in filteredUsers" :key="user.id" :value="user.id">
-          {{ user.name }}
+        <option v-for="num in [0, 1, 2, 3]" :key="num" :value="num">
+          {{ num }}
         </option>
       </select>
-      <div class="valid valid-feedback">•</div>
-      <div class="valid invalid-feedback">•</div>
-    </div>
-
-    <!-- Iskola -->
-    <div class="form-group">
-      <label for="school" class="form-label">Iskola:</label>
-      <input
-        type="text"
-        class="form-control"
-        id="school"
-        required
-        v-model="itemForm.school"
-      />
       <div class="valid valid-feedback">•</div>
       <div class="valid invalid-feedback">•</div>
     </div>
@@ -65,18 +53,14 @@
 
 <script>
 import { useAuthStore } from "@/stores/useAuthStore.js";
+
 export default {
-  props: ["itemForm", "debug", "competitions", "users"],
+  props: ["itemForm", "debug", "competitions"],
   emits: ["saveItem"],
   data() {
     return {
       stateAuth: useAuthStore(),
     };
-  },
-  computed: {
-    filteredUsers() {
-      return this.users.filter((user) => user.roleId === 3);
-    },
   },
   methods: {
     onClickSubmit() {
@@ -195,7 +179,7 @@ export default {
 }
 
 .competition::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;

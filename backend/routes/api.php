@@ -9,6 +9,7 @@ use App\Http\Controllers\TeamAtStationController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\UsersController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,12 +33,15 @@ Route::delete('users/{id}', [UsersController::class, 'destroy'])
 // COMPETITIONS
 
 Route::get('competitions', [CompetitionController::class, 'index']);
+Route::get('getCurrentComp', [CompetitionController::class, 'getCurrentComp']);
 Route::get('competitions/{id}', [CompetitionController::class, 'show']);
 Route::post('competitions', [CompetitionController::class, 'store'])
     ->middleware('auth:sanctum');
 Route::patch('competitions/{id}', [CompetitionController::class, 'update'])
     ->middleware(middleware: 'auth:sanctum');
 Route::delete('competitions/{id}', [CompetitionController::class, 'destroy'])
+    ->middleware('auth:sanctum');
+Route::patch('competitionCurrentCompToFalse', [CompetitionController::class, 'competitionCurrentCompToFalse'])
     ->middleware('auth:sanctum');
 
 // MEMBERATSTATION
@@ -116,3 +120,8 @@ Route::patch('teammember/{id}', [TeamMemberController::class, 'update'])
     ->middleware(middleware: 'auth:sanctum');
 Route::delete('teammember/{id}', [TeamMemberController::class, 'destroy'])
     ->middleware('auth:sanctum');
+
+//querrys
+
+Route::get('teamAtStation/{stationId}', [TeamAtStationController::class, 'teamAtStation']);
+Route::get('membersResultsAtStation/{teamAtStationId}/{teamId}', [MemberResultsAtStationController::class, 'membersResultsAtStation']);
