@@ -90,7 +90,7 @@
           </li>
         </div>
       </ul>
-      <div class="user-account">
+      <div class="user-account" v-if="stateAuth.user">
         <div class="user-profile">
           <img src="/profile-img.jpg" alt="Profile Image" />
           <div class="user-detail">

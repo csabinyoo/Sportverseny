@@ -83,7 +83,6 @@
 import { BASE_URL } from "../helpers/baseUrls";
 import { DEBUG } from "../helpers/debug";
 import { useAuthStore } from "@/stores/useAuthStore.js";
-import ErrorMessage from "@/components/ErrorMessage.vue";
 import axios from "axios";
 import { reactive } from "vue";
 import { useToast } from "vue-toastification";
@@ -91,7 +90,6 @@ import { useToast } from "vue-toastification";
 const toast = useToast();
 
 export default {
-  components: { ErrorMessage },
   data() {
     return {
       urlApi: `${BASE_URL}/users`,

@@ -136,7 +136,6 @@ class Item {
 }
 import { BASE_URL } from "../helpers/baseUrls";
 import { DEBUG } from "../helpers/debug";
-import ErrorMessage from "@/components/ErrorMessage.vue";
 import { useAuthStore } from "@/stores/useAuthStore.js";
 import ItemForm from "@/components/RoleForm.vue";
 import OperationsCrud from "@/components/OperationsCrud.vue";
@@ -147,7 +146,7 @@ import { useToast } from "vue-toastification";
 const toast = useToast();
 
 export default {
-  components: { ItemForm, OperationsCrud, ErrorMessage },
+  components: { ItemForm, OperationsCrud },
   data() {
     return {
       modal: null,

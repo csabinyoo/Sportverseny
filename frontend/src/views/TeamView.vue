@@ -164,7 +164,6 @@
 <script>
 import { BASE_URL } from "../helpers/baseUrls";
 import { DEBUG } from "../helpers/debug";
-import ErrorMessage from "@/components/ErrorMessage.vue";
 import { useAuthStore } from "@/stores/useAuthStore.js";
 import ItemForm from "@/components/TeamForm.vue";
 import OperationsCrud from "@/components/OperationsCrud.vue";
@@ -191,7 +190,7 @@ class Item {
 }
 
 export default {
-  components: { ItemForm, OperationsCrud, ErrorMessage },
+  components: { ItemForm, OperationsCrud },
   data() {
     return {
       modal: null,
