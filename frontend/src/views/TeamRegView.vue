@@ -183,8 +183,6 @@ export default {
           { headers }
         );
 
-        console.log("Team Response:", teamResponse.data);
-
         const teamId = teamResponse.data.data.id;
 
         for (const member of this.teamMembers) {
@@ -204,7 +202,6 @@ export default {
         toast("A csapat és a tagok sikeresen regisztrálva!");
         this.teamRegistered = true;
       } catch (error) {
-        console.error("Hiba történt a regisztráció során:", error);
         toast("Hiba történt a regisztráció során.");
       }
       this.loading = false;

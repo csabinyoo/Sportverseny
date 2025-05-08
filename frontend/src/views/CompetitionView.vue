@@ -319,7 +319,7 @@ export default {
         location: this.item.location,
         registerFrom: this.item.registerFrom,
         registerTo: this.item.registerTo,
-        currentComp: this.item.currentComp,
+        currentComp: false,
       };
       try {
         const response = await axios.post(url, data, { headers });
