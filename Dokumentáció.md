@@ -17,7 +17,7 @@ Célja...
 
 ## Diagram
 
-![Diagram](/documents/Kepek/diagram_new.png)
+![Diagram](/documents/diagram_new.png)
 
 ## Táblák leírása
 # Adatbázis séma leírása
