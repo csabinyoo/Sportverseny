@@ -180,6 +180,12 @@ return new class extends Migration
     }
 };
 ```
+A `teams` tábla létrehozása migrációval történik. A tábla mezői:
+- `id`: automatikusan növekvő azonosító
+- `competitionId`: idegen kulcs a `competitions` táblára
+- `name`: csapat neve
+- `school`: iskola neve
+- `userId`: idegen kulcs a `users` táblára
 
 ## Seeder
 ```php
@@ -331,10 +337,52 @@ class TeamController extends Controller
         return response()->json($data, options: JSON_UNESCAPED_UNICODE);
     }
 }
-
 ```
+A csapatok kezeléséhez tartozó összes CRUD műveletet tartalmazza:
+- `index()`: Aktuális versenyhez tartozó csapatok listázása
+
+- `store()`: Új csapat mentése (validált adat alapján)
+
+- `show(id)`: Egy csapat lekérése azonosító alapján
+
+- `update(request, id)`: Csapat adatainak frissítése
+
+- `destroy(id)`: Csapat törlése
+
 
 # Frontend
 
-## Menü
-![Menu](/documents/Kepek/logreg.png)
+![Log](/documents/Kepek/logreg.png)
+Három lehetőség közül választhatunk:
+- **Bejelentkezés** meglévő fiókkal
+- **Regisztráció** új fiók létrehozásához
+- **Folytatás vendégként** fiók nélkül
+
+![Log ](/documents/Kepek/Kezdolap.png)
+Ha adminisztrátorként vagyunk bejelentkezve:
+- Megjelennek a **versenyek kezelése** gombok
+- Átjutunk a versenykezelő oldalra
+- Látható a **felhasználó neve**, **jogosultsága**, és az **aktuális verseny**
+
+![Competitions](/documents/Kepek/Versenyek.png)
+- Megjelennek az összes rögzített verseny
+- Lehetőség van **módosításra** vagy **törlésre**
+
+![CompetitionsEdit](/documents/Kepek/Verseny%20szerkesztese.png)
+- Egy **modális ablakban** történik a versenyadatok szerkesztése
+- Például: név, időpont, leírás stb.
+
+![Tables](/documents/Kepek/Tablazatok.png)
+- Megjelenik minden olyan **táblát**, amit szerkeszteni lehet
+- Például: felhasználók, versenyek, állomások
+
+![Users](/documents/Kepek/Felhasznalok.png)
+- Az összes fiók megjelenik **rang szerint csoportosítva**
+- Sorra kattintva szerkeszthető az adott felhasználó
+
+![UserEdit](/documents/Kepek/Fiok%20modositasa.png)
+- Egy adott felhasználói fiók minden fontos adata szerkeszthető
+- Például: név, e-mail, jogosultságok, jelszó stb.
+
+![Stations](/documents/Kepek/Allomasok.png)
+- Megjeleníti az **összes állomást**, ami az aktuálisan kiválasztott versenyhez tartozik
