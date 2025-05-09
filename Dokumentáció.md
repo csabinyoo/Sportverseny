@@ -17,7 +17,7 @@ Célja...
 
 ## Diagram
 
-![Diagram](/documents/diagram_new.png)
+![Diagram](/documents/Kepek/diagram_new.png)
 
 ## Táblák leírása
 # Adatbázis séma leírása
@@ -145,3 +145,193 @@ Célja...
 # Backend
 
 ## Migráció
+![Diagram](/documents/migrations.png)
+
+### Példa
+```php
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('teams', function (Blueprint $table) {
+            $table->integer('id')->autoIncrement();
+            $table->integer('competitionId');
+            $table->string('name');
+            $table->string('school');
+            $table->integer('userId');
+            $table->foreign('competitionId')->references('id')->on('competitions');
+            $table->foreign('userId')->references('id')->on('users');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('teams');
+    }
+};
+```
+
+## Seeder
+```php
+<?php
+namespace Database\Seeders;
+
+use App\Models\team;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+
+class TeamSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $filePath = database_path('csv\teams.csv');
+        $data = [];
+        if (($handle = fopen($filePath, "r")) !== FALSE) {
+            fgetcsv($handle, 1000, ";");
+            while (($row = fgetcsv($handle, 1000, ";")) !== FALSE) {
+                $data[] = [
+                    'competitionId' => $row[0],
+                    'name' => $row[1],
+                    'school' => $row[2],
+                    'userId' => $row[3]
+                ];
+            }
+            fclose($handle);
+        }
+    
+        if (team::count() === 0) {
+            team::factory()->createMany($data);
+        }
+    }
+}
+```
+- A kategóriák külső .csv fájlból (temakorok.csv) kerülnek beolvasásra.
+
+- A fájl elérési útvonala: `database/csv/teams.csv`
+
+- A sorokat szétválasztó karakter `;`
+
+- Csak akkor történik feltöltés, ha a teams tábla még üres.
+
+## Controller
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\team;
+use App\Http\Requests\StoreteamRequest;
+use App\Http\Requests\UpdateteamRequest;
+use DB;
+
+class TeamController extends Controller
+{
+    public function index()
+    {
+        // $rows = team::all();
+        $rows = DB::table('teams as t')
+            ->join('competitions as c', 't.competitionId', '=', 'c.id')
+            ->join('users as u', 't.userId', '=', 'u.id')
+            ->where('c.currentComp', 1)
+            ->select('t.id', 't.name', 't.school', 't.userId')
+            ->get();
+
+        return response()->json(['data' => $rows], options: JSON_UNESCAPED_UNICODE);
+    }
+
+    public function store(StoreteamRequest $request)
+    {
+        try {
+            $row = team::create($request->all());
+            $data = [
+                'message' => 'ok',
+                'data' => $row
+            ];
+        } catch (\Illuminate\Database\QueryException $e) {
+            $data = [
+                'message' => 'The post failed',
+                'data' => $request->all()
+            ];
+        }
+
+        return response()->json($data, options: JSON_UNESCAPED_UNICODE);
+    }
+
+    public function show(int $id)
+    {
+        $row = team::find($id);
+        if ($row) {
+            $data = [
+                'message' => 'ok',
+                'data' => $row
+            ];
+        } else {
+            $data = [
+                'message' => 'Not found',
+                'data' => [
+                    'id' => $id
+                ]
+            ];
+        }
+        return response()->json($data, options: JSON_UNESCAPED_UNICODE);
+    }
+
+    public function update(UpdateteamRequest $request, int $id)
+    {
+        $row = team::find($id);
+        if ($row) {
+            $row->update($request->all());
+            $data = [
+                'message' => 'ok',
+                'data' => $row
+            ];
+        } else {
+            $data = [
+                'message' => 'Not found',
+                'data' => [
+                    'id' => $id
+                ]
+            ];
+        }
+        return response()->json($data, options: JSON_UNESCAPED_UNICODE);
+    }
+
+    public function destroy(int $id)
+    {
+        $row = team::find($id);
+        if ($row) {
+            $row->delete();
+            $data = [
+                'message' => 'ok',
+                'data' => [
+                    'id' => $id
+                ]
+            ];
+        } else {
+            $data = [
+                'message' => 'Not found',
+                'data' => [
+                    'id' => $id
+                ]
+            ];
+        }
+        return response()->json($data, options: JSON_UNESCAPED_UNICODE);
+    }
+}
+
+```
