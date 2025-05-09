@@ -220,7 +220,7 @@ class TeamSeeder extends Seeder
     }
 }
 ```
-- A kategóriák külső .csv fájlból (temakorok.csv) kerülnek beolvasásra.
+- Az adatok  .csv fájlból ```(teams.csv)``` kerülnek beolvasásra.
 
 - A fájl elérési útvonala: `database/csv/teams.csv`
 

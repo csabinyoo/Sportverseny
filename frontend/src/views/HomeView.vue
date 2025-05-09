@@ -33,7 +33,6 @@
         </p>
         <p class="mb-0">Aktív verseny: <strong>{{ stateAuth.currentCompName }}</strong></p>
         <div class="btn-group-vertical">
-          <router-link to="/versenyek" class="btn mt-2">Versenyek</router-link>
           <router-link to="/competitions" class="btn mt-2" v-if="stateAuth.roleId < 3 && stateAuth.roleId > 0">Versenyek
             kezelése</router-link>
         </div>
