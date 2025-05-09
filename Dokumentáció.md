@@ -1,6 +1,6 @@
 # Leírás
 
-Célja...
+Célja egy olyan webalkalmazás fejlesztése, amely lehetővé teszi csapatok, versenyek és állomások kezelését, valamint az eredmények nyilvántartását.
 
 - Technológiák:
 
@@ -10,8 +10,6 @@ Célja...
   - Csoportmunka: Git, GitHub
   - Kommunikáció: Discord
   - Ütemterv: GitHub projekttervező rendszere
-
-- A feladat csoportmunkában készült Jáger Kristóf és Kovács János (csoportvezető) részvételével.
 
 # Az adatbázis:
 
@@ -335,3 +333,8 @@ class TeamController extends Controller
 }
 
 ```
+
+# Frontend
+
+## Menü
+![Menu](/documents/Kepek/logreg.png)

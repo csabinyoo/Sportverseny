@@ -246,22 +246,17 @@ export default {
     },
   },
   mounted() {
-    this.loadInitialData();
+    this.getUsers(),
+    this.getCompetitions(),
+    this.getCollections(),
     this.modal = new bootstrap.Modal("#modal", { keyboard: false });
   },
   methods: {
-    async loadInitialData() {
-      await Promise.all([
-        this.getUsers(),
-        this.getCompetitions(),
-        this.getCollections(),
-      ]);
-    },
     async getCollections() {
       try {
         const response = await axios.get(this.urlApi);
         this.items = response.data.data;
-      } catch (err) {
+      } catch (error) {
         toast.error("Szerver hiba!");
       }
       this.loading = false;

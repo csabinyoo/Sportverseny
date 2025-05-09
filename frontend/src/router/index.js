@@ -72,6 +72,13 @@ const router = createRouter({
       meta: { title: (route) => 'Teams' }
     },
     {
+      path: '/stationview',
+      name: 'stationview',
+      component: () => import('../views/StationsView.vue'),
+      beforeEnter: [checkIfNotLogged],
+      meta: { title: (route) => 'Stations' }
+    },
+    {
       path: '/roles',
       name: 'roles',
       component: () => import('../views/RoleView.vue'),

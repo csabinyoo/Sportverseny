@@ -30,6 +30,11 @@
               regisztrálása
             </RouterLink>
           </li>
+          <li>
+            <RouterLink to="/stationview" class="nav-link">
+              <span class="material-symbols-outlined"> simulation </span> Állomások
+            </RouterLink>
+          </li>
         </div>
         <div v-if="!stateAuth.user">
           <h4>

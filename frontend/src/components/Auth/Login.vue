@@ -50,10 +50,8 @@ export default {
   data() {
     return {
       user: {
-        email: "medgyescsaba@gmail.com",
-        password: "MedgyesCsaba2025",
-        // email: "",
-        // password: ""
+        email: "",
+        password: ""
       },
       urlBase: BASE_URL,
       store: useAuthStore(),
