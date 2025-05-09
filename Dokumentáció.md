@@ -145,7 +145,7 @@ Célja...
 # Backend
 
 ## Migráció
-![Diagram](/documents/migrations.png)
+![Migrations](/documents/migrations.png)
 
 ### Példa
 ```php
